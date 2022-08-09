@@ -12,6 +12,8 @@ options(repos=r)
 install.packages('remotes')
 
 remotes::install_github('plotly/dashR', upgrade=TRUE)
+remotes::install_github('plotly/dash-daq', upgrade = TRUE)
+
 install.packages('tidyverse')
 install.packages('plotly')
 install.packages('gapminder')

@@ -23,8 +23,10 @@ logbutton <- dccRadioItems(
 
 graph <- dccGraph(
 	id = 'gap-graph',
-	figure=make_plot() # gets initial data using argument defaults
+	figure=make_map_plot() # gets initial data using argument defaults
 )
+
+
 
 ### Create graph components
 
