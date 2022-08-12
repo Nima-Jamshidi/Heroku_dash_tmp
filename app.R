@@ -40,11 +40,12 @@ div_header <- htmlDiv(
 div_sidebar <- htmlDiv(
 	list(htmlLabel('Select y-axis metric:'),
 			 htmlBr(),
-			 yaxisDropdown,
+			 zscoreDropdown,
 			 htmlLabel('Select y scale : '),
 			 htmlBr(),
 			 logbutton,
-			 sources
+			 sources,
+			 htmlH2(as.character("Hello"),id = "test")
 	), #### THIS IS NEW! Styles added
 	  style = list('background-color' = '#BBCFF1',
 								 'padding' = 10,
@@ -52,8 +53,23 @@ div_sidebar <- htmlDiv(
 )
 
 div_main <- htmlDiv(
-	list(graph,
-			 graph_country
+	list(
+  # htmlButton(
+	#   children = "submit",
+	#   id="input",
+	#   # options=list(
+	#   #   list("label" = "ABCD", "value" = "ABCD.html"),
+	#   #   list("label" = "XYZ", "value" = "XYZ.html")),
+	#   # value="ABCD.html",
+	#   n_clicks = 0),
+	  # graph,
+	  # graph_country,
+	  # htmlIframe(id = "leaflet",
+	  #            src="assets/m.html",
+	  #            style=list("height" = "500px", "width" = "100%"),
+	  #            n_clicks = 0),
+	  graph,
+	  graph_tile
 	)
 )
 
@@ -72,6 +88,30 @@ app %>% set_layout(
 )
 
 ## App Callbacks
+
+app$callback(
+	#update figure of gap-graph
+	output=output(id = 'test', property='children'),
+	#based on values of year, continent, y-axis components
+	params=list(input(id = 'map-graph', property='clickData')),
+	#this translates your list of params into function arguments
+	function(clickdata) {
+		as.character(clickdata$points[[1]])
+	})
+
+
+app$callback(
+  #update figure of gap-graph
+  output=output(id = 'tile-graph', property='figure'),
+  #based on values of year, continent, y-axis components
+  params=list(input(id = 'map-graph', property='clickData'),
+              input(id = 'zscore-type', property='value')),
+  #this translates your list of params into function arguments
+  function(clickdata,zscore) {
+    make_tile_graph(curve_number = as.integer(clickdata$points[[1]]), zscore = zscore)
+  })
+
+
 
 # app$callback(
 # 	#update figure of gap-graph

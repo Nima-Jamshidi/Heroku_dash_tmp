@@ -1,16 +1,16 @@
 ## Assign components to variables
 
-heading_title <- htmlH1('Gapminder Dash Demo')
+heading_title <- htmlH1(id="header",'Gapminder Dash Demo')
 heading_subtitle <- htmlH2('Looking at country data interactively')
 
 ### Create the dropdown
-yaxisDropdown <- dccDropdown(
-	id = "y-axis",
+zscoreDropdown <- dccDropdown(
+	id = "zscore-type",
 	options = map(
-		1:nrow(yaxisKey), function(i){
-			list(label=yaxisKey$label[i], value=yaxisKey$value[i])
+		1:nrow(zscore_type), function(i){
+			list(label=zscore_type$label[i], value=zscore_type$value[i])
 		}),
-	value = "gdpPercap"
+	value = "zscore_weekly"
 )
 
 ### Create the button 
@@ -22,17 +22,22 @@ logbutton <- dccRadioItems(
 )
 
 graph <- dccGraph(
-	id = 'gap-graph',
+	id = 'map-graph',
 	figure=make_map_plot() # gets initial data using argument defaults
 )
+
+# graph <- dl$Map(
+#   # id = 'gap-graph',
+#   make_map_plot() # gets initial data using argument defaults
+# )
 
 
 
 ### Create graph components
 
-graph_country <- dccGraph(
-	id = 'gap-graph-country',
-	figure=make_country_graph() # gets initial data using argument defaults
+graph_tile <- dccGraph(
+	id = 'tile-graph',
+	figure=make_tile_graph() # gets initial data using argument defaults
 )
 
 sources <- dccMarkdown("[Data Source](https://cran.r-project.org/web/packages/gapminder/README.html)")
