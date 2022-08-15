@@ -9,7 +9,7 @@ library(base64enc)
 # Storing the labels/values as a tibble means we can use this both 
 # to create the dropdown and convert colnames -> labels when plotting
 zscore_type <- tibble(label = c("Weekly normalized", "Daily normalized"),
-									 value = c("zscore_weekly", "zscore_daily"))
+									 value = c("weekly", "daily"))
 
 ## Make plot
 
@@ -24,7 +24,8 @@ make_map_plot <- function(){
 	bbox_sf <- readRDS("data/map plot/bbox_sf.rds")
 	# make the plot!
 	
-	plot_ly(type = "scatter",data, split = ~location, showlegend = F
+	plot_ly(type = "scatter",data, split = ~location, showlegend = F,
+	        hoverlabel = list(namelength = 0)
 	        # ,
 	        # hovertemplate = paste0('</br>')
 	) %>% layout(clickmode = "event+select") %>% 
@@ -48,7 +49,8 @@ make_map_plot <- function(){
 	        layer = "over"
 	      )
 	    )
-	  )
+	  ) %>% 
+	  highlight(on = "plotly_click", color = "blue")
 	
 	
 	### the customdata mapping adds country to the tooltip and allows
@@ -150,14 +152,16 @@ make_map_plot <- function(){
 
 ### Create the line graph
 
-make_tile_graph <- function(curve_number=63,zscore = "zscore_weekly"){
+make_tile_graph <- function(curve_number=63,zscore_type = "weekly"){
 	data <- readRDS("data/hourly tile plot/hourly_tile_plot_data.rds")
 	# gets the label matching the column value
   locations <-
     data %>% distinct(location) %>% arrange(location)
-  j=curve_number-62
+  j=curve_number-59
   Name <- locations$location[j]
-  # zscore = paste0("zscore_",tolower(zscore_type))  
+  zscore = paste0("zscore_",tolower(zscore_type))
+  mean = paste0("mean_",tolower(zscore_type))
+  std = paste0("std_",tolower(zscore_type))
     # temp3 <- gather(
     #   data6_weekday %>%
     #     filter(location == Name,
@@ -273,16 +277,20 @@ make_tile_graph <- function(curve_number=63,zscore = "zscore_weekly"){
       ggplot(data_plot , aes(weekday, hour)) +
       geom_raster(
         aes(fill = !!sym(zscore),
-            text = paste0("</br>",
+            text = paste0("</br><b>",
                           hour,
                           ":00-",
                           hour+1,
                           ":00 ",
                           weekday,
-                          "</br>Hourly aggregate fleet idle time = ",
-                          round(number,2),
-                          "</br>Z-score = ",
-                          round(!!sym(zscore),1))),
+                          "</b></br>Hourly aggregate fleet idle time = ",
+                          round(number,1),
+                          "</br>    Z-score = ",
+                          round(!!sym(zscore),1),
+                          "</br>    mean = ",
+                          round(!!sym(mean),1),
+                          "</br>    std = ",
+                          round(!!sym(std),1))),
         hjust = 0.5,
         vjust = 0.5,
         interpolate = FALSE
@@ -323,5 +331,5 @@ make_tile_graph <- function(curve_number=63,zscore = "zscore_weekly"){
     # ggsave(str_c("Figure/evo_",Name,"_idle car distribution.png"),width = 7.3,height = 7.3)  
   
   
-  plotly::ggplotly(hweek, tooltip = "text")
+  plotly::ggplotly(hweek, tooltip = "text") %>% layout(clickmode = "event+select")
 }

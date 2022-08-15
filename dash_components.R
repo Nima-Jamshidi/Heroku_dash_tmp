@@ -10,7 +10,7 @@ zscoreDropdown <- dccDropdown(
 		1:nrow(zscore_type), function(i){
 			list(label=zscore_type$label[i], value=zscore_type$value[i])
 		}),
-	value = "zscore_weekly"
+	value = "weekly"
 )
 
 ### Create the button 
