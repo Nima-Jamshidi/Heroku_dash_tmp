@@ -21,6 +21,19 @@ logbutton <- dccRadioItems(
 	value = 'linear'
 )
 
+slider <- dccRangeSlider(
+  id = "arv_tile_slider",
+  min=0,
+  max=600,
+  marks = periods_list,
+  value = list(0,120),
+  count = 2,
+  pushable = T,
+  allowCross = F,
+  step = NA,
+  # included=F
+  )
+
 graph <- dccGraph(
 	id = 'map-graph',
 	figure=make_map_plot() # gets initial data using argument defaults
@@ -37,7 +50,15 @@ graph <- dccGraph(
 
 graph_tile <- dccGraph(
 	id = 'tile-graph',
-	figure=make_tile_graph() # gets initial data using argument defaults
+	figure=make_tile_graph(),#,
+	# loading_state = list(is_loading = F)# gets initial data using argument defaults
+	# style=list(display = "inline-block")
+	style = list(visibility = "hidden")
+)
+
+graph_arv_tile <- dccGraph(
+  id = 'arv_tile_graph',
+  figure = make_arrival_tile_graph()
 )
 
 sources <- dccMarkdown("[Data Source](https://cran.r-project.org/web/packages/gapminder/README.html)")
