@@ -48,17 +48,19 @@ graph <- dccGraph(
 
 ### Create graph components
 
-graph_tile <- dccGraph(
-	id = 'tile-graph',
-	figure=make_tile_graph(),#,
-	# loading_state = list(is_loading = F)# gets initial data using argument defaults
-	# style=list(display = "inline-block")
-	style = list(visibility = "hidden")
-)
+# graph_tile <- dccGraph(
+# 	id = 'tile-graph',
+# 	figure=make_tile_graph(),#,
+# 	# loading_state = list(is_loading = F)# gets initial data using argument defaults
+# 	# style=list(display = "inline-block")
+# 	style = list(visibility = "hidden")
+# )
 
-graph_arv_tile <- dccGraph(
-  id = 'arv_tile_graph',
-  figure = make_arrival_tile_graph()
-)
+# graph_arv_tile <- dccGraph(
+#   id = 'arv_tile_graph',
+#   figure = make_arrival_tile_graph(),
+#   style = list(visibility = "hidden")#,
+#   # animate = T
+# )
 
 sources <- dccMarkdown("[Data Source](https://cran.r-project.org/web/packages/gapminder/README.html)")

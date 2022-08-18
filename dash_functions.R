@@ -159,7 +159,7 @@ make_map_plot <- function(){
 
 ### Create the line graph
 
-make_tile_graph <- function(curve_number=118,zscore_type = "weekly"){
+make_tile_graph <- function(curve_number=117,zscore_type = "weekly"){
 	data <- readRDS("data/hourly tile plot/hourly_tile_plot_data.rds")
 	# gets the label matching the column value
   locations <-

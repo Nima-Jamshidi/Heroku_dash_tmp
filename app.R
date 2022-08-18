@@ -20,7 +20,7 @@ source('dash_components.R')
 
 ## Create Dash instance
 
-app <- Dash$new()
+app <- Dash$new(suppress_callback_exceptions = T)
 
 ## Specify layout elements
 
@@ -46,7 +46,9 @@ div_sidebar <- htmlDiv(
 			 logbutton,
 			 sources,
 			 htmlH2(as.character("Hello"),id = "test",className = "output-example-loading"),
-			 htmlH2(as.character("Hello"),id = "test2")
+			 htmlH2(as.character("Hello"),id = "test2"),
+			 dccLoading(loading_state = list(is_loading = T))#,
+			 # dccLoading(id = "loading",type = "circle",children = htmlDiv(htmlDiv(id = "loading-output",children = "TEST")))
 	), #### THIS IS NEW! Styles added
 	  style = list('background-color' = '#BBCFF1',
 								 'padding' = 10,
@@ -69,12 +71,28 @@ div_main <- htmlDiv(
 	  #            src="assets/m.html",
 	  #            style=list("height" = "500px", "width" = "100%"),
 	  #            n_clicks = 0),
-	  slider,
+	  # slider,
 	  graph,
 	  # dccLoading(id="loading",children = graph_tile,type = "graph"),
 	  # htmlDiv(children = graph_tile, id = "loading-block",style = list( visibility="hidden")),
-	  graph_tile,
-	  graph_arv_tile
+	  # htmlDiv(id = "loading-tile",children = "click on map"),
+	  # graph_tile,
+	  htmlDiv(id = "tile-wrapper"),
+	  slider,
+	  htmlDiv(id = "arv-tile-wrapper")
+	  # graph_arv_tile,
+	  # dccRangeSlider(
+	  #   id = "testest",
+	  #   min=0,
+	  #   max=600,
+	  #   marks = periods_list,
+	  #   value = list(0,120),
+	  #   count = 2,
+	  #   pushable = T,
+	  #   allowCross = F,
+	  #   step = NA,
+	  #   # included=F
+	  # )
 	),
 	style = list('flex-basis' = '80%')
 )
@@ -94,6 +112,7 @@ app %>% set_layout(
 )
 
 ## App Callbacks
+
 
 # app$callback(
 # 	#update figure of gap-graph
@@ -143,19 +162,47 @@ app %>% set_layout(
 #     return(list(make_tile_graph(curve_number = as.integer(clickdata$points[[1]]), zscore_type = zscore),list(display = "block")))
 #   })
 
+# app$callback(
+#   #update figure of gap-graph
+#   output=list(output(id = 'loading-tile', property='children')),
+#   #based on values of year, continent, y-axis components
+#   params=list(input(id = 'map-graph', property='clickData')),
+#   #this translates your list of params into function arguments
+#   function(clickdata) {
+#     prevent_update(is.null((clickdata$points[[1]])))
+#     # new_loading_style = loading_style
+#     # return(list(make_tile_graph(curve_number = as.integer(clickdata$points[[1]]), zscore_type = zscore),list(visibility = "visible")))
+#     return(graph_tile)
+#   })
+
 app$callback(
-  #update figure of gap-graph
-  output=list(output(id = 'tile-graph', property='figure'),
-              output(id = 'tile-graph', property='style')),
-  #based on values of year, continent, y-axis components
-  params=list(input(id = 'map-graph', property='clickData'),
-              input(id = 'zscore-type', property='value')),
-  #this translates your list of params into function arguments
-  function(clickdata,zscore) {
-    # prevent_update(is.null((clickdata$points[[1]])))
-    # new_loading_style = loading_style
-    return(list(make_tile_graph(curve_number = as.integer(clickdata$points[[1]]), zscore_type = zscore),list(visibility = "visible")))
-  })
+  output = output(id = "tile-wrapper", property = "children"),
+  params = list(input(id = 'map-graph',property = 'clickData'),
+                input(id = "zscore-type", property = "value")),
+  function(clickdata,zscore){
+    return(dccGraph(
+      id = 'tile-graph',
+      figure=make_tile_graph(curve_number = as.integer(clickdata$points[[1]]), zscore_type = zscore),#,
+      # loading_state = list(is_loading = F)# gets initial data using argument defaults
+      # style=list(display = "inline-block")
+      style = list(visibility = "visible")))
+  }
+)
+
+
+# app$callback(
+#   #update figure of gap-graph
+#   output=list(output(id = 'tile-graph', property='figure'),
+#               output(id = 'tile-graph', property='style')),
+#   #based on values of year, continent, y-axis components
+#   params=list(input(id = 'map-graph', property='clickData'),
+#               input(id = 'zscore-type', property='value')),
+#   #this translates your list of params into function arguments
+#   function(clickdata,zscore) {
+#     # prevent_update(is.null((clickdata$points[[1]])))
+#     # new_loading_style = loading_style
+#     return(list(make_tile_graph(curve_number = as.integer(clickdata$points[[1]]), zscore_type = zscore),list(visibility = "visible")))
+#   })
 
 # app$callback(
 #   #update figure of gap-graph
@@ -186,19 +233,66 @@ app$callback(
 #   })
 
 app$callback(
-  #update figure of gap-graph
-  output=output(id = 'arv_tile_graph', property='figure'),
-  #based on values of year, continent, y-axis components
+  output = output(id = "arv-tile-wrapper", property = "children"),
   params=list(input(id = 'map-graph', property='clickData'),
               input(id = 'tile-graph', property='clickData'),
               input(id = 'zscore-type', property='value'),
               input(id = "arv_tile_slider", property = "value")),
-  #this translates your list of params into function arguments
   function(map_clickdata,tile_clickdata,zscore,period_list) {
-    # as.character(clickdata$points[[1]])
     prevent_update(is_null(map_clickdata$points[[1]]),is.null(tile_clickdata$points[[1]][2]),is.null(tile_clickdata$points[[1]][3]))
-    make_arrival_tile_graph(curve_number = as.integer(map_clickdata$points[[1]]), zscore_type = zscore, Weekday_arv = as.integer(tile_clickdata$points[[1]][2]), Hour_arv = as.integer(tile_clickdata$points[[1]][3]), Period_cat = period_list)
-  })
+    return(
+      dccGraph(
+        id = 'arv_tile_graph',
+        figure = make_arrival_tile_graph(curve_number = as.integer(map_clickdata$points[[1]]),
+                                         zscore_type = zscore, 
+                                         Weekday_arv = as.integer(tile_clickdata$points[[1]][2]), 
+                                         Hour_arv = as.integer(tile_clickdata$points[[1]][3]), 
+                                         Period_cat = period_list),
+        style = list(visibility = "visible")#,
+        # animate = T
+      ))
+  }
+)
+
+# app$callback(
+#   #update figure of gap-graph
+#   output=list(output(id = 'arv_tile_graph', property='figure'),
+#               output(id = 'arv_tile_graph', property='style')),
+#   #based on values of year, continent, y-axis components
+#   params=list(input(id = 'map-graph', property='clickData'),
+#               input(id = 'tile-graph', property='clickData'),
+#               input(id = 'zscore-type', property='value'),
+#               input(id = "arv_tile_slider", property = "value")),
+#   #this translates your list of params into function arguments
+#   function(map_clickdata,tile_clickdata,zscore,period_list) {
+#     # as.character(clickdata$points[[1]])
+#     prevent_update(is_null(map_clickdata$points[[1]]),is.null(tile_clickdata$points[[1]][2]),is.null(tile_clickdata$points[[1]][3]))
+#     return(list(make_arrival_tile_graph(curve_number = as.integer(map_clickdata$points[[1]]),
+#                                         zscore_type = zscore,
+#                                         Weekday_arv = as.integer(tile_clickdata$points[[1]][2]),
+#                                         Hour_arv = as.integer(tile_clickdata$points[[1]][3]),
+#                                         Period_cat = period_list),list(visibility = "visible")))
+#   })
+# 
+# app$callback(
+#   #update figure of gap-graph
+#   output=list(output(id = 'arv_tile_graph', property='figure'),
+#               output(id = 'arv_tile_graph', property='style')),
+#   #based on values of year, continent, y-axis components
+#   params=list(input(id = 'map-graph', property='clickData'),
+#               input(id = 'tile-graph', property='clickData'),
+#               input(id = 'zscore-type', property='value'),
+#               input(id = "arv_tile_slider", property = "value")),
+#   #this translates your list of params into function arguments
+#   function(map_clickdata,tile_clickdata,zscore,period_list) {
+#     # as.character(clickdata$points[[1]])
+#     prevent_update(is_null(map_clickdata$points[[1]]),is.null(tile_clickdata$points[[1]][2]),is.null(tile_clickdata$points[[1]][3]))
+#     return(list(make_arrival_tile_graph(curve_number = as.integer(map_clickdata$points[[1]]),
+#                             zscore_type = zscore, 
+#                             Weekday_arv = as.integer(tile_clickdata$points[[1]][2]), 
+#                             Hour_arv = as.integer(tile_clickdata$points[[1]][3]), 
+#                             Period_cat = period_list),list(visibility = "visible")))
+#   })
 
 
 app$callback(
@@ -227,6 +321,17 @@ app$callback(
     # make_arrival_tile_graph(curve_number = as.integer(map_clickdata$points[[1]]), zscore_type = zscore, Weekday_arv = as.integer(tile_clickdata$points[[1]][2]), Hour_arv = as.integer(tile_clickdata$points[[1]][3]))
   })
 
+# app$callback(
+#   #update figure of gap-graph
+#   output=list(output(id = 'loading-output', property='children')),
+#   #based on values of year, continent, y-axis components
+#   params=list(input(id = 'map-graph', property='clickData')),
+#   #this translates your list of params into function arguments
+#   function(clickdata) {
+#     prevent_update(((clickdata$points[[1]]))==59)
+#     # new_loading_style = loading_style
+#     return(NA)
+#   })
 
 # app$callback(
 # 	#update figure of gap-graph
