@@ -15,6 +15,16 @@ periods <- tibble(label = c("0 min","10 min","30 min","1 hr","2 hr","3 hr","6 hr
 periods_list = as.list(periods$label)
 names(periods_list) = periods$value
 
+periods_list = list(`0` = list(label = "0 min", style = list(transform = "translateX(-50%) translateY(20%) rotate(-90deg)")),
+                    `10` = list(label = "10 min", style = list(transform = "translateX(-50%) translateY(20%) rotate(-90deg)")),
+                    `30` = list(label = "30 min", style = list(transform = "translateX(-50%) translateY(20%) rotate(-90deg)")),
+                    `60` = list(label = "1 hr", style = list(transform = "translateX(-50%) translateY(20%) rotate(-90deg)")),
+                    `120` = list(label = "2 hr", style = list(transform = "translateX(-50%) translateY(20%) rotate(-90deg)")),
+                    `180` = list(label = "3 hr", style = list(transform = "translateX(-50%) translateY(20%) rotate(-90deg)")),
+                    `360` = list(label = "6 hr", style = list(transform = "translateX(-50%) translateY(20%) rotate(-90deg)")),
+                    `600` = list(label = "6+ hr", style = list(transform = "translateX(-50%) translateY(20%) rotate(-90deg)")))
+
+
 make_map_plot <- function(){
 
   	data <- readRDS("data/map plot/sf_neighborhoods_t.rds")
@@ -77,6 +87,9 @@ make_tile_graph <- function(curve_number=117,zscore_type = "weekly"){
       geom_raster(
         aes(fill = !!sym(zscore),
             text = paste0("</br><b>",
+                          Name,
+                          "</b>",
+                          "</br><b>",
                           hour,
                           ":00-",
                           hour+1,
@@ -188,15 +201,17 @@ make_arrival_tile_graph <-
       geom_raster(
         aes(
           fill = number,
-          text = paste0(
-            "</br>",
-            hour_int,
-            ":00-",
-            as.numeric(as.character(hour_int)) + 1,
-            ":00 ",
-            weekday_int,
-            "</br>Hourly aggregate fleet idle time = ",
-            round(number, 2)
+          text = paste0("</br><b>",
+                        Name,
+                        "</b>",
+                        "<b></br>",
+                        hour_int,
+                        ":00-",
+                        hour_int + 1,
+                        ":00 ",
+                        x_levels[weekday_int],
+                        "</b></br>Hourly aggregate fleet idle time = ",
+                        round(number, 2)
           )),
           hjust = 0.5,
           vjust = 0.5,

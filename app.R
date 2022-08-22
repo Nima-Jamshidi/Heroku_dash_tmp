@@ -13,6 +13,7 @@ library(dash)
 library(dashCoreComponents)
 library(dashHtmlComponents)
 library(dashTable)
+library(dashBootstrapComponents)
 
 ## Important! Source the files (order matters!)
 source('dash_functions.R')
@@ -20,7 +21,8 @@ source('dash_components.R')
 
 ## Create Dash instance
 
-app <- Dash$new(suppress_callback_exceptions = T)
+app <- Dash$new(suppress_callback_exceptions = T,
+                external_stylesheets = dbcThemes$COSMO)
 
 ## Specify layout elements
 
@@ -37,6 +39,22 @@ div_header <- htmlDiv(
 			)
 )
 
+offcanvas = htmlDiv(list(
+  dbcButton(
+    "Open scrollable offcanvas",
+    id="open-offcanvas-scrollable",
+    n_clicks=0,
+  ),
+  dbcOffcanvas(
+    htmlP("The contents on the main page are now scrollable."),
+    id="offcanvas-scrollable",
+    scrollable=T,
+    title="Scrollable Offcanvas",
+    is_open=T,
+    placement = "end"
+  ))
+)
+
 div_sidebar <- htmlDiv(
 	list(htmlLabel('Select y-axis metric:'),
 			 htmlBr(),
@@ -47,7 +65,8 @@ div_sidebar <- htmlDiv(
 			 sources,
 			 htmlH2(as.character("Hello"),id = "test",className = "output-example-loading"),
 			 htmlH2(as.character("Hello"),id = "test2"),
-			 dccLoading(loading_state = list(is_loading = T))
+			 offcanvas
+			 # dccLoading(loading_state = list(is_loading = T))
 	), #### THIS IS NEW! Styles added
 	  style = list('background-color' = '#BBCFF1',
 								 'padding' = 10,
@@ -68,6 +87,8 @@ div_main <- htmlDiv(
 	style = list('flex-basis' = '80%')
 )
 
+
+
 ## Specify App layout
 
 app %>% set_layout(
@@ -84,6 +105,11 @@ app %>% set_layout(
 
 ## App Callbacks
 
+
+# 
+# 
+
+
 app$callback(
   output = output(id = "tile-wrapper", property = "children"),
   params = list(input(id = 'map-graph',property = 'clickData'),
@@ -95,7 +121,7 @@ app$callback(
       style = list(visibility = "visible")))
   }
 )
-
+# 
 app$callback(
   output = output(id = "arv-tile-wrapper", property = "children"),
   params=list(input(id = 'map-graph', property='clickData'),
@@ -103,41 +129,94 @@ app$callback(
               input(id = 'zscore-type', property='value'),
               input(id = "arv_tile_slider", property = "value")),
   function(map_clickdata,tile_clickdata,zscore,period_list) {
-    prevent_update(is_null(map_clickdata$points[[1]]),is.null(tile_clickdata$points[[1]][2]),is.null(tile_clickdata$points[[1]][3]))
+    # prevent_update(is_null(map_clickdata$points[[1]]),is.null(tile_clickdata$points[[1]][2]),is.null(tile_clickdata$points[[1]][3]))
     return(
       dccGraph(
         id = 'arv_tile_graph',
         figure = make_arrival_tile_graph(curve_number = as.integer(map_clickdata$points[[1]]),
-                                         zscore_type = zscore, 
-                                         Weekday_arv = as.integer(tile_clickdata$points[[1]][2]), 
-                                         Hour_arv = as.integer(tile_clickdata$points[[1]][3]), 
+                                         zscore_type = zscore,
+                                         Weekday_arv = as.integer(tile_clickdata$points[[1]][2]),
+                                         Hour_arv = as.integer(tile_clickdata$points[[1]][3]),
                                          Period_cat = period_list),
         style = list(visibility = "visible")
       ))
   }
 )
+# 
+# app$callback(
+#   output=output(id = 'test', property='children'),
+#   params=list(input(id = 'map-graph', property='clickData'),
+#               input(id = 'tile-graph', property='clickData'),
+#               input(id = 'zscore-type', property='value'),
+#               input(id = "arv_tile_slider", property = "value")),
+#   function(map_clickdata,tile_clickdata,zscore,period_list) {
+#     prevent_update(is_null(map_clickdata$points[[1]]),is.null(tile_clickdata$points[[1]][2]),is.null(tile_clickdata$points[[1]][3]))
+#     paste0(as.character(map_clickdata$points[[1]]),
+#            "-\n",
+#            zscore,
+#            "-\n",
+#            as.character(tile_clickdata$points[[1]][2]),
+#            "-\n",
+#            as.character(tile_clickdata$points[[1]][3]),
+#            "-\n",
+#            as.character(period_list[[1]]),
+#            "--",
+#            as.character(period_list[[2]]))
+#   })
+
 
 app$callback(
   output=output(id = 'test', property='children'),
-  params=list(input(id = 'map-graph', property='clickData'),
-              input(id = 'tile-graph', property='clickData'),
-              input(id = 'zscore-type', property='value'),
-              input(id = "arv_tile_slider", property = "value")),
-  function(map_clickdata,tile_clickdata,zscore,period_list) {
-    prevent_update(is_null(map_clickdata$points[[1]]),is.null(tile_clickdata$points[[1]][2]),is.null(tile_clickdata$points[[1]][3]))
-    paste0(as.character(map_clickdata$points[[1]]),
-           "-\n",
-           zscore,
-           "-\n",
-           as.character(tile_clickdata$points[[1]][2]),
-           "-\n",
-           as.character(tile_clickdata$points[[1]][3]),
-           "-\n",
-           as.character(period_list[[1]]),
-           "--",
-           as.character(period_list[[2]]))
+  params=list(input(id = 'open-offcanvas-scrollable', property='n_clicks')),
+              # input(id = 'tile-graph', property='clickData'),
+              # input(id = 'zscore-type', property='value'),
+              # input(id = "arv_tile_slider", property = "value")),
+  function(n1#,
+           # tile_clickdata,zscore,period_list
+           ) {
+    # prevent_update(is_null(map_clickdata$points[[1]]),is.null(tile_clickdata$points[[1]][2]),is.null(tile_clickdata$points[[1]][3]))
+    # paste0(as.character(map_clickdata$points[[1]]),
+    #        "-\n",
+    #        zscore,
+    #        "-\n",
+    #        as.character(tile_clickdata$points[[1]][2]),
+    #        "-\n",
+    #        as.character(tile_clickdata$points[[1]][3]),
+    #        "-\n",
+    #        as.character(period_list[[1]]),
+    #        "--",
+    #        as.character(period_list[[2]]))
+    paste0(n1)
   })
 
+app$callback(
+  output = output("test2", property = "children"),
+  params = list(input("open-offcanvas-scrollable", "n_clicks"),
+                state("offcanvas-scrollable", "is_open")),
+  function(n1, is_open){
+    paste0(
+      (n1),
+      "-\n",
+      as.character(is_open)
+    )
+    # if (n1){
+    #   return(!is_open)
+    # }
+    # return(is_open)
+  }
+)
+
+app$callback(
+  output = output("offcanvas-scrollable", "is_open"),
+  params = list(input("open-offcanvas-scrollable", "n_clicks"),
+                state("offcanvas-scrollable", "is_open")),
+  function(n1, is_open){
+    if (n1>0){
+      return(!is_open)
+    }
+    return(is_open)
+  }
+)
 ## Run app
 
 # app$run_server(host = '0.0.0.0', port = Sys.getenv('PORT', 8050)) # NEW: MUST CHANGE FOR DEPLOYMENT

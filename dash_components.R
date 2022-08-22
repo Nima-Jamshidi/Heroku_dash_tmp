@@ -10,6 +10,9 @@ zscoreDropdown <- dccDropdown(
 	value = "weekly"
 )
 
+
+zscoreDropdown_boot <- dbcDropdownMenu(children = list(dbcDropdownMenuItem("")))
+
 logbutton <- dccRadioItems(
 	id = 'yaxis-type',
 	options = list(list(label = 'Linear', value = 'linear'),
