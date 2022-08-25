@@ -87,8 +87,8 @@ div_main <- htmlDiv(
 	  #            src="assets/m.html",
 	  #            style=list("height" = "500px", "width" = "100%"),
 	  #            n_clicks = 0),
-	  # dbcCard(graph),
-	  graph,
+	  dbcCard(graph),
+	  # graph,
 	  htmlDiv(id = "tile-wrapper"),
 	  slider,
 	  htmlDiv(id = "loader-wrapper", className="loader-wrapper",children = dccLoading(id="loading",children = htmlDiv(id = "arv-tile-wrapper"),type = "circle"),style = list("margin-top" = "15px"))  
@@ -118,7 +118,7 @@ app %>% set_layout(dbcContainer(list(
     list(dbcCol(div_sidebar,
                 width = 3),
          dbcCol(div_main,
-                width = 9)),
+                width = 7)),
     #### THIS IS NEW! Styles added
     # style = list('display' = 'flex',
     #              'justify-content' = 'center')

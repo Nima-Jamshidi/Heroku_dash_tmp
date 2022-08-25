@@ -1,8 +1,8 @@
 suppressPackageStartupMessages(library(plotly))
 suppressPackageStartupMessages(library(tidyverse))
-library(gapminder)
-library(leaflet)
-library(ggmap)
+# library(gapminder)
+# library(leaflet)
+# library(ggmap)
 library(base64enc)
 
 zscore_type <- tibble(label = c("Weekly normalized", "Daily normalized"),
@@ -25,96 +25,97 @@ periods_list = list(`0` = list(label = "0 min", style = list(transform = "transl
                     `600` = list(label = "6+ hr", style = list(transform = "translateX(-100%)")))
 
 
-make_map_plot <- function(){
-
-  	data <- readRDS("data/map plot/sf_neighborhoods_t.rds")
-	google_map <- dataURI(file = "data/map plot/google_map.png")
-	bbox_sf <- readRDS("data/map plot/bbox_sf.rds")
-	
-	# plot_ly(type = "scatter",data, split = ~location, showlegend = F,
-	#         hoverlabel = list(namelength = 0)
-	# ) %>% layout(clickmode = "event+select") %>% 
-	#   layout(xaxis = list(range = c((bbox_sf[1,]))),
-	#          yaxis = list(range = c((bbox_sf[2,])))) %>%
-	#   layout(
-	#     images = list(
-	#       list(
-	#         source =  google_map,
-	#         xref = "x",
-	#         yref = "y",
-	#         x = bbox_sf[1,1],
-	#         y = bbox_sf[2,2],
-	#         sizex = bbox_sf[1,2]-bbox_sf[1,1],
-	#         sizey = bbox_sf[2,2]-bbox_sf[2,1],
-	#         sizing = "stretch",
-	#         opacity = 0.4,
-	#         layer = "over"
-	#       )
-	#     )
-	#   ) %>% 
-	#   highlight(on = "plotly_click", color = "blue")
-	# 
-	
-	# plot_ly(type = "scatter",data, split = ~location, showlegend = F,
-	#         hoverlabel = list(namelength = 0),
-	#         width=800, height=495
-	# ) %>% layout(clickmode = "event+select") %>% 
-	#   layout(xaxis = list(range = c((bbox_sf[1,]))),
-	#          yaxis = list(range = c((bbox_sf[2,])))) %>%
-	#   layout(
-	#     images = list(
-	#       list(
-	#         source =  google_map,
-	#         xref = "x",
-	#         yref = "y",
-	#         x = bbox_sf[1,1],
-	#         y = bbox_sf[2,2],
-	#         sizex = bbox_sf[1,2]-bbox_sf[1,1],
-	#         sizey = bbox_sf[2,2]-bbox_sf[2,1],
-	#         # sizing = "stretch",
-	#         opacity = 0.4,
-	#         layer = "over"
-	#       )
-	#     )
-	#   ) %>% 
-	#   layout(margin=list(
-	#     l=0,
-	#     r=0,
-	#     b=0,
-	#     t=0,
-	#     pad=0
-	#   ))
-	
-	
-	plot_ly(type = "scatter",data, split = ~location, showlegend = F,
-	        hoverlabel = list(namelength = 0)#,
-	        # width=800, height=495
-	) %>% layout(clickmode = "event+select") %>% 
-	  # layout(xaxis = list(range = c((bbox_sf[1,]))),
-	  #        yaxis = list(range = c((bbox_sf[2,])))) %>%
-	  layout(
-	    images = list(
-	      list(
-	        source =  google_map,
-	        xref = "x",
-	        yref = "y",
-	        x = bbox_sf[1,1],
-	        y = bbox_sf[2,2],
-	        sizex = bbox_sf[1,2]-bbox_sf[1,1],
-	        sizey = bbox_sf[2,2]-bbox_sf[2,1],
-	        sizing = "stretch",
-	        opacity = 0.4,
-	        layer = "over"
-	      )
-	    )
-	  ) %>% 
-	  layout(margin=list(
-	    l=0,
-	    r=0,
-	    b=0,
-	    t=0,
-	    pad=0
-	  ))
+make_map_plot <- function() {
+  data <- readRDS("data/map plot/sf_neighborhoods_t.rds")
+  google_map <- dataURI(file = "data/map plot/google_map.png")
+  bbox_sf <- readRDS("data/map plot/bbox_sf.rds")
+  
+  # plot_ly(type = "scatter",data, split = ~location, showlegend = F,
+  #         hoverlabel = list(namelength = 0)
+  # ) %>% layout(clickmode = "event+select") %>%
+  #   layout(xaxis = list(range = c((bbox_sf[1,]))),
+  #          yaxis = list(range = c((bbox_sf[2,])))) %>%
+  #   layout(
+  #     images = list(
+  #       list(
+  #         source =  google_map,
+  #         xref = "x",
+  #         yref = "y",
+  #         x = bbox_sf[1,1],
+  #         y = bbox_sf[2,2],
+  #         sizex = bbox_sf[1,2]-bbox_sf[1,1],
+  #         sizey = bbox_sf[2,2]-bbox_sf[2,1],
+  #         sizing = "stretch",
+  #         opacity = 0.4,
+  #         layer = "over"
+  #       )
+  #     )
+  #   ) %>%
+  #   highlight(on = "plotly_click", color = "blue")
+  #
+  
+  # plot_ly(type = "scatter",data, split = ~location, showlegend = F,
+  #         hoverlabel = list(namelength = 0),
+  #         width=800, height=495
+  # ) %>% layout(clickmode = "event+select") %>%
+  #   layout(xaxis = list(range = c((bbox_sf[1,]))),
+  #          yaxis = list(range = c((bbox_sf[2,])))) %>%
+  #   layout(
+  #     images = list(
+  #       list(
+  #         source =  google_map,
+  #         xref = "x",
+  #         yref = "y",
+  #         x = bbox_sf[1,1],
+  #         y = bbox_sf[2,2],
+  #         sizex = bbox_sf[1,2]-bbox_sf[1,1],
+  #         sizey = bbox_sf[2,2]-bbox_sf[2,1],
+  #         # sizing = "stretch",
+  #         opacity = 0.4,
+  #         layer = "over"
+  #       )
+  #     )
+  #   ) %>%
+  #   layout(margin=list(
+  #     l=0,
+  #     r=0,
+  #     b=0,
+  #     t=0,
+  #     pad=0
+  #   ))
+  
+  
+  plot_ly(
+    type = "scatter",
+    data,
+    split = ~ location,
+    showlegend = F,
+    hoverlabel = list(namelength = 0)#,
+    # width=800, height=495
+  ) %>% layout(clickmode = "event+select") %>%
+    layout(xaxis = list(range = c((bbox_sf[1,]))),
+           yaxis = list(range = c((bbox_sf[2,])))) %>%
+    layout(images = list(
+      list(
+        source =  google_map,
+        xref = "x",
+        yref = "y",
+        x = bbox_sf[1, 1],
+        y = bbox_sf[2, 2],
+        sizex = bbox_sf[1, 2] - bbox_sf[1, 1],
+        sizey = bbox_sf[2, 2] - bbox_sf[2, 1],
+        sizing = "stretch",
+        opacity = 0.4,
+        layer = "over"
+      )
+    )) %>%
+    layout(margin = list(
+      l = 0,
+      r = 0,
+      b = 0,
+      t = 0,
+      pad = 0
+    ))
 }
 
 
@@ -157,13 +158,13 @@ make_tile_graph <- function(curve_number=117,zscore_type = "weekly"){
                           ":00 ",
                           weekday,
                           "</b></br>Hourly aggregate fleet idle time = ",
-                          round(number,1),
+                          sprintf("%.1f",round(number,1)),
                           "</br>    Z-score = ",
-                          round(!!sym(zscore),1),
+                          sprintf("%.1f",round(!!sym(zscore),1)),
                           "</br>    mean = ",
-                          round(!!sym(mean),1),
+                          sprintf("%.1f",round(!!sym(mean),1)),
                           "</br>    std = ",
-                          round(!!sym(std),1))),
+                          sprintf("%.1f",round(!!sym(std),1)))),
         hjust = 0.5,
         vjust = 0.5,
         interpolate = FALSE
@@ -221,7 +222,10 @@ make_arrival_tile_graph <-
         0, c(0, 10, 30, 60, 120, 180, 360, Inf), right = F
       ))
     )
-
+    
+    color_limits <- data %>% filter(location == Name) %>% group_by(weekday_arv, hour_arv, weekday_int,hour_int) %>% summarise(number = sum(number))
+    color_limits <- c(0,max(color_limits$number))
+    
     data_plot <-
       data %>% filter(
         location == Name,
@@ -272,19 +276,28 @@ make_arrival_tile_graph <-
                         ":00 ",
                         x_levels[weekday_int],
                         "</b></br>Hourly aggregate fleet idle time = ",
-                        round(number, 2)
+                        sprintf("%.2f",round(number, 2))
           )),
           hjust = 0.5,
           vjust = 0.5,
           interpolate = FALSE
         ) +
-          scale_fill_gradient2(
-            name = "Number",
-            low = "blue",
-            mid = "white",
-            high = "red",
-            na.value = "grey50",
-          ) +
+          # scale_fill_gradient2(
+          #   name = "Number",
+          #   low = "blue",
+          #   mid = "white",
+          #   high = "red",
+          #   na.value = "grey50",
+          #   limits = color_limits
+          # ) +
+      scale_fill_gradient(
+        name = "Number",
+        low = "white",
+        # mid = "white",
+        high = "red",
+        na.value = "grey50",
+        limits = color_limits
+      ) +
           coord_cartesian(
             clip = "off") +
           theme_bw() +
