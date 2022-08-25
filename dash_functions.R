@@ -22,7 +22,7 @@ periods_list = list(`0` = list(label = "0 min", style = list(transform = "transl
                     `120` = list(label = "2 hr", style = list(transform = "translateX(-50%) translateY(20%) rotate(-90deg)")),
                     `180` = list(label = "3 hr", style = list(transform = "translateX(-50%) translateY(20%) rotate(-90deg)")),
                     `360` = list(label = "6 hr", style = list(transform = "translateX(-50%) translateY(20%) rotate(-90deg)")),
-                    `600` = list(label = "6+ hr", style = list(transform = "translateX(-50%) translateY(20%) rotate(-90deg)")))
+                    `600` = list(label = "6+ hr", style = list(transform = "translateX(-100%)")))
 
 
 make_map_plot <- function(){
@@ -31,11 +31,67 @@ make_map_plot <- function(){
 	google_map <- dataURI(file = "data/map plot/google_map.png")
 	bbox_sf <- readRDS("data/map plot/bbox_sf.rds")
 	
+	# plot_ly(type = "scatter",data, split = ~location, showlegend = F,
+	#         hoverlabel = list(namelength = 0)
+	# ) %>% layout(clickmode = "event+select") %>% 
+	#   layout(xaxis = list(range = c((bbox_sf[1,]))),
+	#          yaxis = list(range = c((bbox_sf[2,])))) %>%
+	#   layout(
+	#     images = list(
+	#       list(
+	#         source =  google_map,
+	#         xref = "x",
+	#         yref = "y",
+	#         x = bbox_sf[1,1],
+	#         y = bbox_sf[2,2],
+	#         sizex = bbox_sf[1,2]-bbox_sf[1,1],
+	#         sizey = bbox_sf[2,2]-bbox_sf[2,1],
+	#         sizing = "stretch",
+	#         opacity = 0.4,
+	#         layer = "over"
+	#       )
+	#     )
+	#   ) %>% 
+	#   highlight(on = "plotly_click", color = "blue")
+	# 
+	
+	# plot_ly(type = "scatter",data, split = ~location, showlegend = F,
+	#         hoverlabel = list(namelength = 0),
+	#         width=800, height=495
+	# ) %>% layout(clickmode = "event+select") %>% 
+	#   layout(xaxis = list(range = c((bbox_sf[1,]))),
+	#          yaxis = list(range = c((bbox_sf[2,])))) %>%
+	#   layout(
+	#     images = list(
+	#       list(
+	#         source =  google_map,
+	#         xref = "x",
+	#         yref = "y",
+	#         x = bbox_sf[1,1],
+	#         y = bbox_sf[2,2],
+	#         sizex = bbox_sf[1,2]-bbox_sf[1,1],
+	#         sizey = bbox_sf[2,2]-bbox_sf[2,1],
+	#         # sizing = "stretch",
+	#         opacity = 0.4,
+	#         layer = "over"
+	#       )
+	#     )
+	#   ) %>% 
+	#   layout(margin=list(
+	#     l=0,
+	#     r=0,
+	#     b=0,
+	#     t=0,
+	#     pad=0
+	#   ))
+	
+	
 	plot_ly(type = "scatter",data, split = ~location, showlegend = F,
-	        hoverlabel = list(namelength = 0)
+	        hoverlabel = list(namelength = 0)#,
+	        # width=800, height=495
 	) %>% layout(clickmode = "event+select") %>% 
-	  layout(xaxis = list(range = c((bbox_sf[1,]))),
-	         yaxis = list(range = c((bbox_sf[2,])))) %>%
+	  # layout(xaxis = list(range = c((bbox_sf[1,]))),
+	  #        yaxis = list(range = c((bbox_sf[2,])))) %>%
 	  layout(
 	    images = list(
 	      list(
@@ -52,8 +108,13 @@ make_map_plot <- function(){
 	      )
 	    )
 	  ) %>% 
-	  highlight(on = "plotly_click", color = "blue")
-	
+	  layout(margin=list(
+	    l=0,
+	    r=0,
+	    b=0,
+	    t=0,
+	    pad=0
+	  ))
 }
 
 

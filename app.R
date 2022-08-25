@@ -69,8 +69,16 @@ div_sidebar <- htmlDiv(
 			 # dccLoading(loading_state = list(is_loading = T))
 	), #### THIS IS NEW! Styles added
 	  style = list('background-color' = '#BBCFF1',
-								 'padding' = 10,
-								 'flex-basis' = '20%')
+								 'padding' = 10#,
+								 # 'flex-basis' = '20%'#,
+								 # 'position' = 'fixed',
+								 # 'top' = 0,
+								 # 'left' = 0,
+								 # 'bottom' = 0,
+								 # 'width' = '16rem',
+								 # 'padding' = '2rem 1rem'
+								 ),
+	className = "sidebar"
 )
 
 div_main <- htmlDiv(
@@ -79,29 +87,43 @@ div_main <- htmlDiv(
 	  #            src="assets/m.html",
 	  #            style=list("height" = "500px", "width" = "100%"),
 	  #            n_clicks = 0),
+	  # dbcCard(graph),
 	  graph,
 	  htmlDiv(id = "tile-wrapper"),
 	  slider,
-	  htmlDiv(id = "arv-tile-wrapper")
+	  htmlDiv(id = "loader-wrapper", className="loader-wrapper",children = dccLoading(id="loading",children = htmlDiv(id = "arv-tile-wrapper"),type = "circle"),style = list("margin-top" = "15px"))  
 	),
-	style = list('flex-basis' = '80%')
+	# style = list('flex-basis' = '80%')
 )
 
 
 
 ## Specify App layout
 
-app %>% set_layout(
-	div_header,
-	htmlDiv(
-		list(
-			div_sidebar,
-			div_main
-		), #### THIS IS NEW! Styles added
-			style = list('display' = 'flex',
-								 'justify-content'='center')
-	)
-)
+# app %>% set_layout(
+# 	div_header,
+# 	htmlDiv(
+# 		list(
+# 			div_sidebar,
+# 			div_main
+# 		), #### THIS IS NEW! Styles added
+# 			style = list('display' = 'flex',
+# 								 'justify-content'='center')
+# 	)
+# )
+
+app %>% set_layout(dbcContainer(list(
+  dbcRow(div_header),
+  dbcRow(
+    list(dbcCol(div_sidebar,
+                width = 3),
+         dbcCol(div_main,
+                width = 9)),
+    #### THIS IS NEW! Styles added
+    # style = list('display' = 'flex',
+    #              'justify-content' = 'center')
+  )
+)))
 
 ## App Callbacks
 

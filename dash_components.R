@@ -29,7 +29,7 @@ slider <- dccRangeSlider(
   count = 2,
   pushable = T,
   allowCross = F,
-  step = NA,
+  step = NA
   )
 
 graph <- dccGraph(
