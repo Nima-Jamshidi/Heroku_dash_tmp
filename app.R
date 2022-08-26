@@ -78,7 +78,8 @@ div_sidebar <- htmlDiv(
 								 # 'width' = '16rem',
 								 # 'padding' = '2rem 1rem'
 								 ),
-	className = "sidebar"
+	# className = "sidebar"
+	className = "position-fixed left"
 )
 
 div_main <- htmlDiv(
@@ -87,12 +88,28 @@ div_main <- htmlDiv(
 	  #            src="assets/m.html",
 	  #            style=list("height" = "500px", "width" = "100%"),
 	  #            n_clicks = 0),
-	  dbcCard(graph),
+	  dbcRow(list(dbcCol(dbcCard(graph),width = 7),dbcCol(htmlDiv("Test Test Test"),width = 3))),
 	  # graph,
 	  htmlDiv(id = "tile-wrapper"),
-	  slider,
-	  htmlDiv(id = "loader-wrapper", className="loader-wrapper",children = dccLoading(id="loading",children = htmlDiv(id = "arv-tile-wrapper"),type = "circle"),style = list("margin-top" = "15px"))  
-	),
+	  # htmlDiv(id = "loader-wrapper", className="loader-wrapper",children = dccLoading(id="loading",children = htmlDiv(slider,id = "arv-tile-wrapper",style = list(visibility = "visible")),type = "circle"),style = list("margin-top" = "15px"))
+	  htmlDiv(id = "loader-wrapper", className="loader-wrapper",children = dccLoading(id="loading",children = htmlDiv(id = "arv-tile-wrapper"),type = "circle"),style = list("margin-top" = "15px"))   
+	  
+	# ,htmlDiv(list(
+	#   htmlDiv('Convert Temperature'),
+	#   'Celsius',
+	#   dccInput(
+	#     id="celsius",
+	#     value=0.0,
+	#     type="number"
+	#   ),
+	#   ' = Fahrenheit',
+	#   dccInput(
+	#     id="fahrenheit",
+	#     value=32.0,
+	#     type="number",
+	#   )
+	# ))
+	)
 	# style = list('flex-basis' = '80%')
 )
 
@@ -116,9 +133,10 @@ app %>% set_layout(dbcContainer(list(
   dbcRow(div_header),
   dbcRow(
     list(dbcCol(div_sidebar,
-                width = 3),
-         dbcCol(div_main,
-                width = 7)),
+                width = 2),
+         dbcCol(div_main, width = 10))
+         # dbcCol(dbcRow(list(dbcCol(div_main,width = 7),dbcCol(htmlDiv("Test Test Test"),width = 3))),
+         #        width = 10)),
     #### THIS IS NEW! Styles added
     # style = list('display' = 'flex',
     #              'justify-content' = 'center')
@@ -131,37 +149,120 @@ app %>% set_layout(dbcContainer(list(
 # 
 # 
 
+# app$callback(output = list(output("celsius", "value"),
+#              output("fahrenheit", "value")),
+#              params = list(input("celsius", "value"),
+#              input("fahrenheit", "value")),
+#              function(celsius, fahrenheit) {
+#                ctx = dash$callback_context
+#                input_id = stringr::str_split(ctx$triggered[1]["prop_i"], "\\.")[[1]][1]
+#                if (input_id == "celsius") {
+#                  fahrenheit = ifelse(is.na(celsius), NA, (as.numeric(celsius) * 9 / 5) + 32)
+#                  # None if celsius is None else (float(celsius) * 9/5) + 32
+#                } else {
+#                  celsius = ifelse(is.na(fahrenheit), NA, (as.numeric(fahrenheit)  - 32) * 5 /9)
+#                  # None if  is None else (float(fahrenheit) - 32) * 5/9
+#                }
+#                return(list(celsius, fahrenheit))
+#              })
+
+
 
 app$callback(
   output = output(id = "tile-wrapper", property = "children"),
   params = list(input(id = 'map-graph',property = 'clickData'),
                 input(id = "zscore-type", property = "value")),
   function(clickdata,zscore){
-    return(dccGraph(
+    graph = dccGraph(
       id = 'tile-graph',
       figure=make_tile_graph(curve_number = as.integer(clickdata$points[[1]]), zscore_type = zscore),
-      style = list(visibility = "visible")))
+      style = list(visibility = "visible"))
+    return(dbcRow(list(dbcCol(dbcCard(graph),width = 7),dbcCol(htmlDiv("Test Test Test"),width = 3))))
   }
 )
 # 
+
+# app$callback(
+#   output = list(output(id = "arv-tile-wrapper", property = "children"),
+#                 output(id = "arv-tile-wrapper", property = "style"),
+#                 output(id = "arv-tile-slider", property = "value")),
+#   params=list(input(id = 'map-graph', property='clickData'),
+#               input(id = 'tile-graph', property='clickData'),
+#               input(id = 'zscore-type', property='value'),
+#               input(id = "arv-tile-slider", property = "value")),
+#   function(map_clickdata,tile_clickdata,zscore,period_list) {
+#     prevent_update(tile_n_click!=1)
+#     graph = dccGraph(
+#       id = 'arv_tile_graph',
+#       figure = make_arrival_tile_graph(curve_number = as.integer(map_clickdata$points[[1]]),
+#                                        zscore_type = zscore,
+#                                        Weekday_arv = as.integer(tile_clickdata$points[[1]][2]),
+#                                        Hour_arv = as.integer(tile_clickdata$points[[1]][3]),
+#                                        Period_cat = period_list),
+#       style = list(visibility = "visible")
+#     )
+#     return(
+#       list(dbcRow(list(dbcCol(dbcCard(graph),width = 7),dbcCol(dccRangeSlider(
+#         id = "arv_tile_slider",
+#         min=0,
+#         max=600,
+#         marks = periods_list,
+#         value = period_list,
+#         count = 2,
+#         pushable = T,
+#         allowCross = F,
+#         step = NA
+#       ),width = 3))),
+#            list(visibility = "visible"),
+#            period_list)
+#     )
+#   }
+# )
+
 app$callback(
   output = output(id = "arv-tile-wrapper", property = "children"),
+  params=list(input(id = 'map-graph', property='clickData'),
+              input(id = 'tile-graph', property='clickData'),
+              input(id = 'zscore-type', property='value')
+              # input(id = "arv_tile_slider", property = "value")
+              ),
+  function(map_clickdata,tile_clickdata,zscore) {
+    # prevent_update(is_null(map_clickdata$points[[1]]),is.null(tile_clickdata$points[[1]][2]),is.null(tile_clickdata$points[[1]][3]))
+    # graph = dccGraph(
+    #   id = 'arv_tile_graph',
+    #   figure = make_arrival_tile_graph(curve_number = as.integer(map_clickdata$points[[1]]),
+    #                                    zscore_type = zscore,
+    #                                    Weekday_arv = as.integer(tile_clickdata$points[[1]][2]),
+    #                                    Hour_arv = as.integer(tile_clickdata$points[[1]][3]),
+    #                                    Period_cat = period_list),
+    #   style = list(visibility = "visible")
+    # )
+    return(
+      dbcRow(list(dbcCol(dbcCard(id = "arv-tile-graph"),width = 7),dbcCol(slider,width = 3)))
+    )
+  }
+)
+
+app$callback(
+  output = output(id = "arv-tile-graph", property = "children"),
   params=list(input(id = 'map-graph', property='clickData'),
               input(id = 'tile-graph', property='clickData'),
               input(id = 'zscore-type', property='value'),
               input(id = "arv_tile_slider", property = "value")),
   function(map_clickdata,tile_clickdata,zscore,period_list) {
     # prevent_update(is_null(map_clickdata$points[[1]]),is.null(tile_clickdata$points[[1]][2]),is.null(tile_clickdata$points[[1]][3]))
+    graph = dccGraph(
+      id = 'arv_tile_graph',
+      figure = make_arrival_tile_graph(curve_number = as.integer(map_clickdata$points[[1]]),
+                                       zscore_type = zscore,
+                                       Weekday_arv = as.integer(tile_clickdata$points[[1]][2]),
+                                       Hour_arv = as.integer(tile_clickdata$points[[1]][3]),
+                                       Period_cat = period_list),
+      style = list(visibility = "visible")
+    )
     return(
-      dccGraph(
-        id = 'arv_tile_graph',
-        figure = make_arrival_tile_graph(curve_number = as.integer(map_clickdata$points[[1]]),
-                                         zscore_type = zscore,
-                                         Weekday_arv = as.integer(tile_clickdata$points[[1]][2]),
-                                         Hour_arv = as.integer(tile_clickdata$points[[1]][3]),
-                                         Period_cat = period_list),
-        style = list(visibility = "visible")
-      ))
+      graph
+      )
   }
 )
 # 
