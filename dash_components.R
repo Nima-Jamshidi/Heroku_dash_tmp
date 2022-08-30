@@ -1,5 +1,7 @@
-heading_title <- htmlH1(id="header",'Gapminder Dash Demo')
-heading_subtitle <- htmlH2('Looking at country data interactively')
+heading_title <- htmlH1(id="header",'Evo Car Share idle fleet in time and space')
+heading_subtitle <- htmlH2('Looking at neighbourhood data interactively')
+
+
 
 zscoreDropdown <- dccDropdown(
 	id = "zscore-type",
@@ -7,7 +9,8 @@ zscoreDropdown <- dccDropdown(
 		1:nrow(zscore_type), function(i){
 			list(label=zscore_type$label[i], value=zscore_type$value[i])
 		}),
-	value = "weekly"
+	value = "weekly",
+	clearable=F
 )
 
 
@@ -29,12 +32,41 @@ slider <- dccRangeSlider(
   count = 2,
   pushable = T,
   allowCross = F,
-  step = NA
+  step = NA,
+  vertical = F
+  # className = "position-sticky right"
   )
 
-graph <- dccGraph(
+offcanvas = htmlDiv(list(
+  dbcButton(
+    "Open scrollable offcanvas",
+    id="open-offcanvas-scrollable",
+    n_clicks=0,
+  ),
+  dbcOffcanvas(
+    htmlP("The contents on the main page are now scrollable."),
+    id="offcanvas-scrollable",
+    scrollable=T,
+    title="Scrollable Offcanvas",
+    is_open=F,
+    placement = "end"
+  ))
+)
+
+graph_map <- dccGraph(
 	id = 'map-graph',
-	figure=make_map_plot()
+	figure=make_map_plot(),
+	style = list(height = '45vh')
+)
+
+graph_tile <- dccGraph(
+  id = 'tile-graph',
+  figure=make_tile_graph()
+)
+
+graph_arv_tile <- dccGraph(
+  id = 'arv-tile-graph',
+  figure=make_arrival_tile_graph()
 )
 
 sources <- dccMarkdown("[Data Source](https://cran.r-project.org/web/packages/gapminder/README.html)")

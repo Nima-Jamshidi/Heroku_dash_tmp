@@ -5,6 +5,66 @@ suppressPackageStartupMessages(library(tidyverse))
 # library(ggmap)
 library(base64enc)
 
+text_template = "updatemode (a value equal to: 'mouseup' or 'drag'; default 'mouseup'): Determines when the component should update its value property. If mouseup (the default) then the slider will only trigger its value when the user has finished dragging the slider. If drag, then the slider will update its value continuously as it is being dragged. If you want different actions during and after drag, leave updatemode as mouseup and use drag_value for the continuously updating value.
+
+vertical (boolean; optional): If True, the slider will be vertical.
+
+verticalHeight (number; default 400): The height, in px, of the slider if it is vertical.
+
+className (string; optional): Additional CSS class for the root DOM node.
+
+id (string; optional): The ID of this component, used to identify dash components in callbacks. The ID needs to be unique across all of the components in an app.
+
+loading_state (dict; optional): Object that holds the loading state object coming from dash-renderer.
+
+loading_state is a dict with keys:
+
+component_name (string; optional): Holds the name of the component that is loading.
+
+is_loading (boolean; optional): Determines if the component is loading or not.
+
+prop_name (string; optional): Holds which property is loading.
+
+persistence (boolean | string | number; optional): Used to allow user interactions in this component to be persisted when the component - or the page - is refreshed. If persisted is truthy and hasn't changed from its previous value, a value that the user has changed while using the app will keep that change, as long as the new value also matches what was given originally. Used in conjunction with persistence_type."
+
+
+map_text = list("For my graduate research project I had access to Evo carsharing service's fleet data between February 2017 and August 2018. 
+                Evo is a free-floating (+ station-based) carsharing service that has been operating in Vancouver, BC since March 2015.
+                The other carsharing services in Vancouver at the time of the study belonged to Car2Go, 
+                also free-floating but ceased to continue operating in 2020, and Modo, a co-op providing round-trip carsharing service.",htmlBr(),
+                "During the data collection period the fleet consisted of 1050 Toyota Prius Hybrids on average. 
+                The data had information about the location of each carsharing car while they were idle and not reserved by the users 
+                with a 5-minute frequency. After wrangling the data, we were able to identidy trips and cancelled reservations. 
+                On average an Evo car was used 5.8 times per day with each trip (+ reservation period) averageing around an hour in duration.",
+                htmlBr(),"In a part of my thesis I explored the spatio-temporal usage of the cars and through that identified usage patterns
+                among different neighbourhoods. The usage of the carsharing service follows the general daily pattern of other transportation 
+                modes with peaks during the commute hours. But how does it plays out in the service boundary?",
+                htmlBr(),"Here You can find 57 neighborhoods throughout Metro Vancouver in which Evo has been present. 
+                Hover over the map and see the neighbourhoods' names.",htmlBr(),"In order to show the usage pattern in the neighbourhoods,
+                the periods that a car was idle in a location waiting for a user to book and drive it are analyzed.",
+                htmlBr(),"If you click on a neighbourhood, you can see the hourly aggregate fleet idle time distribution figure below.
+                That is the number of vehicles idle in that neighbourhood during any hour of the day of the week.
+                To be more precise, the aggregate idle time (hour unit) of vehicles for each hour is calculated.")
+
+
+map_text = list(htmlP("For my graduate research project I had access to Evo carsharing service's fleet data between February 2017 and August 2018. 
+                Evo is a free-floating (+ station-based) carsharing service that has been operating in Vancouver, BC since March 2015.
+                The other carsharing services in Vancouver at the time of the study belonged to Car2Go, 
+                also free-floating but ceased to continue operating in 2020, and Modo, a co-op providing round-trip carsharing service."),
+                htmlP("During the data collection period the fleet consisted of 1050 Toyota Prius Hybrids on average. 
+                The data had information about the location of each carsharing car while they were idle and not reserved by the users 
+                with a 5-minute frequency. After wrangling the data, we were able to identidy trips and cancelled reservations. 
+                On average an Evo car was used 5.8 times per day with each trip (+ reservation period) averageing around an hour in duration."),
+                htmlP("In a part of my thesis I explored the spatio-temporal usage of the cars and through that identified usage patterns
+                among different neighbourhoods. The usage of the carsharing service follows the general daily pattern of other transportation 
+                modes with peaks during the commute hours. But how does it plays out in the service boundary?"),htmlP("Here You can find
+                57 neighborhoods throughout Metro Vancouver in which Evo has been present. 
+                Hover over the map and see the neighbourhoods' names. In order to show the usage pattern in the neighbourhoods,
+                the periods that a car was idle at a location waiting for a user to book and drive it are analyzed."),htmlP("If you click on a neighbourhood, you can see the hourly aggregate fleet idle time distribution figure below.
+                That is the number of vehicles idle in that neighbourhood during any hour of the day of the week.
+                To be more precise, the aggregate idle time (hour unit) of vehicles for each hour is calculated."))
+
+
 zscore_type <- tibble(label = c("Weekly normalized", "Daily normalized"),
 									 value = c("weekly", "daily"))
 
@@ -23,6 +83,15 @@ periods_list = list(`0` = list(label = "0 min", style = list(transform = "transl
                     `180` = list(label = "3 hr", style = list(transform = "translateX(-50%) translateY(20%) rotate(-90deg)")),
                     `360` = list(label = "6 hr", style = list(transform = "translateX(-50%) translateY(20%) rotate(-90deg)")),
                     `600` = list(label = "6+ hr", style = list(transform = "translateX(-100%)")))
+
+# periods_list = list(`0` = list(label = "0 min"),
+#                     `10` = list(label = "10 min"),
+#                     `30` = list(label = "30 min"),
+#                     `60` = list(label = "1 hr"),
+#                     `120` = list(label = "2 hr"),
+#                     `180` = list(label = "3 hr"),
+#                     `360` = list(label = "6 hr"),
+#                     `600` = list(label = "6+ hr"))
 
 
 make_map_plot <- function() {
@@ -119,12 +188,12 @@ make_map_plot <- function() {
 }
 
 
-make_tile_graph <- function(curve_number=117,zscore_type = "weekly"){
+make_tile_graph <- function(curve_number=113,zscore_type = "weekly"){
 	data <- readRDS("data/hourly tile plot/hourly_tile_plot_data.rds")
 	
   locations <-
     data %>% distinct(location) %>% arrange(location)
-  j=curve_number-58
+  j=curve_number-56
   Name <- locations$location[j]
   zscore = paste0("zscore_",tolower(zscore_type))
   mean = paste0("mean_",tolower(zscore_type))
@@ -183,13 +252,23 @@ make_tile_graph <- function(curve_number=117,zscore_type = "weekly"){
                          labels = as.character(c(0, 4, 8, 12, 16, 20, 23)))+
       labs(x="",
            y="Hour of Day"
-      )
+      )+
+    theme(axis.text.x = element_text(
+      angle = 45,
+      # vjust = 1,
+      # size = 5,
+      # hjust = 0
+      ))
 
-  plotly::ggplotly(hweek, tooltip = "text") %>% layout(clickmode = "event+select")
+  plotly::ggplotly(hweek, tooltip = "text")  %>% layout(clickmode = "event+select",
+                                                        xaxis = list(fixedrange = TRUE), 
+                                                        yaxis = list(fixedrange = TRUE)) #%>% 
+    # config(displayModeBar = FALSE,
+    #        modeBarButtonsToRemove = c('zoom2d','pan2d','hoverClosestGl2d','lasso2d'))
 }
 
 make_arrival_tile_graph <-
-  function(curve_number = 63,
+  function(curve_number = 113,
            zscore_type = "weekly",
            Weekday_arv = 2,
            Hour_arv = 8,
@@ -198,7 +277,7 @@ make_arrival_tile_graph <-
   
     locations <-
       data %>% distinct(location) %>% arrange(location)
-    j = curve_number - 58
+    j = curve_number - 56
     Name <- locations$location[j]
     zscore = paste0("zscore_", tolower(zscore_type))
     mean = paste0("mean_", tolower(zscore_type))
