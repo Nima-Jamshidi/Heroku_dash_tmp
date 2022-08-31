@@ -14,7 +14,7 @@ zscoreDropdown <- dccDropdown(
 )
 
 
-zscoreDropdown_boot <- dbcDropdownMenu(children = list(dbcDropdownMenuItem("")))
+# zscoreDropdown_boot <- dbcDropdownMenu(children = list(dbcDropdownMenuItem("")))
 
 logbutton <- dccRadioItems(
 	id = 'yaxis-type',
@@ -56,17 +56,28 @@ offcanvas = htmlDiv(list(
 graph_map <- dccGraph(
 	id = 'map-graph',
 	figure=make_map_plot(),
-	style = list(height = '45vh')
+	style = list(height = '45vh'),
+	config = list(
+	  # displayModeBar = T,
+	              modeBarButtonsToRemove = list('toggleSpikelines','lasso2d','select2d','hoverClosestCartesian','hoverCompareCartesian','autoScale')),
+	clickData = list(points = 80)
 )
 
 graph_tile <- dccGraph(
   id = 'tile-graph',
-  figure=make_tile_graph()
+  figure=make_tile_graph(),
+  config = list(
+    # displayModeBar = T,
+                modeBarButtonsToRemove = list('toggleSpikelines','lasso2d','select2d','hoverClosestCartesian','hoverCompareCartesian')),
+  clickData = list(points = list(c(NA,'1','15')))
 )
 
 graph_arv_tile <- dccGraph(
   id = 'arv-tile-graph',
-  figure=make_arrival_tile_graph()
+  figure=make_arrival_tile_graph(),
+  config = list(
+    # displayModeBar = F,
+    modeBarButtonsToRemove = list('toggleSpikelines','lasso2d','select2d','hoverClosestCartesian','hoverCompareCartesian'))
 )
 
 sources <- dccMarkdown("[Data Source](https://cran.r-project.org/web/packages/gapminder/README.html)")

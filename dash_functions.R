@@ -60,9 +60,47 @@ map_text = list(htmlP("For my graduate research project I had access to Evo cars
                 modes with peaks during the commute hours. But how does it plays out in the service boundary?"),htmlP("Here You can find
                 57 neighborhoods throughout Metro Vancouver in which Evo has been present. 
                 Hover over the map and see the neighbourhoods' names. In order to show the usage pattern in the neighbourhoods,
-                the periods that a car was idle at a location waiting for a user to book and drive it are analyzed."),htmlP("If you click on a neighbourhood, you can see the hourly aggregate fleet idle time distribution figure below.
+                the periods that a car was idle at a location waiting for a user to book and drive it are analyzed."),
+                htmlP("If you click on a neighbourhood, you can see the hourly aggregate fleet idle time distribution (HAFIT) figure below.
                 That is the number of vehicles idle in that neighbourhood during any hour of the day of the week.
                 To be more precise, the aggregate idle time (hour unit) of vehicles for each hour is calculated."))
+
+
+tile_text = list(
+  htmlP(
+    'HAFIT, tells you when and where cars get piled up in the morning, leave in the afternoon,
+                       and where the parties happen on the weekend nights! The system on the long weekend Mondays would experience a usage
+                       pattern different from regular weekday Mondays, hence a separate column for "H/ Mondays".
+                       Hover over the figure to see HAFIT and the respective normalized values for each hour of the week.
+                       The coloring of the figure is to convey when the number of idle cars are high (red) or low (blue).'
+  ),
+  htmlP(
+    list(
+      "If you click on ",
+      htmlA(
+        id = "Downtown Vancouver link",
+        children = "Downtown Vancouver",
+        href = "#!"
+      ),
+      ", you can see that this neighbourhood is a popular destination for carsharing users in the morning on weekdays.
+                             The HAFIT level stays the same until afternoon around 4PM when the majority of the cars are taken by the users gradually
+                             and leave the neighbourhood. The neighbourhood is not as popular in the weekends with lighter red colors.
+                             To have better view of the daily patterns, you can change the settings of the figure to show the daily
+      normalized data instead of weekly. This normalization helps better with identifying neighbourhood classes.
+      Opposed to Downtown Vancouver, ",
+      htmlA(
+        id = "False Creek link",
+        children = "False Creek",
+        href = "#!"
+      ),
+      " on Friday nights is as busy as weekday middays. 
+      The daily normalization show a more similar pattern for False Creek and Downtown Vancouver. 
+      Both being destinations for work during weekdays and entertainment on weekend nights. The result of a clustering analisys 
+      on these figures are presented in my thesis."
+    )
+  )
+)
+                 
 
 
 zscore_type <- tibble(label = c("Weekly normalized", "Daily normalized"),
@@ -188,7 +226,7 @@ make_map_plot <- function() {
 }
 
 
-make_tile_graph <- function(curve_number=113,zscore_type = "weekly"){
+make_tile_graph <- function(curve_number=80,zscore_type = "weekly"){
 	data <- readRDS("data/hourly tile plot/hourly_tile_plot_data.rds")
 	
   locations <-
@@ -262,13 +300,14 @@ make_tile_graph <- function(curve_number=113,zscore_type = "weekly"){
 
   plotly::ggplotly(hweek, tooltip = "text")  %>% layout(clickmode = "event+select",
                                                         xaxis = list(fixedrange = TRUE), 
-                                                        yaxis = list(fixedrange = TRUE)) #%>% 
+                                                        yaxis = list(fixedrange = TRUE),
+                                                        title=Name) #%>% 
     # config(displayModeBar = FALSE,
     #        modeBarButtonsToRemove = c('zoom2d','pan2d','hoverClosestGl2d','lasso2d'))
 }
 
 make_arrival_tile_graph <-
-  function(curve_number = 113,
+  function(curve_number = 80,
            zscore_type = "weekly",
            Weekday_arv = 2,
            Hour_arv = 8,
@@ -359,7 +398,8 @@ make_arrival_tile_graph <-
           )),
           hjust = 0.5,
           vjust = 0.5,
-          interpolate = FALSE
+          interpolate = FALSE,
+          color = "grey"
         ) +
           # scale_fill_gradient2(
           #   name = "Number",
@@ -371,9 +411,9 @@ make_arrival_tile_graph <-
           # ) +
       scale_fill_gradient(
         name = "Number",
-        low = "white",
+        low = "#DCDCDC",
         # mid = "white",
-        high = "red",
+        high = "#FFFF00",
         na.value = "grey50",
         limits = color_limits
       ) +
@@ -399,7 +439,36 @@ make_arrival_tile_graph <-
             expand = expansion(add = .5)
             ) +
           labs(x = "",
-               y = "Hour of Day")
+               y = "Hour of Day")+
+      theme(axis.text.x = element_text(
+        angle = 45,
+        # vjust = 1,
+        # size = 5,
+        # hjust = 0
+      ))
 
-        ggplotly(hweek, tooltip = "text") %>% layout(clickmode = "event+select")
+        ggplotly(hweek, tooltip = "text") %>% layout(clickmode = "event+select",
+                                                     title=paste0(
+                                                       Name,
+                                                       # "</b>",
+                                                       "<br>",
+                                                       "Arrivals between ",
+                                                       Hour_arv,
+                                                       "-",
+                                                       Hour_arv + 1,
+                                                       ":00 ",
+                                                       Weekday_arv
+                                                     ),
+                                                     margin = list(
+                                                       l = 0,
+                                                       r = 0,
+                                                       b = 0,
+                                                       t = 70,
+                                                       pad = 0
+                                                     ),
+                                                     xaxis = list(fixedrange = TRUE), 
+                                                     yaxis = list(fixedrange = TRUE)) #%>% 
+          # config(displayModeBar = F,
+          #        modeBarButtonsToRemove = list('zoom2d','pan2d','hoverClosestGl2d','lasso2d'),
+          #        displaylogo = F)
   }

@@ -48,7 +48,9 @@ div_sidebar <- htmlDiv(
        htmlBr(),
        logbutton,
        sources,
-       htmlH2(as.character("Hello"),id = "test",className = "output-example-loading"),
+       htmlH2(as.character("Hello"),id = "test"
+              # ,className = "output-example-loading"
+              ),
        htmlH2(as.character("Hello"),id = "test2"),
        offcanvas
        # dccLoading(loading_state = list(is_loading = T))
@@ -83,7 +85,7 @@ div_main <- #htmlDiv(
         dbcCol(
           dbcCard(htmlDiv(list(graph_tile,dbcCard(list(htmlH4("Settings:"),dbcCol(zscoreDropdown,width = 6))))),className = "position-sticky right",style = list(top = 10, bottom = 10, `margin-top` = 10 ,`margin-bottom` = 10)),width = 6),
         dbcCol(
-          htmlDiv(map_text),width = 6)
+          htmlDiv(tile_text),width = 6)
         # dbcCol(
         #   htmlDiv(zscoreDropdown),width = 2)
       )
@@ -91,11 +93,11 @@ div_main <- #htmlDiv(
     dbcRow(
       list(
         dbcCol(
-          htmlDiv(text_template),width = 3),
+          htmlDiv(text_template),width = 6),
         dbcCol(
-          dbcCard(graph_arv_tile,className = "position-sticky right",style = list(top = 10, bottom = 10, `margin-bottom` = 10)),width = 5),
-        dbcCol(
-          htmlDiv(slider,className = "position-sticky right",style = list(top = 10, bottom = 10, `margin-bottom` = 10)),width = 2)
+          dbcCard(htmlDiv(list(dccLoading(graph_arv_tile,type = "circle"),dbcCard(list(htmlH4("Settings:"),dbcCol(slider,width = 12))))),className = "position-sticky right",style = list(top = 10, bottom = 10, `margin-bottom` = 10)),width = 6)
+        # dbcCol(
+        #   htmlDiv(slider,className = "position-sticky right",style = list(top = 10, bottom = 10, `margin-bottom` = 10)),width = 2)
       )
     )
     # dbcRow(
@@ -236,6 +238,23 @@ app %>% set_layout(dbcContainer(list(
 
 # 
 # 
+app$callback(
+  output = output(id = "map-graph", property = "clickData"),
+  # output=output(id = 'test2', property='children'),
+  params = list(input(id = "Downtown Vancouver link", property = "n_clicks"),
+                input(id = "False Creek link", property = "n_clicks")),
+  function(n1,n2){
+    # Sys.sleep(1)
+    ctx <- callback_context()
+    prevent_update(is.null(ctx$triggered$prop_id))
+    # paste0(ctx$triggered$prop_id)
+    if (ctx$triggered$prop_id == "Downtown Vancouver link.n_clicks"){
+      return(list(points = 68))
+    } else if (ctx$triggered$prop_id == "False Creek link.n_clicks"){
+      return(list(points = 72))
+    }
+  }
+)
 
 
 app$callback(
@@ -243,18 +262,37 @@ app$callback(
   params = list(input(id = 'map-graph',property = 'clickData'),
                 input(id = "zscore-type", property = "value")),
   function(clickdata,zscore){
-    # prevent_update(is_null(clickdata$points[[1]]))
-    if (is_null(clickdata$points[[1]])){
-      make_tile_graph(zscore_type = zscore)
-    } else {
-    # graph = dccGraph(
+    prevent_update(is_null(clickdata$points[[1]]))
+    # if (is_null(clickdata$points[[1]])){
+    #   make_tile_graph(zscore_type = zscore)
+    # } else {
+      # graph = dccGraph(
       # id = 'tile-graph',
       make_tile_graph(curve_number = as.integer(clickdata$points[[1]]), zscore_type = zscore)
       # style = list(visibility = "visible"))
-    # return(dbcRow(list(dbcCol(dbcCard(graph),width = 7),dbcCol(htmlDiv("Test Test Test"),width = 3))))
-    }
+      # return(dbcRow(list(dbcCol(dbcCard(graph),width = 7),dbcCol(htmlDiv("Test Test Test"),width = 3))))
+    # }
   }
 )
+
+
+# app$callback(
+#   output = output(id = "tile-graph", property = "figure"),
+#   params = list(input(id = 'map-graph',property = 'clickData'),
+#                 input(id = "zscore-type", property = "value")),
+#   function(clickdata,zscore){
+#     # prevent_update(is_null(clickdata$points[[1]]))
+#     if (is_null(clickdata$points[[1]])){
+#       make_tile_graph(zscore_type = zscore)
+#     } else {
+#     # graph = dccGraph(
+#       # id = 'tile-graph',
+#       make_tile_graph(curve_number = as.integer(clickdata$points[[1]]), zscore_type = zscore)
+#       # style = list(visibility = "visible"))
+#     # return(dbcRow(list(dbcCol(dbcCard(graph),width = 7),dbcCol(htmlDiv("Test Test Test"),width = 3))))
+#     }
+#   }
+# )
 
 
 app$callback(
@@ -279,6 +317,47 @@ app$callback(
     # )
   }
 )
+
+#####
+
+
+
+# app$callback(
+#   output = output(id = "map-graph", property = "clickData"),
+#   params = list(input(id = "False Creek link", property = "n_clicks")),
+#   function(n1){
+#     prevent_update(is.null(n1[[1]]))
+#     # if(n1>0){
+#     return(list(points = 72))
+#     # }
+#   }
+# )
+# app$callback(
+#   output = output(id = "zscore-type", property = "value"),
+#   params = list(input(id = "daily normalized link", property = "n_clicks")),
+#   function(n1){
+#     prevent_update(is.null(n1[[1]]))
+#     # if(n1>0){
+#     return("daily")
+#     # }
+#   }
+
+
+# app$callback(
+#   output = output(id = "zscore-type", property = "value"),
+#   params = list(input(id = "daily normalized link", property = "n_clicks")),
+#   function(n1){
+#     prevent_update(is.null(n1[[1]]))
+#     # if (n1>1){
+#     return("daily")
+#     # }
+#   }
+# )
+# # 
+
+
+
+
 # app$callback(
 #   output = output(id = "tile-wrapper", property = "children"),
 #   params = list(input(id = 'map-graph',property = 'clickData'),
@@ -343,6 +422,39 @@ app$callback(
 # )
 # 
 # 
+
+app$callback(
+    output=output(id = 'test', property='children'),
+    params=list(input(id = 'map-graph', property='clickData')),
+    function(data){
+      paste0(data$points[[1]])
+    })
+
+
+app$callback(
+  output=output(id = 'test2', property='children'),
+  # params=list(input(id = 'zscore-type', property='value')),
+  params = list(input(id = "zscore-type", property = "value")),
+  function(data){
+    paste0((data))
+  })
+
+# app$callback(
+#   output = output(id = "map-graph", property = "clickData"),
+#   # output=output(id = 'test2', property='children'),
+#   params = list(input(id = "Downtown Vancouver link", property = "n_clicks"),
+#                 input(id = "False Creek link", property = "n_clicks")),
+#   function(n1,n2){
+#     ctx <- callback_context()
+#     prevent_update(is.null(ctx))
+#     paste0(ctx$triggered$prop_id)
+#     if (ctx$triggered$prop_id == "Downtown Vancouver link.n_clicks"){
+#       return(list(points = 68))
+#     } else if (ctx$triggered$prop_id == "False Creek link.n_clicks"){
+#       return(list(points = 72))
+#     }
+#   }
+# )
 # app$callback(
 #   output=output(id = 'test', property='children'),
 #   params=list(input(id = 'open-offcanvas-scrollable', property='n_clicks')),
@@ -384,17 +496,17 @@ app$callback(
 #   }
 # )
 # 
-# app$callback(
-#   output = output("offcanvas-scrollable", "is_open"),
-#   params = list(input("open-offcanvas-scrollable", "n_clicks"),
-#                 state("offcanvas-scrollable", "is_open")),
-#   function(n1, is_open){
-#     if (n1>0){
-#       return(!is_open)
-#     }
-#     return(is_open)
-#   }
-# )
+app$callback(
+  output = output("offcanvas-scrollable", "is_open"),
+  params = list(input("open-offcanvas-scrollable", "n_clicks"),
+                state("offcanvas-scrollable", "is_open")),
+  function(n1, is_open){
+    if (n1>0){
+      return(!is_open)
+    }
+    return(is_open)
+  }
+)
 ## Run app
 
 # app$run_server(host = '0.0.0.0', port = Sys.getenv('PORT', 8050)) # NEW: MUST CHANGE FOR DEPLOYMENT
