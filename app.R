@@ -22,21 +22,21 @@ source('dash_components.R')
 ## Create Dash instance
 
 app <- Dash$new(suppress_callback_exceptions = T,
-                external_stylesheets = dbcThemes$COSMO)
+                external_stylesheets = dbcThemes$MORPH)
 
 ## Specify layout elements
 
 div_header <- htmlDiv(
   list(heading_title,
        heading_subtitle
-  ), #### THIS IS NEW! Styles added
-  style = list(
-    backgroundColor = '#337DFF',
-    textAlign = 'center',
-    color = 'white',
-    margin = 5,
-    marginTop = 0
-  )
+  )#, #### THIS IS NEW! Styles added
+  # style = list(
+  #   backgroundColor = '#337DFF',
+  #   textAlign = 'center',
+  #   color = 'white',
+  #   margin = 5,
+  #   marginTop = 0
+  # )
 )
 
 
@@ -44,7 +44,7 @@ div_sidebar <- htmlDiv(
   list(htmlLabel('Select y-axis metric:'),
        htmlBr(),
        # zscoreDropdown,
-       htmlLabel('Select y scale : '),
+       # htmlLabel('Select y scale : '),
        htmlBr(),
        logbutton,
        sources,
@@ -83,7 +83,7 @@ div_main <- #htmlDiv(
     dbcRow(
       list(
         dbcCol(
-          dbcCard(htmlDiv(list(graph_tile,dbcCard(list(htmlH4("Settings:"),dbcCol(zscoreDropdown,width = 6))))),className = "position-sticky right",style = list(top = 10, bottom = 10, `margin-top` = 10 ,`margin-bottom` = 10)),width = 6),
+          dbcCard(htmlDiv(list(graph_tile,dbcCard(list(htmlH4("Settings:",style = list("padding"=5)),dbcCol(zscoreDropdown,width = 6))))),className = "position-sticky right",style = list(top = 10, bottom = 10, `margin-top` = 10 ,`margin-bottom` = 10)),width = 6),
         dbcCol(
           htmlDiv(tile_text),width = 6)
         # dbcCol(
@@ -93,9 +93,9 @@ div_main <- #htmlDiv(
     dbcRow(
       list(
         dbcCol(
-          htmlDiv(text_template),width = 6),
+          htmlDiv(arv_tile_text),width = 6),
         dbcCol(
-          dbcCard(htmlDiv(list(dccLoading(graph_arv_tile,type = "circle"),dbcCard(list(htmlH4("Settings:"),dbcCol(slider,width = 12))))),className = "position-sticky right",style = list(top = 10, bottom = 10, `margin-bottom` = 10)),width = 6)
+          dbcCard(htmlDiv(list(dccLoading(graph_arv_tile,type = "circle"),dbcCard(list(htmlH4("Settings:",style = list("padding"=5)),dbcCol(slider,width = 12))))),className = "position-sticky right",style = list(top = 10, bottom = 10, `margin-bottom` = 10)),width = 6)
         # dbcCol(
         #   htmlDiv(slider,className = "position-sticky right",style = list(top = 10, bottom = 10, `margin-bottom` = 10)),width = 2)
       )
@@ -197,7 +197,7 @@ div_main <- #htmlDiv(
 # )
 
 app %>% set_layout(dbcContainer(list(
-  dbcRow(div_header),
+  dbcRow(dbcCol(div_header),className = "navbar navbar-expand-lg navbar-light bg-light"),
   dbcRow(
     list(dbcCol(div_sidebar,
                 width = 2),
@@ -242,19 +242,79 @@ app$callback(
   output = output(id = "map-graph", property = "clickData"),
   # output=output(id = 'test2', property='children'),
   params = list(input(id = "Downtown Vancouver link", property = "n_clicks"),
-                input(id = "False Creek link", property = "n_clicks")),
-  function(n1,n2){
+                input(id = "False Creek link", property = "n_clicks"),
+                input(id = "Grouse Mountain link", property = "n_clicks"),
+                input(id = "DT 8-9AM  Mondays link", property = "n_clicks"),
+                input(id = "YL 8-9AM  Mondays link", property = "n_clicks")),
+  function(n1,n2,n3,n4,n5){
     # Sys.sleep(1)
     ctx <- callback_context()
     prevent_update(is.null(ctx$triggered$prop_id))
     # paste0(ctx$triggered$prop_id)
-    if (ctx$triggered$prop_id == "Downtown Vancouver link.n_clicks"){
+    if (ctx$triggered$prop_id %in% c("Downtown Vancouver link.n_clicks","DT 8-9AM  Mondays link.n_clicks")){
       return(list(points = 68))
     } else if (ctx$triggered$prop_id == "False Creek link.n_clicks"){
       return(list(points = 72))
+    } else if (ctx$triggered$prop_id == "Grouse Mountain link.n_clicks"){
+      return(list(points = 77))
+    } else if (ctx$triggered$prop_id == "YL 8-9AM  Mondays link.n_clicks"){
+      return(list(points = 113))
     }
   }
 )
+
+
+# app$callback(
+#   output = list(output(id = "map-graph", property = "clickData"),
+#                 output(id = "tile-graph", property = "clickData"),
+#                 output(id = "arv_tile_slider", property = "value")),
+#   # output=output(id = 'test2', property='children'),
+#   params = list(input(id = "DT 8-9AM  Mondays link", property = "n_clicks")
+#                 # input(id = "False Creek link", property = "n_clicks"),
+#                 # input(id = "Grouse Mountain link", property = "n_clicks")
+#                 ),
+#   function(n1){
+#     # Sys.sleep(1)
+#     ctx <- callback_context()
+#     prevent_update(is.null(ctx$triggered$prop_id))
+#     # paste0(ctx$triggered$prop_id)
+#     if (ctx$triggered$prop_id == "DT 8-9AM  Mondays link.n_clicks"){
+#       print("hey")
+#       return(list(list(points = 68),list(points = list(c(NA,'1','8'))),list(0,120)))
+#     # } else if (ctx$triggered$prop_id == "False Creek link.n_clicks"){
+#       # return(list(points = 72))
+#     # } else if (ctx$triggered$prop_id == "Grouse Mountain link.n_clicks"){
+#       # return(list(points = 77))
+#     }
+#   }
+# )
+
+
+app$callback(
+  output = list(output(id = "tile-graph", property = "clickData"),
+                output(id = "arv_tile_slider", property = "value")),
+  params = list(input(id = "DT 8-9AM  Mondays link", property = "n_clicks"),
+                input(id = "YL 8-9AM  Mondays link", property = "n_clicks")),
+  function(n1,n2){
+    ctx <- callback_context()
+    prevent_update(is.null(ctx$triggered$prop_id))
+    # paste0(ctx$triggered$prop_id)
+    if (ctx$triggered$prop_id == "DT 8-9AM  Mondays link.n_clicks"){
+      # print("hey")
+      return(list(
+        # 1,
+        list(points = list(c(NA,'1','8'))),
+        list(0,120)))
+    } else if (ctx$triggered$prop_id == "YL 8-9AM  Mondays link.n_clicks"){
+      # print("hey")
+      return(list(
+        # 1,
+        list(points = list(c(NA,'1','8'))),
+        list(0,120)))
+    }
+  }
+)
+
 
 
 app$callback(

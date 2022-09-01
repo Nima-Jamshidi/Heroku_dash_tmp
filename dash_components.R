@@ -1,5 +1,5 @@
 heading_title <- htmlH1(id="header",'Evo Car Share idle fleet in time and space')
-heading_subtitle <- htmlH2('Looking at neighbourhood data interactively')
+heading_subtitle <- htmlH2('Looking at neighbourhood data interactively',style = list("padding" = 10))
 
 
 
@@ -23,19 +23,22 @@ logbutton <- dccRadioItems(
 	value = 'linear'
 )
 
-slider <- dccRangeSlider(
+slider <- htmlDiv(dccRangeSlider(
   id = "arv_tile_slider",
   min=0,
   max=600,
   marks = periods_list,
-  value = list(0,120),
+  value = list(180,360),
   count = 2,
   pushable = T,
   allowCross = F,
   step = NA,
   vertical = F
   # className = "position-sticky right"
-  )
+  ),
+  style = list(
+    "padding" = 10
+  ))
 
 offcanvas = htmlDiv(list(
   dbcButton(
@@ -60,7 +63,7 @@ graph_map <- dccGraph(
 	config = list(
 	  # displayModeBar = T,
 	              modeBarButtonsToRemove = list('toggleSpikelines','lasso2d','select2d','hoverClosestCartesian','hoverCompareCartesian','autoScale')),
-	clickData = list(points = 80)
+	clickData = list(points = 84)
 )
 
 graph_tile <- dccGraph(

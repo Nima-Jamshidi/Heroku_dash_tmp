@@ -28,23 +28,23 @@ prop_name (string; optional): Holds which property is loading.
 persistence (boolean | string | number; optional): Used to allow user interactions in this component to be persisted when the component - or the page - is refreshed. If persisted is truthy and hasn't changed from its previous value, a value that the user has changed while using the app will keep that change, as long as the new value also matches what was given originally. Used in conjunction with persistence_type."
 
 
-map_text = list("For my graduate research project I had access to Evo carsharing service's fleet data between February 2017 and August 2018. 
-                Evo is a free-floating (+ station-based) carsharing service that has been operating in Vancouver, BC since March 2015.
-                The other carsharing services in Vancouver at the time of the study belonged to Car2Go, 
-                also free-floating but ceased to continue operating in 2020, and Modo, a co-op providing round-trip carsharing service.",htmlBr(),
-                "During the data collection period the fleet consisted of 1050 Toyota Prius Hybrids on average. 
-                The data had information about the location of each carsharing car while they were idle and not reserved by the users 
-                with a 5-minute frequency. After wrangling the data, we were able to identidy trips and cancelled reservations. 
-                On average an Evo car was used 5.8 times per day with each trip (+ reservation period) averageing around an hour in duration.",
-                htmlBr(),"In a part of my thesis I explored the spatio-temporal usage of the cars and through that identified usage patterns
-                among different neighbourhoods. The usage of the carsharing service follows the general daily pattern of other transportation 
-                modes with peaks during the commute hours. But how does it plays out in the service boundary?",
-                htmlBr(),"Here You can find 57 neighborhoods throughout Metro Vancouver in which Evo has been present. 
-                Hover over the map and see the neighbourhoods' names.",htmlBr(),"In order to show the usage pattern in the neighbourhoods,
-                the periods that a car was idle in a location waiting for a user to book and drive it are analyzed.",
-                htmlBr(),"If you click on a neighbourhood, you can see the hourly aggregate fleet idle time distribution figure below.
-                That is the number of vehicles idle in that neighbourhood during any hour of the day of the week.
-                To be more precise, the aggregate idle time (hour unit) of vehicles for each hour is calculated.")
+# map_text = list("For my graduate research project I had access to Evo carsharing service's fleet data between February 2017 and August 2018. 
+#                 Evo is a free-floating (+ station-based) carsharing service that has been operating in Vancouver, BC since March 2015.
+#                 The other carsharing services in Vancouver at the time of the study belonged to Car2Go, 
+#                 also free-floating but ceased to continue operating in 2020, and Modo, a co-op providing round-trip carsharing service.",htmlBr(),
+#                 "During the data collection period the fleet consisted of 1050 Toyota Prius Hybrids on average. 
+#                 The data had information about the location of each carsharing car while they were idle and not reserved by the users 
+#                 with a 5-minute frequency. After wrangling the data, we were able to identidy trips and cancelled reservations. 
+#                 On average an Evo car was used 5.8 times per day with each trip (+ reservation period) averageing around an hour in duration.",
+#                 htmlBr(),"In a part of my thesis I explored the spatio-temporal usage of the cars and through that identified usage patterns
+#                 among different neighbourhoods. The usage of the carsharing service follows the general daily pattern of other transportation 
+#                 modes with peaks during the commute hours. But how does it plays out in the service boundary?",
+#                 htmlBr(),"Here You can find 57 neighborhoods throughout Metro Vancouver in which Evo has been present. 
+#                 Hover over the map and see the neighbourhoods' names.",htmlBr(),"In order to show the usage pattern in the neighbourhoods,
+#                 the periods that a car was idle in a location waiting for a user to book and drive it are analyzed.",
+#                 htmlBr(),"If you click on a neighbourhood, you can see the hourly aggregate fleet idle time distribution figure below.
+#                 That is the number of vehicles idle in that neighbourhood during any hour of the day of the week.
+#                 To be more precise, the aggregate idle time (hour unit) of vehicles for each hour is calculated.")
 
 
 map_text = list(htmlP("For my graduate research project I had access to Evo carsharing service's fleet data between February 2017 and August 2018. 
@@ -62,7 +62,7 @@ map_text = list(htmlP("For my graduate research project I had access to Evo cars
                 Hover over the map and see the neighbourhoods' names. In order to show the usage pattern in the neighbourhoods,
                 the periods that a car was idle at a location waiting for a user to book and drive it are analyzed."),
                 htmlP("If you click on a neighbourhood, you can see the hourly aggregate fleet idle time distribution (HAFIT) figure below.
-                That is the number of vehicles idle in that neighbourhood during any hour of the day of the week.
+                That is the number of vehicles idle in that neighbourhood during any hour of a day of the week.
                 To be more precise, the aggregate idle time (hour unit) of vehicles for each hour is calculated."))
 
 
@@ -71,8 +71,10 @@ tile_text = list(
     'HAFIT, tells you when and where cars get piled up in the morning, leave in the afternoon,
                        and where the parties happen on the weekend nights! The system on the long weekend Mondays would experience a usage
                        pattern different from regular weekday Mondays, hence a separate column for "H/ Mondays".
-                       Hover over the figure to see HAFIT and the respective normalized values for each hour of the week.
-                       The coloring of the figure is to convey when the number of idle cars are high (red) or low (blue).'
+                       Hover over the figure to see HAFIT and the respective normalized values for each hour of a day of the week.
+                       The coloring of the figure is to convey when the number of idle cars are high (red) or low (blue).
+                       The color scale indicate Z-score that is the standardized value. Hover over the graph and see the 
+    mean of aggregate hourly idle time and its standard deviation (SD).'
   ),
   htmlP(
     list(
@@ -84,22 +86,69 @@ tile_text = list(
       ),
       ", you can see that this neighbourhood is a popular destination for carsharing users in the morning on weekdays.
                              The HAFIT level stays the same until afternoon around 4PM when the majority of the cars are taken by the users gradually
-                             and leave the neighbourhood. The neighbourhood is not as popular in the weekends with lighter red colors.
-                             To have better view of the daily patterns, you can change the settings of the figure to show the daily
-      normalized data instead of weekly. This normalization helps better with identifying neighbourhood classes.
-      Opposed to Downtown Vancouver, ",
+                             and leave the neighbourhood. The neighbourhood is not as popular in the weekends with lighter red colors."
+    )),
+    htmlP(
+      "To have a better view of the daily patterns, you can change the settings of the figure to show the daily
+      normalized data instead of weekly. This normalization helps better with identifying neighbourhood classes. If you hover over the graph with daily normalized values, you can see that the mean and standard deviation for each day is different."
+    ),
+    htmlP(list(
+      "Opposed to Downtown Vancouver, ",
       htmlA(
         id = "False Creek link",
         children = "False Creek",
         href = "#!"
       ),
-      " on Friday nights is as busy as weekday middays. 
-      The daily normalization show a more similar pattern for False Creek and Downtown Vancouver. 
-      Both being destinations for work during weekdays and entertainment on weekend nights. The result of a clustering analisys 
+      " on Friday nights is as busy as weekday middays.
+      The daily normalization show a more similar pattern for False Creek and Downtown Vancouver,
+      both being destinations for work during weekdays and entertainment on weekend nights. The result of a clustering analysis
       on these figures are presented in my thesis."
-    )
-  )
+    )),
+    htmlP(list(
+      "Take a look at ",
+      htmlA(
+        id = "Grouse Mountain link",
+        children = "Grouse Mountain",
+        href = "#!"
+      ),
+      ". This is a beautiful place only 20 minutes away from Vancouver's core that attracts hikers and skiers all around the year.
+      The weekly normalization shows the popularity of the place on weekends, emphasizing on the difference between days. 
+      The daily normalization on the other hand shows similar usage per day all around the week. 
+      After all, Grouse mountain is a recreational destination during the day."
+    ))
 )
+
+arv_tile_text = list(
+  htmlP("The figure above gives us a tool to see the distribution of idle vehicles in time and place. 
+        We can take a deeper look by checking the frequency of vehicles staying idle.
+        Not all the vehicles arriving in Downtown Vancouver in the morning commute hours will stay until the afternoon commute hours.
+        Some may be picked up by users not later than 10 minutes after arrival. What is the distribution of idle duration for those vehicles?"),
+  htmlP(
+        "Hover over the figure above and click on an hour of a day. The figure on the right shows the HAFIT for the vehicles arriving at the chosen neighbourhood at the chosen hour of the day. 
+        Moreover, you can choose a period for the idle duration from the settings below the figure. 
+        Move the slider's left and right nodes to specify the minimum and maximum values for idle duration to be considered in the graph."),
+  htmlP(list(
+    "Let's check Downtown Vancouver vehicles arriving at ",
+    htmlA(
+      id = "DT 8-9AM  Mondays link",
+      children = "8-9 in the morning on Mondays",
+      href = "#!"
+    ),
+    ". hover over the newly created figure on the right.
+    It informs that between 8-9AM, 21% of the HAFIT belonging to the vehicles arrived between 8-9AM would have an idle duration less than 2 hours.
+    In the next hour, 10% of the vehicles arrived between 8-9AM and are idle at 9-10AM have a 0-2 hour idle duration.
+    Let's compare these percentages with ",
+    htmlA(
+      id = "YL 8-9AM  Mondays link",
+      children = "Yaletown",
+      href = "#!"
+    ),
+    ". 
+    between 8-9AM 80% of HAFIT of vehicles arrived at the same hour would leave within 2 hours.
+    This percentage for 9-10AM is 59%, which could be interpreted as percentage of idle vehicles between 9-10AM with an arrival between 8-9AM to Yaletown that have an idle duration less than 2 hours.
+    The comparison between Downtown Vancouver and Yaletown shows that most of the vehicles that come into Yaletown would leave within 2 hours while 80% of cars arriving to Downtown Vancouver stay there unused more than 2 hours.")
+),
+htmlP(list("The limits of the color scale are fixed between 0 and the maximum aggregate fleet idle time of the cars arriving at an hour of a day of the week for any idle duration.")))
                  
 
 
@@ -226,7 +275,7 @@ make_map_plot <- function() {
 }
 
 
-make_tile_graph <- function(curve_number=80,zscore_type = "weekly"){
+make_tile_graph <- function(curve_number=84,zscore_type = "weekly"){
 	data <- readRDS("data/hourly tile plot/hourly_tile_plot_data.rds")
 	
   locations <-
@@ -307,11 +356,11 @@ make_tile_graph <- function(curve_number=80,zscore_type = "weekly"){
 }
 
 make_arrival_tile_graph <-
-  function(curve_number = 80,
+  function(curve_number = 84,
            zscore_type = "weekly",
            Weekday_arv = 2,
            Hour_arv = 8,
-           Period_cat = list(60,360)) {
+           Period_cat = list(180,360)) {
     data <- readRDS("data/arrival tile plot/arrival_tile_plot_data.rds")
   
     locations <-
@@ -341,8 +390,9 @@ make_arrival_tile_graph <-
       ))
     )
     
-    color_limits <- data %>% filter(location == Name) %>% group_by(weekday_arv, hour_arv, weekday_int,hour_int) %>% summarise(number = sum(number))
-    color_limits <- c(0,max(color_limits$number))
+    data <- data %>% filter(location == Name) %>% group_by(weekday_arv, hour_arv, weekday_int,hour_int) %>% mutate(number_sum = sum(number))
+                                                                                                                      
+    color_limits <- c(0,max(data$number_sum))
     
     data_plot <-
       data %>% filter(
@@ -354,8 +404,9 @@ make_arrival_tile_graph <-
           which(periods$end == Period_cat[[2]])
         )]
       ) %>% 
-      group_by(weekday_int,hour_int) %>% 
-      summarise(number = sum(number))
+      group_by(weekday_int,hour_int,number_sum) %>% 
+      summarise(number = sum(number)) %>% 
+      mutate(percentage = number/number_sum*100)
     
     data_plot$weekday_int <-
       fct_relevel(
@@ -394,7 +445,9 @@ make_arrival_tile_graph <-
                         ":00 ",
                         x_levels[weekday_int],
                         "</b></br>Hourly aggregate fleet idle time = ",
-                        sprintf("%.2f",round(number, 2))
+                        sprintf("%.2f",round(number, 2)),
+                        "</b></br>Percentage of HAFIT = ",
+                        round(percentage),"%"
           )),
           hjust = 0.5,
           vjust = 0.5,
