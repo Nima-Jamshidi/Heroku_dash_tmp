@@ -180,6 +180,16 @@ periods_list = list(`0` = list(label = "0 min", style = list(transform = "transl
 #                     `360` = list(label = "6 hr"),
 #                     `600` = list(label = "6+ hr"))
 
+# mapboxToken <- "pk.eyJ1IjoibmltbmltIiwiYSI6ImNsN2s2c2c2MzBtYnozb21xdDczMDZheGoifQ.0iiCoYMlrjz84TU4FkRapQ"
+# Sys.setenv("MAPBOX_TOKEN" = mapboxToken)
+location_finder <- function(curve_number = 84){
+  data <- readRDS("data/map plot/sf_neighborhoods_t.rds")
+  locations <-
+    data %>% distinct(location) %>% arrange(location)
+  j=curve_number-56
+  return(locations$location[j])
+}
+
 
 make_map_plot <- function() {
   data <- readRDS("data/map plot/sf_neighborhoods_t.rds")
@@ -242,13 +252,16 @@ make_map_plot <- function() {
   
   
   plot_ly(
+  # plot_mapbox(
     type = "scatter",
+    mode = "lines",
     data,
     split = ~ location,
     showlegend = F,
     hoverlabel = list(namelength = 0)#,
     # width=800, height=495
-  ) %>% layout(clickmode = "event+select") %>%
+  ) %>%
+    layout(clickmode = "event+select") %>%
     layout(xaxis = list(range = c((bbox_sf[1,]))),
            yaxis = list(range = c((bbox_sf[2,])))) %>%
     layout(images = list(
@@ -271,7 +284,7 @@ make_map_plot <- function() {
       b = 0,
       t = 0,
       pad = 0
-    ))
+    ))# %>% config(mapboxAccessToken = Sys.getenv("MAPBOX_TOKEN"))
 }
 
 
@@ -345,12 +358,20 @@ make_tile_graph <- function(curve_number=84,zscore_type = "weekly"){
       # vjust = 1,
       # size = 5,
       # hjust = 0
-      ))
+      ),
+      legend.position="none")
 
   plotly::ggplotly(hweek, tooltip = "text")  %>% layout(clickmode = "event+select",
                                                         xaxis = list(fixedrange = TRUE), 
                                                         yaxis = list(fixedrange = TRUE),
-                                                        title=Name) #%>% 
+                                                        title=Name,
+                                                        margin = list(
+                                                          # l = 0,
+                                                          r = 20
+                                                          # b = 0,
+                                                          # t = 0,
+                                                          # pad = 0
+                                                        )) #%>% 
     # config(displayModeBar = FALSE,
     #        modeBarButtonsToRemove = c('zoom2d','pan2d','hoverClosestGl2d','lasso2d'))
 }
@@ -516,9 +537,11 @@ make_arrival_tile_graph <-
                                                        l = 0,
                                                        r = 0,
                                                        b = 0,
-                                                       t = 70,
+                                                       t = 60,
                                                        pad = 0
                                                      ),
+                                                     autosize=T,
+                                                     # automargin = T,
                                                      xaxis = list(fixedrange = TRUE), 
                                                      yaxis = list(fixedrange = TRUE)) #%>% 
           # config(displayModeBar = F,

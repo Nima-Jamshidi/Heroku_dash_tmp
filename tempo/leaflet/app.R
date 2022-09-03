@@ -22,8 +22,7 @@ source('dash_components.R')
 ## Create Dash instance
 
 app <- Dash$new(suppress_callback_exceptions = T,
-                external_stylesheets = c(dbcThemes$MORPH,
-                                            "https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css"))
+                external_stylesheets = dbcThemes$MORPH)
 
 ## Specify layout elements
 
@@ -41,76 +40,25 @@ div_header <- htmlDiv(
 )
 
 
-# div_sidebar <- htmlDiv(
-#   list(htmlLabel('Select y-axis metric:'),
-#        htmlBr(),
-#        # zscoreDropdown,
-#        # htmlLabel('Select y scale : '),
-#        htmlBr(),
-#        logbutton,
-#        sources,
-#        htmlH2(as.character("Hello"),id = "test"
-#               # ,className = "output-example-loading"
-#               ),
-#        htmlH2(as.character("Hello"),id = "test2"),
-#        offcanvas,
-#        offcanvas2
-#        # dccLoading(loading_state = list(is_loading = T))
-#   ), #### THIS IS NEW! Styles added
-#   style = list('background-color' = '#BBCFF1',
-#                'padding' = 10,
-#                # 'flex-basis' = '20%'#,
-#                # 'position' = 'fixed',
-#                'top' = 20,
-#                # 'left' = 0,
-#                'bottom' = 50
-#                # 'width' = '16rem',
-#                # 'padding' = '2rem 1rem'
-#   )#,
-#   # className = "sidebar"
-#   # className = "position-sticky left"
-#   # className = "position-absolute left"
-# )
-
 div_sidebar <- htmlDiv(
-  list(htmlH2(htmlB(toupper('Nima Jamshidi'))),
+  list(htmlLabel('Select y-axis metric:'),
        htmlBr(),
-       htmlH6(htmlI("M.Sc. in Resources, Environment and Sustainability, UBC")),
-       htmlBr(),
-       htmlA(
-         id = "LinkedIn",
-         className = "fa fa-linkedin fa-2x",
-         # children = "LinkedIn",
-         href = "https://www.linkedin.com/in/nima-jamshidi-991711131/",
-         style = list("text-decoration" = "none")
-       ),
-       # htmlBr(),
-       # htmlH2(" "),
-       "  ",
-       htmlA(
-         id = "GitHub",
-         # children = "GitHub",
-         className = "fa fa-github fa-2x",
-         href = "https://github.com/Nima-Jamshidi",
-         style = list("text-decoration" = "none")
-       )
        # zscoreDropdown,
        # htmlLabel('Select y scale : '),
-       # htmlBr(),
-       # logbutton,
-       # sources,
-       # htmlH2(as.character("Hello"),id = "test"
-       #        # ,className = "output-example-loading"
-       # ),
-       # htmlH2(as.character("Hello"),id = "test2"),
-       # offcanvas,
-       # offcanvas2
+       htmlBr(),
+       logbutton,
+       sources,
+       htmlH2(as.character("Hello"),id = "test"
+              # ,className = "output-example-loading"
+              ),
+       htmlH2(as.character("Hello"),id = "test2"),
+       offcanvas
        # dccLoading(loading_state = list(is_loading = T))
   ), #### THIS IS NEW! Styles added
   style = list('background-color' = '#BBCFF1',
                'padding' = 10,
                # 'flex-basis' = '20%'#,
-               'position' = 'sticky',
+               # 'position' = 'fixed',
                'top' = 20,
                # 'left' = 0,
                'bottom' = 50
@@ -129,52 +77,13 @@ div_main <- #htmlDiv(
         dbcCol(
           htmlDiv(map_text),width = 6),
         dbcCol(
-          dbcCard(list(
-            graph_map,
-            dbcAlert(
-              htmlH5(htmlB("Check out Vancouver Map! Hover over the map to see neighbourhoods. Click on them to see their fleet density through out the week.")),
-              id="alert-map1",
-              is_open=T,
-              dismissable = F,
-              fade = F,
-              color="primary"
-              # duration=4000
-              # className = "position-sticky right",
-              # style = list("margin-top" = 50)
-            ),
-            dbcAlert(
-              id="alert-map2",
-              is_open=F,
-              duration=4000
-              # className = "position-sticky right",
-              # style = list("margin-top" = 50)
-          )),className = "position-sticky right",style = list(top = 10, bottom = 10, `margin-top` = 10 ,`margin-bottom` = 10)),
-          ,width = 6)
+          dbcCard(graph_map,className = "position-sticky right",style = list(top = 10, bottom = 10, `margin-top` = 10 ,`margin-bottom` = 10)),width = 6)
         )
       ),
     dbcRow(
       list(
         dbcCol(
-          dbcCard(htmlDiv(list(graph_tile,
-                               dbcCard(list(htmlH4("Settings:",style = list("padding"=5)),dbcCol(zscoreDropdown,width = 6))),
-                               dbcAlert(
-                                 htmlH5(htmlB("This graph shows Hourly Aggregate Fleet Idle Time (HAFIT). Hover over the graph to see the values for different hours of a day of the week. The redder or bluer the block the higher or lower the density of idle cars at that hour.")),
-                                 id="alert-tile1",
-                                 is_open=T,
-                                 dismissable = F,
-                                 fade = F,
-                                 color="primary"
-                                 # duration=4000
-                                 # className = "position-sticky right",
-                                 # style = list("margin-top" = 50)
-                               ),
-                               dbcAlert(
-                                 id="alert-tile2",
-                                 is_open=F,
-                                 duration=4000
-                                 # className = "position-sticky right",
-                                 # style = list("margin-top" = 50)
-                               ))),className = "position-sticky right",style = list(top = 10, bottom = 10, `margin-top` = 10 ,`margin-bottom` = 10)),width = 6),
+          dbcCard(htmlDiv(list(graph_tile,dbcCard(list(htmlH4("Settings:",style = list("padding"=5)),dbcCol(zscoreDropdown,width = 6))))),className = "position-sticky right",style = list(top = 10, bottom = 10, `margin-top` = 10 ,`margin-bottom` = 10)),width = 6),
         dbcCol(
           htmlDiv(tile_text),width = 6)
         # dbcCol(
@@ -186,24 +95,7 @@ div_main <- #htmlDiv(
         dbcCol(
           htmlDiv(arv_tile_text),width = 6),
         dbcCol(
-          dbcCard(htmlDiv(list(dccLoading(graph_arv_tile,type = "circle"),dbcCard(list(htmlH4("Settings:",style = list("padding"=5)),dbcCol(slider,width = 12))),
-                               dbcAlert(
-                                 id="alert-arv-tile1",
-                                 is_open=T,
-                                 dismissable = F,
-                                 fade = F,
-                                 color="primary"
-                                 # duration=4000
-                                 # className = "position-sticky right",
-                                 # style = list("margin-top" = 50)
-                               ),
-                               dbcAlert(
-                                 id="alert-arv-tile2",
-                                 is_open=F,
-                                 duration=4000
-                                 # className = "position-sticky right",
-                                 # style = list("margin-top" = 50)
-                               ))),className = "position-sticky right",style = list(top = 10, bottom = 10, `margin-bottom` = 10)),width = 6)
+          dbcCard(htmlDiv(list(dccLoading(graph_arv_tile,type = "circle"),dbcCard(list(htmlH4("Settings:",style = list("padding"=5)),dbcCol(slider,width = 12))))),className = "position-sticky right",style = list(top = 10, bottom = 10, `margin-bottom` = 10)),width = 6)
         # dbcCol(
         #   htmlDiv(slider,className = "position-sticky right",style = list(top = 10, bottom = 10, `margin-bottom` = 10)),width = 2)
       )
@@ -304,129 +196,353 @@ div_main <- #htmlDiv(
 # 	)
 # )
 
-# app %>% set_layout(dccGraph(
-#   id = 'map-graph',
-#   figure=make_map_plot(),
-#   style = list(height = '100vh',
-#                width = '100vh',
-#                position = 'absolute'),
-#   config = list(
-#     # displayModeBar = T,
-#     modeBarButtonsToRemove = list('toggleSpikelines','lasso2d','select2d','hoverClosestCartesian','hoverCompareCartesian','autoScale')),
-#   clickData = list(points = 84)
-# ))
+# app %>% set_layout(
+#   dbcContainer(
+#     list(
+#       dbcRow(
+#         dbcCol(div_header), className = "navbar navbar-expand-lg navbar-light bg-light"),
+#       dbcRow(
+#         list(
+#           dbcCol(div_sidebar, width = 2),
+#           dbcCol(div_main, width = 10)
+#           )
+#         )
+#       )
+#     )
+#   )
 
+# overlay_test <- htmlDiv(
+#   list(
+#     dccGraph(
+#       id = 'map-graph',
+#       figure=make_map_plot(),
+#       style = list("height" = '100vh',
+#                    "width" = "100vw",
+#                    'position' = 'absolute',
+#                    'left'= 50),
+#       config = list(
+#         # displayModeBar = T,
+#         modeBarButtonsToRemove = list('toggleSpikelines','lasso2d','select2d','hoverClosestCartesian','hoverCompareCartesian','autoScale')),
+#       clickData = list(points = 84)
+#     ),
+#     dbcFade(dccGraph(
+#       id = 'tile-graph',
+#       figure=make_tile_graph(),
+#       config = list(
+#         # displayModeBar = T,
+#         modeBarButtonsToRemove = list('toggleSpikelines','lasso2d','select2d','hoverClosestCartesian','hoverCompareCartesian')),
+#       clickData = list(points = list(c(NA,'1','15'))),
+#       style=list(
+#         "height" = "50vh",
+#         "width" = "40vw",
+#         # "float" = "left",
+#         # 'display' = 'inline-block'
+#         'position' = 'absolute',
+#         'left'= '10%',
+#         'top' = '50%'#,
+#         # 'right' = 100
+#       )
+#     ),
+#     id="fade",
+#     is_in=F,
+#     appear=F),
+#     # dbcCard(id = "card-test",
+#     #         style=list(
+#     #           'background-color' = '#BBCFF1',
+#     #           "height" = "100vh",
+#     #           "width" = "25vw",
+#     #           # "float" = "left",
+#     #           # 'display' = 'inline-block'
+#     #           'position' = 'absolute',
+#     #           'left'= 0,
+#     #           "visibility" = "visible"
+#     #         )),
+#             #,
+#     # dbcCard(id = "card-test2",
+#     #         style=list(
+#     #           "height" = "100vh",
+#     #           "width" = "25vw",
+#     #           # "float" = "left",
+#     #           # 'display' = 'inline-block'
+#     #           'position' = 'absolute',
+#     #           'left'= 0,
+#     #           'visibility' = 'visible'
+#     #         )
+#     # )
+#       
+#     # dbcFade(dbcCard("Nima",id = "card-test2",
+#     #                 style=list(
+#     #                   "height" = "100vh",
+#     #                   "width" = "25vw",
+#     #                   # "float" = "left",
+#     #                   # 'display' = 'inline-block'
+#     #                   'position' = 'absolute',
+#     #                   'left'= 0
+#     #                   # 'visibility' = 'visible'
+#     #                 )
+#     #                 ),
+#     #         id="fade",
+#     #         is_in=T,
+#     #         appear=F#,
+#     #         # style=list(
+#     #         #   "height" = "100vh",
+#     #         #   "width" = "25vw",
+#     #         #   # "float" = "left",
+#     #         #   # 'display' = 'inline-block'
+#     #         #   'position' = 'absolute',
+#     #         #   'left'= 0
+#     #         #   # 'visibility' = 'visible'
+#     #         # )
+#     # ),
+#     dbcButton(
+#                   "Click me", id="example-button",
+#                   style = list("position" = "absolute",
+#                                "left" = 80)
+#                 )
+#   ),
+#   style=list("height" = "97vh", "width" = "100vw")
+# )
 
-
-app %>% set_layout(dbcContainer(list(
-  dbcRow(dbcCol(div_header),className = "navbar navbar-expand-lg navbar-light bg-light"),
-  dbcRow(
-    list(dbcCol(div_sidebar,
-                width = 2),
-         dbcCol(div_main, width = 10))
-  )#,
-  # dbcRow(list(
-  #       dbcCard("Hello",id = "card-test1",
-  #               style=list(
-  #                 "height" = "100vh",
-  #                 "width" = "25vw",
-  #                 # "float" = "left",
-  #                 # 'display' = 'inline-block'
-  #                 'position' = 'absolute',
-  #                 'left'= 0#,
-  #                 # 'visibility' = 'visible'
-  #               )
-  #       ),
-  #       dbcFade(dbcCard(htmlDiv("Nima",id = "Nima-div"),id = "card-test2",
-  #                       style=list(
-  #                         "height" = "100vh",
-  #                         "width" = "25vw",
-  #                         # "float" = "left",
-  #                         # 'display' = 'inline-block'
-  #                         'position' = 'absolute',
-  #                         'left'= 0,
-  #                         'opacity' = 0.5
-  #                         # 'visibility' = 'visible'
-  #                       )
-  #                       ),
-  #               id="fade",
-  #               is_in=T,
-  #               appear=F#,
-  #               # style=list(
-  #               #   "height" = "100vh",
-  #               #   "width" = "25vw",
-  #               #   # "float" = "left",
-  #               #   # 'display' = 'inline-block'
-  #               #   'position' = 'absolute',
-  #               #   'left'= 0
-  #               #   # 'visibility' = 'visible'
-  #               # )
-  #       )))
-),fluid = T))
-
-## App Callbacks
+app %>% set_layout(htmlDiv(list(htmlDiv(htmlIframe(id = "iframe",
+                                                       # width = "600px",
+                                                       # height = "600px",
+                                                       src = "assets/leaflet.html"
+                                                     ),id="iframe_div"),htmlH2(id="iframe_text"))))
 
 app$callback(
-  output = output(id = "fade", property = "is_in"),
+  output = output(id = "iframe_text", property = "children"),
   # output=output(id = 'test2', property='children'),
-  params = list(input(id = "Nima-div", property = "n_clicks")),
+  params = list(input(id = "iframe_div", property = "n_clicks")),
   function(n1){
     prevent_update(is.null(n1[[1]]))
+    return(paste0(n1))
+  }
+)
+
+# app %>% set_layout(dbcContainer(list(
+#   dccGraph(
+#     id = 'map-graph',
+#     figure = make_map_plot(),
+#     style = list(
+#       "height" = '100vh',
+#       "width" = "100vw",
+#       'position' = 'fixed',
+#       'left' = 0
+#     ),
+#     config = list(
+#       # displayModeBar = T,
+#       modeBarButtonsToRemove = list(
+#         'toggleSpikelines',
+#         'lasso2d',
+#         'select2d',
+#         'hoverClosestCartesian',
+#         'hoverCompareCartesian',
+#         'autoScale'
+#       )
+#     ),
+#     clickData = list(points = 84)
+#   ),
+#   dbcRow(className = "h-50"),
+#   dbcRow(list(dbcCol(
+#     dbcFade(dccGraph(
+#       id = 'tile-graph',
+#       figure=make_tile_graph(),
+#       config = list(
+#         # displayModeBar = T,
+#         modeBarButtonsToRemove = list('toggleSpikelines','lasso2d','select2d','hoverClosestCartesian','hoverCompareCartesian')),
+#       clickData = list(points = list(c(NA,'1','15'))),
+#       style=list(
+#         # "height" = "50vh",
+#         # "width" = "40vw",
+#         # "float" = "left",
+#         # 'display' = 'inline-block'
+#         'position' = 'static'
+#         # 'left'= '10%',
+#         # 'top' = '50%'#,
+#         # 'right' = 100
+#       )
+#     ),
+#     id="fade",
+#     is_in=T,
+#     appear=F),
+#     width = 6,
+#     align="end"
+#   ),
+#   dbcCol(htmlIframe(
+#     id="my-output",
+#     src="data/map plot/leaflet.html",
+#     style=list("height"= "495px", "width"= "100%"),
+#   ),width = 6)),align="end",
+#   className = "h-50")
+# ),style = list("height" = "100vh",
+#                "margin-bottom" = 0,
+#                "margin-top" = 0
+#                )))
+
+# app$layout(htmlDiv(list(
+#   htmlIframe(id = "iframe",
+#     # width = "600px",
+#     # height = "600px",
+#     src = "assets/leaflet.html"
+#   ),
+#   dbcCard(htmlH2("Nima",id="iframe_text"),style = list("width" = "600px",
+#                               "height" = "600px")),
+#   dbcButton(
+#     "Click me", id="example-button",
+#     # style = list("position" = "absolute",
+#     #              "left" = 80)
+#   )
+# )))
+# 
+# app$callback(
+#   output = output(id = "iframe_text", property = "children"),
+#   # output=output(id = 'test2', property='children'),
+#   params = list(input(id = "example-button", property = "n_clicks"),
+#                 state(id = "iframe", property = "srcDoc")),
+#   function(n1,n2){
+#     prevent_update(is.null(n1[[1]]))
+#     return(paste0(class(n2),
+#                   "--",
+#                   class(n2[[1]])))
+#   }
+# )
+
+# app %>% set_layout(overlay_test)
+# app %>% set_layout(
+#   dbcContainer(
+#     # list(
+#       # dbcRow(
+#       #   dbcCol(graph_map)),
+#       dbcRow(
+#         list(
+#           dbcCol(htmlDiv(list(dbcButton(
+#             "Click me", id="example-button"
+#           ),htmlH2(as.character("Hello"),id = "test3"
+#                    # ,className = "output-example-loading"
+#           ))), width = 6),
+#           dbcCol(overlay_test, width = 6,
+#                  style = list("position" = "relative"))
+#         ),
+#         style = list(height = '100vh')
+#       )
+#     # )
+#   )
+# )
+
+# app %>% set_layout(dbcContainer(
+#   dbcRow(
+#     dbcCol(
+#       xx,
+#       width = 12,
+#       style = list("position" = "relative")
+#     )
+#   )
+# )
+
+# app %>% set_layout(
+#   dbcContainer(dbcRow(htmlDiv(list(
+#   # dccGraph(
+#   #   id = 'map-graph',
+#   #   figure=make_map_plot(),
+#   #   style = list("height" = '100vh'),
+#   #   config = list(
+#   #     # displayModeBar = T,
+#   #     modeBarButtonsToRemove = list('toggleSpikelines','lasso2d','select2d','hoverClosestCartesian','hoverCompareCartesian','autoScale')),
+#   #   clickData = list(points = 84)
+#   # ),
+#   dbcCol(
+#   dccGraph(
+#     id = 'tile-graph',
+#     figure=make_tile_graph(),
+#     config = list(
+#       # displayModeBar = T,
+#       modeBarButtonsToRemove = list('toggleSpikelines','lasso2d','select2d','hoverClosestCartesian','hoverCompareCartesian')),
+#     clickData = list(points = list(c(NA,'1','15'))),
+#     style=list(
+#       # "height" = "100vh",
+#       # "width" = "100vw",
+#       # "float" = "left",
+#       # 'display' = 'inline-block'
+#       'position' = 'absolute',
+#       'left'= 0
+#     )
+#   ),width = 6,
+#   style = list("position" = "relative"))
+#     # list(
+#     #   dbcRow(
+#     #     dbcCol(graph_map))#,
+#     #   # dbcRow(
+#     #   #   list(
+#     #   #     dbcCol(htmlDiv(list(dbcButton(
+#     #   #       "Click me", id="example-button"
+#     #   #     ),htmlH2(as.character("Hello"),id = "test3"
+#     #   #              # ,className = "output-example-loading"
+#     #   #     ))), width = 6),
+#     #   #     dbcCol(overlay_test, width = 6,
+#     #   #            style = list("position" = "relative"))
+#     #   #   )
+#     #   # )
+#     # )
+#   # )
+# )))))
+
+
+app$callback(
+  output = output(id = "test3", property = "children"),
+  # output=output(id = 'test2', property='children'),
+  params = list(input(id = "example-button", property = "n_clicks")),
+  function(n1){
     # prevent_update(n_clicks!=1)
-    return(F)
+    return(paste0(n1))
   }
 )
 
 app$callback(
-  output = list(output("alert-map1", "is_open"),
-                output("alert-map2", "is_open"),
-                output("alert-map2", "children")),
-  params = list(input("map-graph", "clickData")),
+  output = output(id = "fade", property = "is_in"),
+  # output=output(id = 'test2', property='children'),
+  params = list(input(id = "example-button", property = "n_clicks")),
+  function(n1){
+        prevent_update(is.null(n1[[1]]))
+    # prevent_update(n_clicks!=1)
+    return(T)
+  }
+)
 
-function(clickdata){
-  prevent_update(is_null(clickdata$points[[1]]))
-  return(list(F,T,htmlH5(htmlB(paste0("Scroll down to see the fleet density for ",location_finder(as.integer(clickdata$points[[1]])),".")))))
-})
+# app$callback(
+#   output = output(id = "card-test2", property = "style"),
+#   # output=output(id = 'test2', property='children'),
+#   params = list(input(id = "example-button", property = "n_clicks")),
+#   function(n1){
+#     prevent_update(is.null(n1[[1]]))
+#     return(list(
+#       "height" = "100vh",
+#       "width" = "25vw",
+#       # "float" = "left",
+#       # 'display' = 'inline-block'
+#       'position' = 'absolute',
+#       'left'= 0,
+#       'visibility' = 'hidden'
+#     ))
+#   }
+# )
+  #   # Sys.sleep(1)
+  #   ctx <- callback_context()
+  #   prevent_update(is.null(ctx$triggered$prop_id))
+  #   # paste0(ctx$triggered$prop_id)
+  #   if (ctx$triggered$prop_id %in% c("Downtown Vancouver link.n_clicks","DT 8-9AM  Mondays link.n_clicks")){
+  #     return(list(points = 68))
+  #   } else if (ctx$triggered$prop_id == "False Creek link.n_clicks"){
+  #     return(list(points = 72))
+  #   } else if (ctx$triggered$prop_id == "Grouse Mountain link.n_clicks"){
+  #     return(list(points = 77))
+  #   } else if (ctx$triggered$prop_id == "YL 8-9AM  Mondays link.n_clicks"){
+  #     return(list(points = 113))
+  #   }
+  # }
+# )
+## App Callbacks
 
 
-app$callback(
-  output = list(output("alert-tile1", "is_open"),
-                output("alert-tile2", "is_open"),
-                output("alert-tile2", "children")),
-  params = list(input("tile-graph", "clickData")),
-  
-  function(tile_clickdata){
-    prevent_update(is.null(tile_clickdata$points[[1]][2]),is.null(tile_clickdata$points[[1]][3]))
-    return(list(F,T,htmlH5(htmlB(paste0("Scroll down to see the fleet density throughout the week for the cars that arrive at ",as.integer(tile_clickdata$points[[1]][3])," on ",c(
-      "Monday",
-      "Tuesday",
-      "Wednesday",
-      "Thursday",
-      "Friday",
-      "Saturday",
-      "Sunday",
-      "H/ Monday"
-    )[as.integer(tile_clickdata$points[[1]][2])],"."
-                                        )))))
-  })
-
-app$callback(
-  output = list(output("alert-arv-tile1", "is_open"),
-                output("alert-arv-tile2", "is_open"),
-                output("alert-arv-tile1", "children"),
-                output("alert-arv-tile2", "children")),
-  params = list(input(id = "arv_tile_slider", property = "value"),
-                state(id = "arv_tile_slider", property = "value")),
-  
-  function(period_list){
-    # prevent_update(is.null(tile_clickdata$points[[1]][2]),is.null(tile_clickdata$points[[1]][3]))
-    
-    
-    return(list(T,T,htmlH5(htmlB(paste0("You can see the density of idle cars with an idle duration ",ifelse(period_list[[2]]==600,
-                                                                                                      paste0("more than ",periods$label[periods$value==period_list[[1]]],"."),
-                                                                                                      paste0("between ",periods$label[periods$value==period_list[[1]]]," and ",periods$label[periods$value==period_list[[2]]],"."))))),
-                htmlH5(htmlB(paste0("Scroll up to choose other neighbourhoods and times.")))))
-  })
 # 
 # 
 app$callback(
@@ -678,9 +794,6 @@ app$callback(
     output=output(id = 'test', property='children'),
     params=list(input(id = 'map-graph', property='clickData')),
     function(data){
-      # prevent_update(is.null(data$points[[1]]))
-      # paste0(location_finder(data$points[[1]]))
-      # location_finder(curve_number = data$points[[1]])
       paste0(data$points[[1]])
     })
 
@@ -754,18 +867,6 @@ app$callback(
   output = output("offcanvas-scrollable", "is_open"),
   params = list(input("open-offcanvas-scrollable", "n_clicks"),
                 state("offcanvas-scrollable", "is_open")),
-  function(n1, is_open){
-    if (n1>0){
-      return(!is_open)
-    }
-    return(is_open)
-  }
-)
-
-app$callback(
-  output = output("offcanvas-scrollable2", "is_open"),
-  params = list(input("open-offcanvas-scrollable2", "n_clicks"),
-                state("offcanvas-scrollable2", "is_open")),
   function(n1, is_open){
     if (n1>0){
       return(!is_open)

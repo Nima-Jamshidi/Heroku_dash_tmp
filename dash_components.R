@@ -1,4 +1,4 @@
-heading_title <- htmlH1(id="header",'Evo Car Share idle fleet in time and space')
+heading_title <- htmlH1(id="header",'Evo Car Share Idle Fleet in Time and Space')
 heading_subtitle <- htmlH2('Looking at neighbourhood data interactively',style = list("padding" = 10))
 
 
@@ -51,6 +51,22 @@ offcanvas = htmlDiv(list(
     id="offcanvas-scrollable",
     scrollable=T,
     title="Scrollable Offcanvas",
+    is_open=F,
+    placement = "end"
+  ))
+)
+
+offcanvas2 = htmlDiv(list(
+  dbcButton(
+    "Open scrollable offcanvas2",
+    id="open-offcanvas-scrollable2",
+    n_clicks=0,
+  ),
+  dbcOffcanvas(
+    htmlP("Hellooo"),
+    id="offcanvas-scrollable2",
+    scrollable=T,
+    title="Scrollable Offcanvas2",
     is_open=F,
     placement = "end"
   ))
