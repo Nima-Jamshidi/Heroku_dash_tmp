@@ -12,7 +12,7 @@ Usage: app.R
 library(dash)
 library(dashCoreComponents)
 library(dashHtmlComponents)
-library(dashTable)
+# library(dashTable)
 library(dashBootstrapComponents)
 
 ## Important! Source the files (order matters!)
