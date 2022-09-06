@@ -795,13 +795,13 @@ app$callback(
 )
 ## Run app
 
-# app$run_server(host = '0.0.0.0', port = Sys.getenv('PORT', 8050)) # NEW: MUST CHANGE FOR DEPLOYMENT
+app$run_server(host = '0.0.0.0', port = Sys.getenv('PORT', 8050)) # NEW: MUST CHANGE FOR DEPLOYMENT
 # app$run_server(debug=TRUE)
 # app %>% run_app(host = '0.0.0.0', port = Sys.getenv('PORT'))
-app %>% run_app(
-  host = Sys.getenv("DASH_HOST", Sys.getenv("HOST", "0.0.0.0")),
-  port = as.numeric(Sys.getenv("DASH_PORT", Sys.getenv("PORT", 8050)))
-)
+# app %>% run_app(
+#   host = Sys.getenv("DASH_HOST", Sys.getenv("HOST", "0.0.0.0")),
+#   port = as.numeric(Sys.getenv("DASH_PORT", Sys.getenv("PORT", 8050)))
+# )
 # app %>% run_app()
 # app
 
