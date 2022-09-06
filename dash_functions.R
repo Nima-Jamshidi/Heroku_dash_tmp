@@ -162,13 +162,13 @@ periods <- tibble(label = c("0 min","10 mins","30 mins","1 hr","2 hrs","3 hrs","
 periods_list = as.list(periods$label)
 names(periods_list) = periods$value
 
-periods_list = list(`0` = list(label = "0 min", style = list(transform = "translateX(-50%) translateY(20%) rotate(-90deg)")),
-                    `10` = list(label = "10 mins", style = list(transform = "translateX(-50%) translateY(20%) rotate(-90deg)")),
-                    `30` = list(label = "30 mins", style = list(transform = "translateX(-50%) translateY(20%) rotate(-90deg)")),
-                    `60` = list(label = "1 hr", style = list(transform = "translateX(-50%) translateY(20%) rotate(-90deg)")),
-                    `120` = list(label = "2 hrs", style = list(transform = "translateX(-50%) translateY(20%) rotate(-90deg)")),
-                    `180` = list(label = "3 hrs", style = list(transform = "translateX(-50%) translateY(20%) rotate(-90deg)")),
-                    `360` = list(label = "6 hrs", style = list(transform = "translateX(-50%) translateY(20%) rotate(-90deg)")),
+periods_list = list(`0` = list(label = "0 min", style = list(transform = "translateX(-50%) translateY(40%) rotate(-90deg)")),
+                    `10` = list(label = "10 mins", style = list(transform = "translateX(-50%) translateY(40%) rotate(-90deg)")),
+                    `30` = list(label = "30 mins", style = list(transform = "translateX(-50%) translateY(40%) rotate(-90deg)")),
+                    `60` = list(label = "1 hr", style = list(transform = "translateX(-50%) translateY(40%) rotate(-90deg)")),
+                    `120` = list(label = "2 hrs", style = list(transform = "translateX(-50%) translateY(40%) rotate(-90deg)")),
+                    `180` = list(label = "3 hrs", style = list(transform = "translateX(-50%) translateY(40%) rotate(-90deg)")),
+                    `360` = list(label = "6 hrs", style = list(transform = "translateX(-50%) translateY(40%) rotate(-90deg)")),
                     `600` = list(label = "6+ hrs", style = list(transform = "translateX(-100%)")))
 
 # periods_list = list(`0` = list(label = "0 min"),
