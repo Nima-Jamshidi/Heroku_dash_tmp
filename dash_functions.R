@@ -156,7 +156,7 @@ zscore_type <- tibble(label = c("Weekly normalized", "Daily normalized"),
 									 value = c("weekly", "daily"))
 
 
-periods <- tibble(label = c("0 min","10 min","30 min","1 hr","2 hr","3 hr","6 hr","6+ hr"),
+periods <- tibble(label = c("0 min","10 mins","30 mins","1 hr","2 hrs","3 hrs","6 hrs","6+ hrs"),
                   value = c(0,10,30,60,120,180,360,600)) 
 
 periods_list = as.list(periods$label)

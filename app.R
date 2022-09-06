@@ -188,6 +188,7 @@ div_main <- #htmlDiv(
         dbcCol(
           dbcCard(htmlDiv(list(dccLoading(graph_arv_tile,type = "circle"),dbcCard(list(htmlH4("Settings:",style = list("padding"=5)),dbcCol(slider,width = 12))),
                                dbcAlert(
+                                 htmlH5(htmlB("You can see the density of idle cars with an idle duration between 3 hrs and 6 hrs.")),
                                  id="alert-arv-tile1",
                                  is_open=T,
                                  dismissable = F,
@@ -410,22 +411,35 @@ app$callback(
                                         )))))
   })
 
-app$callback(
-  output = list(output("alert-arv-tile1", "is_open"),
-                output("alert-arv-tile2", "is_open"),
-                output("alert-arv-tile1", "children"),
-                output("alert-arv-tile2", "children")),
-  params = list(input(id = "arv_tile_slider", property = "value"),
-                state(id = "arv_tile_slider", property = "value")),
+app$callback(output = list(
+  output("alert-arv-tile1", "is_open"),
+  output("alert-arv-tile2", "is_open"),
+  output("alert-arv-tile1", "children"),
+  output("alert-arv-tile2", "children")
+  ),
+  params = list(
+    input(id = "arv_tile_slider", property = "value")
+    # state(id = "arv_tile_slider", property = "value")
+    ),
+  function(period_list) {
+  # prevent_update(is.null(tile_clickdata$points[[1]][2]),is.null(tile_clickdata$points[[1]][3]))
   
-  function(period_list){
-    # prevent_update(is.null(tile_clickdata$points[[1]][2]),is.null(tile_clickdata$points[[1]][3]))
-    
-    
-    return(list(T,T,htmlH5(htmlB(paste0("You can see the density of idle cars with an idle duration ",ifelse(period_list[[2]]==600,
-                                                                                                      paste0("more than ",periods$label[periods$value==period_list[[1]]],"."),
-                                                                                                      paste0("between ",periods$label[periods$value==period_list[[1]]]," and ",periods$label[periods$value==period_list[[2]]],"."))))),
-                htmlH5(htmlB(paste0("Scroll up to choose other neighbourhoods and times.")))))
+  
+    return(list(T, T, htmlH5(htmlB(
+      paste0(
+        "You can see the density of idle cars with an idle duration ",
+        ifelse(
+          period_list[[2]] == 600,
+          paste0("more than ", periods$label[periods$value ==
+                                               period_list[[1]]], "."),
+          paste0("between ", periods$label[periods$value ==
+                                             period_list[[1]]], " and ", periods$label[periods$value == period_list[[2]]], ".")
+        )
+      )
+    )),
+    htmlH5(htmlB(
+      paste0("Scroll up to choose other neighbourhoods and times.")
+    ))))
   })
 # 
 # 
@@ -777,8 +791,8 @@ app$callback(
 
 # app$run_server(host = '0.0.0.0', port = Sys.getenv('PORT', 8050)) # NEW: MUST CHANGE FOR DEPLOYMENT
 # app$run_server(debug=TRUE)
-app %>% run_app(host = '0.0.0.0', port = Sys.getenv('PORT', 8050))
-# app %>% run_app()
+# app %>% run_app(host = '0.0.0.0', port = Sys.getenv('PORT', 8050))
+app %>% run_app()
 # app
 
 # command to add dash app in Rstudio viewer:
