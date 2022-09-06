@@ -137,7 +137,8 @@ div_main <- #htmlDiv(
               is_open=T,
               dismissable = F,
               fade = F,
-              color="primary"
+              color="primary",
+              style = list(top = 10)
               # duration=4000
               # className = "position-sticky right",
               # style = list("margin-top" = 50)
@@ -145,7 +146,8 @@ div_main <- #htmlDiv(
             dbcAlert(
               id="alert-map2",
               is_open=F,
-              duration=4000
+              duration=4000,
+              style = list(top = 10)
               # className = "position-sticky right",
               # style = list("margin-top" = 50)
           )),className = "position-sticky right",style = list(top = 10, bottom = 10, `margin-top` = 10 ,`margin-bottom` = 10)),
@@ -163,7 +165,8 @@ div_main <- #htmlDiv(
                                  is_open=T,
                                  dismissable = F,
                                  fade = F,
-                                 color="primary"
+                                 color="primary",
+                                 style = list(top = 10)
                                  # duration=4000
                                  # className = "position-sticky right",
                                  # style = list("margin-top" = 50)
@@ -171,7 +174,8 @@ div_main <- #htmlDiv(
                                dbcAlert(
                                  id="alert-tile2",
                                  is_open=F,
-                                 duration=4000
+                                 duration=4000,
+                                 style = list(top = 10)
                                  # className = "position-sticky right",
                                  # style = list("margin-top" = 50)
                                ))),className = "position-sticky right",style = list(top = 10, bottom = 10, `margin-top` = 10 ,`margin-bottom` = 10)),width = 6),
@@ -193,7 +197,8 @@ div_main <- #htmlDiv(
                                  is_open=T,
                                  dismissable = F,
                                  fade = F,
-                                 color="primary"
+                                 color="primary",
+                                 style = list(top = 10)
                                  # duration=4000
                                  # className = "position-sticky right",
                                  # style = list("margin-top" = 50)
@@ -201,7 +206,8 @@ div_main <- #htmlDiv(
                                dbcAlert(
                                  id="alert-arv-tile2",
                                  is_open=F,
-                                 duration=4000
+                                 duration=4000,
+                                 style = list(top = 10)
                                  # className = "position-sticky right",
                                  # style = list("margin-top" = 50)
                                ))),className = "position-sticky right",style = list(top = 10, bottom = 10, `margin-bottom` = 10)),width = 6)
@@ -790,9 +796,9 @@ app$callback(
 ## Run app
 
 # app$run_server(host = '0.0.0.0', port = Sys.getenv('PORT', 8050)) # NEW: MUST CHANGE FOR DEPLOYMENT
-# app$run_server(debug=TRUE)
+app$run_server(debug=TRUE)
 # app %>% run_app(host = '0.0.0.0', port = Sys.getenv('PORT', 8050))
-app %>% run_app()
+# app %>% run_app()
 # app
 
 # command to add dash app in Rstudio viewer:
