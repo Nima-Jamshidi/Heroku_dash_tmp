@@ -156,20 +156,20 @@ zscore_type <- tibble(label = c("Weekly normalized", "Daily normalized"),
 									 value = c("weekly", "daily"))
 
 
-periods <- tibble(label = c("0 min","10 min","30 min","1 hr","2 hr","3 hr","6 hr","6+ hr"),
+periods <- tibble(label = c("0 min","10 mins","30 mins","1 hr","2 hrs","3 hrs","6 hrs","6+ hrs"),
                   value = c(0,10,30,60,120,180,360,600)) 
 
 periods_list = as.list(periods$label)
 names(periods_list) = periods$value
 
-periods_list = list(`0` = list(label = "0 min", style = list(transform = "translateX(-50%) translateY(20%) rotate(-90deg)")),
-                    `10` = list(label = "10 min", style = list(transform = "translateX(-50%) translateY(20%) rotate(-90deg)")),
-                    `30` = list(label = "30 min", style = list(transform = "translateX(-50%) translateY(20%) rotate(-90deg)")),
-                    `60` = list(label = "1 hr", style = list(transform = "translateX(-50%) translateY(20%) rotate(-90deg)")),
-                    `120` = list(label = "2 hr", style = list(transform = "translateX(-50%) translateY(20%) rotate(-90deg)")),
-                    `180` = list(label = "3 hr", style = list(transform = "translateX(-50%) translateY(20%) rotate(-90deg)")),
-                    `360` = list(label = "6 hr", style = list(transform = "translateX(-50%) translateY(20%) rotate(-90deg)")),
-                    `600` = list(label = "6+ hr", style = list(transform = "translateX(-100%)")))
+periods_list = list(`0` = list(label = "0 min", style = list(transform = "translateX(-50%) translateY(40%) rotate(-90deg)")),
+                    `10` = list(label = "10 mins", style = list(transform = "translateX(-50%) translateY(40%) rotate(-90deg)")),
+                    `30` = list(label = "30 mins", style = list(transform = "translateX(-50%) translateY(40%) rotate(-90deg)")),
+                    `60` = list(label = "1 hr", style = list(transform = "translateX(-50%) translateY(40%) rotate(-90deg)")),
+                    `120` = list(label = "2 hrs", style = list(transform = "translateX(-50%) translateY(40%) rotate(-90deg)")),
+                    `180` = list(label = "3 hrs", style = list(transform = "translateX(-50%) translateY(40%) rotate(-90deg)")),
+                    `360` = list(label = "6 hrs", style = list(transform = "translateX(-50%) translateY(40%) rotate(-90deg)")),
+                    `600` = list(label = "6+ hrs", style = list(transform = "translateX(-100%)")))
 
 # periods_list = list(`0` = list(label = "0 min"),
 #                     `10` = list(label = "10 min"),
