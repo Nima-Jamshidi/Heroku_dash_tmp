@@ -1,7 +1,6 @@
 libcurl4-openssl-dev
 libxml2-dev
 libv8-dev
-libv8-dev
 r-cran-jsonlite
 r-cran-curl
 r-cran-triebeard
