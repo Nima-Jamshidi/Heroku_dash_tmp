@@ -11,14 +11,15 @@ options(repos=r)
 # packages go here
 install.packages('remotes')
 
-remotes::install_github('plotly/dashR', upgrade=TRUE)
-remotes::install_github('plotly/dash-daq', upgrade = TRUE)
+# remotes::install_github('plotly/dashR', upgrade=TRUE)
+install.packages("dash")
+# remotes::install_github('plotly/dash-daq', upgrade = TRUE)
 remotes::install_github('facultyai/dash-bootstrap-components@r-release', upgrade = TRUE)
 
 
-install.packages('dashCoreComponents')
-install.packages('dashHtmlComponents')
+# install.packages('dashCoreComponents')
+# install.packages('dashHtmlComponents')
 install.packages('tidyverse')
-install.packages('plotly')
+# install.packages('plotly')
 # install.packages('gapminder')
-install.packages('base64enc')
+# install.packages('base64enc')
