@@ -34,6 +34,8 @@ install.packages('remotes')
 #                    'dtplyr', 'forcats', 'googledrive', 'googlesheets4', 'haven', 'hms', 'lubridate', 'modelr', 'readr', 'readxl', 'reprex', 'rstudioapi', 'rvest',
 #                    'stringr'))
 
+install.packages(c('Rcpp','R6','viridisLite','RColorBrewer','DBI'))
+
 remotes::install_github('plotly/dashR')
 # remotes::install_github('cran/dash', upgrade=TRUE)
 # install.packages("dash")
