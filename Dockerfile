@@ -1,5 +1,6 @@
 # FROM plotly/heroku-docker-r:3.6.2_heroku18
-FROM virtualstaticvoid/heroku-docker-r:build
+# FROM virtualstaticvoid/heroku-docker-r:build
+FROM virtualstaticvoid/heroku-docker-r:4.1.0-build
 #
 # on build, copy application files
 COPY . /app/
