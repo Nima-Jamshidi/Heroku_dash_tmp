@@ -4,11 +4,9 @@ libv8-dev
 r-cran-jsonlite
 r-cran-curl
 r-cran-triebeard
-r-cran-Rcpp
 r-cran-magrittr
 r-cran-rlang
 r-cran-later
-r-cran-R6
 r-cran-fastmap
 r-cran-base64enc
 r-cran-digest 
@@ -35,8 +33,6 @@ r-cran-askpass
 r-cran-openssl
 r-cran-mime
 r-cran-colorspace
-r-cran-viridisLite 
-r-cran-RColorBrewer
 r-cran-munsell
 r-cran-labeling
 r-cran-farver
@@ -87,7 +83,6 @@ r-cran-jquerylib
 r-cran-tinytex
 r-cran-backports
 r-cran-blob
-r-cran-DBI
 r-cran-gargle
 r-cran-cellranger
 r-cran-ids
