@@ -9,8 +9,8 @@ Usage: app.R
 "
 
 library(dash)
-library(dashCoreComponents)
-library(dashHtmlComponents)
+# library(dashCoreComponents)
+# library(dashHtmlComponents)
 library(dashBootstrapComponents)
 
 source('dash_functions.R')
