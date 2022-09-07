@@ -3,7 +3,7 @@
 # author: Nima Jamshidi
 # date: Aug 1st, 2022
 
-"This script is the main file that creates a Dash app for cm110 on the gapminder dataset.
+"This script is the main file that creates a Dash app for Evo Idle Fleet.
 
 Usage: app.R
 "
