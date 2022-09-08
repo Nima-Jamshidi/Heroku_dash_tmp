@@ -49,11 +49,12 @@ library(base64enc)
 
 map_text = list(p("For my graduate research project I had access to Evo carsharing service's fleet data between February 2017 and August 2018. 
                 Evo is a free-floating (+ station-based) carsharing service that has been operating in Vancouver, BC since March 2015.
-                The other carsharing services in Vancouver at the time of the study belonged to Car2Go, 
-                also free-floating but ceased to continue operating in 2020, and Modo, a co-op providing round-trip carsharing service."),
+                The other carsharing services in Vancouver at the time of the study belonged to Car2Go and Modo.
+                 Car2Go provided free-floating serivce before ceasing operation in 2020. 
+                  Modo on the other hand is a co-op providing round-trip carsharing service."),
                 p("During the data collection period the fleet consisted of 1050 Toyota Prius Hybrids on average. 
                 The data had information about the location of each carsharing car while they were idle and not reserved by the users 
-                with a 5-minute frequency. After wrangling the data, we were able to identidy trips and cancelled reservations. 
+                with a 5-minute frequency. After wrangling the data, we were able to identify trips and cancelled reservations. 
                 On average an Evo car was used 5.8 times per day with each trip (+ reservation period) averageing around an hour in duration."),
                 p(list("In a part of ",
                        a(
@@ -69,9 +70,9 @@ map_text = list(p("For my graduate research project I had access to Evo carshari
                 57 neighborhoods throughout Metro Vancouver in which Evo has been present. 
                 Hover over the map and see the neighbourhoods' names. In order to show the usage pattern in the neighbourhoods,
                 the periods that a car was idle at a location waiting for a user to book and drive it are analyzed."),
-                p("If you click on a neighbourhood, you can see the hourly aggregate fleet idle time distribution (HAFIT) figure below.
+                p("If you click on a neighbourhood, you can see the respective hourly aggregate fleet idle time distribution (HAFIT) figure below.
                 That is the number of vehicles idle in that neighbourhood during any hour of a day of the week.
-                To be more precise, the aggregate idle time (hour unit) of vehicles for each hour is calculated."))
+                To be more precise, the aggregate idle time (hour unit) of vehicles for each hour is calculated. In simpler words, it gives an interpretation of idle car density"))
 
 
 tile_text = list(
