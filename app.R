@@ -16,9 +16,9 @@ library(dashBootstrapComponents)
 source('dash_functions.R')
 source('dash_components.R')
 
-app <- Dash$new(
-  suppress_callback_exceptions = T,
-  external_stylesheets = c(
+app <- dash_app(
+  suppress_callback_exceptions = T) %>% 
+  add_stylesheet(list(
     dbcThemes$MORPH,
     "https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css"
   )
@@ -202,7 +202,7 @@ app %>% set_layout(dbcContainer(list(
 #                return(F)
 #              })
 
-app$callback(output = list(
+app %>% add_callback(output = list(
     output("alert-map1", "is_open"),
     output("alert-map2", "is_open"),
     output("alert-map2", "children")
@@ -267,7 +267,7 @@ app$callback(output = list(
     ))))
   })
 
-app$callback(
+app %>% add_callback(
   output = output(id = "map-graph", property = "clickData"),
   params = list(input(id = "Downtown Vancouver link", property = "n_clicks"),
                 input(id = "False Creek link", property = "n_clicks"),
@@ -289,7 +289,7 @@ app$callback(
   }
 )
 
-app$callback(
+app %>% add_callback(
   output = list(output(id = "tile-graph", property = "clickData"),
                 output(id = "arv_tile_slider", property = "value")),
   params = list(input(id = "DT 8-9AM  Mondays link", property = "n_clicks"),
@@ -309,7 +309,7 @@ app$callback(
   }
 )
 
-app$callback(
+app %>% add_callback(
   output = output(id = "tile-graph", property = "figure"),
   params = list(input(id = 'map-graph',property = 'clickData'),
                 input(id = "zscore-type", property = "value")),
@@ -319,7 +319,7 @@ app$callback(
   }
 )
 
-app$callback(
+app %>% add_callback(
   output = output(id = "arv-tile-graph", property = "figure"),
   params=list(input(id = 'map-graph', property='clickData'),
               input(id = 'tile-graph', property='clickData'),
@@ -335,7 +335,7 @@ app$callback(
   }
 )
 
-# app$callback(
+# app %>% add_callback(
 #     output=output(id = 'test', property='children'),
 #     params=list(input(id = 'tile-graph', property='clickData')),
 #     function(data){
@@ -343,14 +343,14 @@ app$callback(
 #     })
 # 
 # 
-# app$callback(
+# app %>% add_callback(
 #   output=output(id = 'test2', property='children'),
 #   params = list(input(id = "zscore-type", property = "value")),
 #   function(data){
 #     paste0((data))
 #   })
 
-app$callback(
+app %>% add_callback(
   output = output("offcanvas-scrollable", "is_open"),
   params = list(input("open-offcanvas-scrollable", "n_clicks"),
                 state("offcanvas-scrollable", "is_open")),
@@ -362,7 +362,7 @@ app$callback(
   }
 )
 
-app$callback(
+app %>% add_callback(
   output = output("offcanvas-scrollable2", "is_open"),
   params = list(input("open-offcanvas-scrollable2", "n_clicks"),
                 state("offcanvas-scrollable2", "is_open")),
