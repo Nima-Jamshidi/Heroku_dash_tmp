@@ -2,7 +2,7 @@
 # FROM virtualstaticvoid/heroku-docker-r:build
 # FROM virtualstaticvoid/heroku-docker-r:4.1.0-build
 # FROM rstudio/r-base:devel-focal
-FROM rocker/r-bspm:ubuntu
+FROM rocker/r-bspm:testing
 # FROM eddelbuettel/r2u
 
 #
