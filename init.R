@@ -35,7 +35,7 @@ install.packages(c('jsonlite', 'curl', 'triebeard', 'Rcpp', 'magrittr', 'rlang',
                    'stringr'))
 
 # install.packages(c('Rcpp','R6','viridisLite','RColorBrewer','DBI'))
-
+remotes::install_github("r-spatial/sf")
 remotes::install_github('plotly/dashR')
 # remotes::install_github('cran/dash', upgrade=TRUE)
 # install.packages("dash")
