@@ -2,18 +2,18 @@
 # FROM virtualstaticvoid/heroku-docker-r:build
 # FROM virtualstaticvoid/heroku-docker-r:4.1.0-build
 # FROM rstudio/r-base:devel-focal
-FROM rocker/r-bspm
+FROM rocker/r-bspm:ubuntu
 # FROM eddelbuettel/r2u
 
 #
 # on build, copy application files
 COPY . /app/
 
-run apt install --yes --no-install-recommends wget; wget -q -O- https://eddelbuettel.github.io/r2u/assets/dirk_eddelbuettel_key.asc \
-    | tee -a /etc/apt/trusted.gpg.d/cranapt_key.asc
+#run apt install --yes --no-install-recommends wget; wget -q -O- https://eddelbuettel.github.io/r2u/assets/dirk_eddelbuettel_key.asc \
+#    | tee -a /etc/apt/trusted.gpg.d/cranapt_key.asc
     
-run echo "deb [arch=amd64] https://dirk.eddelbuettel.com/cranapt focal main" \
-    > /etc/apt/sources.list.d/cranapt.list; apt update
+#run echo "deb [arch=amd64] https://dirk.eddelbuettel.com/cranapt focal main" \
+#    > /etc/apt/sources.list.d/cranapt.list; apt update
 # for installing additional dependencies etc.
 RUN if [ -f '/app/onbuild' ]; then bash /app/onbuild; fi; 
 
