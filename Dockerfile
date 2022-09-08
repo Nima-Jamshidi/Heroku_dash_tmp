@@ -1,7 +1,8 @@
 # FROM plotly/heroku-docker-r:3.6.2_heroku18
 # FROM virtualstaticvoid/heroku-docker-r:build
 # FROM virtualstaticvoid/heroku-docker-r:4.1.0-build
-FROM rstudio/r-base:devel-focal
+# FROM rstudio/r-base:devel-focal
+FROM rocker/r-bspm
 # FROM eddelbuettel/r2u
 
 #

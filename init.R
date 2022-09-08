@@ -23,18 +23,18 @@ install.packages('remotes')
 #                    'dtplyr', 'forcats', 'googledrive', 'googlesheets4', 'haven', 'hms', 'lubridate', 'modelr', 'readr', 'readxl', 'reprex', 'rstudioapi', 'rvest',
 #                    'stringr'),type="binary")
 
-# install.packages(c('jsonlite', 'curl', 'triebeard', 'Rcpp', 'magrittr', 'rlang', 'later', 'R6', 'fastmap', 'base64enc', 'digest',
-#                    'lazyeval', 'htmltools', 'utf8', 'cli', 'glue', 'vctrs', 'pkgconfig', 'pillar', 'lifecycle', 'fansi', 'purrr',
-#                    'ellipsis', 'tidyselect', 'tibble', 'generics', 'cpp11', 'dplyr', 'yaml', 'sys', 'askpass', 'openssl', 'mime', 'colorspace', 'viridisLite',
-#                    'RColorBrewer', 'munsell', 'labeling', 'farver', 'withr', 'scales', 'isoband', 'gtable', 'webutils', 'xml2', 'brotli', 'urltools', 'stringi',
-#                    'assertthat', 'parallelly', 'listenv', 'globals', 'promises', 'data.table', 'crosstalk', 'tidyr', 'htmlwidgets', 'httr', 'ggplot2', 'reqres',
-#                    'uuid', 'crayon', 'future', 'httpuv', 'plotly', 'routr', 'fiery','tidyverse','bit', 'ps', 'sass', 'cachem', 'memoise', 'rappdirs', 'rematch',
-#                    'bit64', 'prettyunits', 'processx', 'evaluate', 'highr', 'xfun', 'bslib', 'jquerylib', 'tinytex', 'backports', 'blob', 'DBI', 'gargle',
-#                    'cellranger', 'ids', 'rematch2', 'clipr', 'vroom', 'tzdb', 'progress', 'callr', 'fs', 'knitr', 'rmarkdown', 'selectr', 'broom', 'dbplyr',
-#                    'dtplyr', 'forcats', 'googledrive', 'googlesheets4', 'haven', 'hms', 'lubridate', 'modelr', 'readr', 'readxl', 'reprex', 'rstudioapi', 'rvest',
-#                    'stringr'))
+install.packages(c('jsonlite', 'curl', 'triebeard', 'Rcpp', 'magrittr', 'rlang', 'later', 'R6', 'fastmap', 'base64enc', 'digest',
+                   'lazyeval', 'htmltools', 'utf8', 'cli', 'glue', 'vctrs', 'pkgconfig', 'pillar', 'lifecycle', 'fansi', 'purrr',
+                   'ellipsis', 'tidyselect', 'tibble', 'generics', 'cpp11', 'dplyr', 'yaml', 'sys', 'askpass', 'openssl', 'mime', 'colorspace', 'viridisLite',
+                   'RColorBrewer', 'munsell', 'labeling', 'farver', 'withr', 'scales', 'isoband', 'gtable', 'webutils', 'xml2', 'brotli', 'urltools', 'stringi',
+                   'assertthat', 'parallelly', 'listenv', 'globals', 'promises', 'data.table', 'crosstalk', 'tidyr', 'htmlwidgets', 'httr', 'ggplot2', 'reqres',
+                   'uuid', 'crayon', 'future', 'httpuv', 'plotly', 'routr', 'fiery','tidyverse','bit', 'ps', 'sass', 'cachem', 'memoise', 'rappdirs', 'rematch',
+                   'bit64', 'prettyunits', 'processx', 'evaluate', 'highr', 'xfun', 'bslib', 'jquerylib', 'tinytex', 'backports', 'blob', 'DBI', 'gargle',
+                   'cellranger', 'ids', 'rematch2', 'clipr', 'vroom', 'tzdb', 'progress', 'callr', 'fs', 'knitr', 'rmarkdown', 'selectr', 'broom', 'dbplyr',
+                   'dtplyr', 'forcats', 'googledrive', 'googlesheets4', 'haven', 'hms', 'lubridate', 'modelr', 'readr', 'readxl', 'reprex', 'rstudioapi', 'rvest',
+                   'stringr'))
 
-install.packages(c('Rcpp','R6','viridisLite','RColorBrewer','DBI'))
+# install.packages(c('Rcpp','R6','viridisLite','RColorBrewer','DBI'))
 
 remotes::install_github('plotly/dashR')
 # remotes::install_github('cran/dash', upgrade=TRUE)
