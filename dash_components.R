@@ -1,4 +1,4 @@
-heading_title <- h1(id="header",'Evo Car Share Idle Fleet in Time and Space')
+heading_title <- h1(id="header","EVO CAR SHARE IDLE FLEET IN TIME AND SPACE")
 heading_subtitle <- h2('Looking at neighbourhood data interactively',style = list("padding" = 10))
 
 
