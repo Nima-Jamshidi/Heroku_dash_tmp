@@ -1,5 +1,5 @@
-heading_title <- htmlH1(id="header",'Evo Car Share Idle Fleet in Time and Space')
-heading_subtitle <- htmlH2('Looking at neighbourhood data interactively',style = list("padding" = 10))
+heading_title <- html$h1(id="header",'Evo Car Share Idle Fleet in Time and Space')
+heading_subtitle <- html$h2('Looking at neighbourhood data interactively',style = list("padding" = 10))
 
 
 
@@ -16,14 +16,14 @@ zscoreDropdown <- dccDropdown(
 
 # zscoreDropdown_boot <- dbcDropdownMenu(children = list(dbcDropdownMenuItem("")))
 
-logbutton <- dccRadioItems(
-	id = 'yaxis-type',
-	options = list(list(label = 'Linear', value = 'linear'),
-								 list(label = 'Log', value = 'log')),
-	value = 'linear'
-)
+# logbutton <- dccRadioItems(
+# 	id = 'yaxis-type',
+# 	options = list(list(label = 'Linear', value = 'linear'),
+# 								 list(label = 'Log', value = 'log')),
+# 	value = 'linear'
+# )
 
-slider <- htmlDiv(dccRangeSlider(
+slider <- html$div(dccRangeSlider(
   id = "arv_tile_slider",
   min=0,
   max=600,
@@ -40,14 +40,14 @@ slider <- htmlDiv(dccRangeSlider(
     "padding" = 10
   ))
 
-offcanvas = htmlDiv(list(
+offcanvas = html$div(list(
   dbcButton(
     "Open scrollable offcanvas",
     id="open-offcanvas-scrollable",
     n_clicks=0,
   ),
   dbcOffcanvas(
-    htmlP("The contents on the main page are now scrollable."),
+    html$p("The contents on the main page are now scrollable."),
     id="offcanvas-scrollable",
     scrollable=T,
     title="Scrollable Offcanvas",
@@ -56,14 +56,14 @@ offcanvas = htmlDiv(list(
   ))
 )
 
-offcanvas2 = htmlDiv(list(
+offcanvas2 = html$div(list(
   dbcButton(
     "Open scrollable offcanvas2",
     id="open-offcanvas-scrollable2",
     n_clicks=0,
   ),
   dbcOffcanvas(
-    htmlP("Hellooo"),
+    html$p("Hellooo"),
     id="offcanvas-scrollable2",
     scrollable=T,
     title="Scrollable Offcanvas2",
@@ -99,4 +99,4 @@ graph_arv_tile <- dccGraph(
     modeBarButtonsToRemove = list('toggleSpikelines','lasso2d','select2d','hoverClosestCartesian','hoverCompareCartesian'))
 )
 
-sources <- dccMarkdown("[Data Source](https://cran.r-project.org/web/packages/gapminder/README.html)")
+#sources <- dccMarkdown("[Data Source](https://cran.r-project.org/web/packages/gapminder/README.html)")

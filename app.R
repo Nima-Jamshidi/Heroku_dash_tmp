@@ -24,25 +24,25 @@ app <- Dash$new(
   )
 )
 
-div_header <- htmlDiv(list(heading_title,
+div_header <- html$div(list(heading_title,
                            heading_subtitle))
 
-div_sidebar <- htmlDiv(
+div_sidebar <- html$div(
   list(
-    htmlH2(htmlB(toupper('Nima Jamshidi'))),
-    htmlBr(),
-    htmlH6(htmlI(
+    html$h2(html$b(toupper('Nima Jamshidi'))),
+    html$br(),
+    html$h6(html$i(
       "M.Sc. in Resources, Environment and Sustainability, UBC"
     )),
-    htmlBr(),
-    htmlA(
+    html$br(),
+    html$a(
       id = "LinkedIn",
       className = "fa fa-linkedin fa-2x",
       href = "https://www.linkedin.com/in/nima-jamshidi-991711131/",
       style = list("text-decoration" = "none")
     ),
     "  ",
-    htmlA(
+    html$a(
       id = "GitHub",
       className = "fa fa-github fa-2x",
       href = "https://github.com/Nima-Jamshidi",
@@ -60,14 +60,14 @@ div_sidebar <- htmlDiv(
 
 div_main <-
   list(dbcRow(list(
-    dbcCol(htmlDiv(map_text), width = 6),
+    dbcCol(html$div(map_text), width = 6),
     dbcCol(
       dbcCard(
         list(
           graph_map,
           dbcAlert(
-            htmlH5(
-              htmlB(
+            html$h5(
+              html$b(
                 "Check out Vancouver Map! Hover over the map to see neighbourhoods. Click on them to see their fleet density through out the week."
               )
             ),
@@ -100,15 +100,15 @@ div_main <-
   dbcRow(list(
     dbcCol(
       dbcCard(
-        htmlDiv(list(
+        html$div(list(
           graph_tile,
           dbcCard(list(
-            htmlH4("Settings:", style = list("padding" = 5)),
+            html$h4("Settings:", style = list("padding" = 5)),
             dbcCol(zscoreDropdown, width = 6)
           )),
           dbcAlert(
-            htmlH5(
-              htmlB(
+            html$h5(
+              html$b(
                 "This graph shows Hourly Aggregate Fleet Idle Time (HAFIT). Hover over the graph to see the values for different hours of a day of the week. The redder or bluer the block the higher or lower the density of idle cars at that hour."
               )
             ),
@@ -136,20 +136,20 @@ div_main <-
       ),
       width = 6
     ),
-    dbcCol(htmlDiv(tile_text), width = 6)
+    dbcCol(html$div(tile_text), width = 6)
   )),
   dbcRow(list(
-    dbcCol(htmlDiv(arv_tile_text), width = 6),
+    dbcCol(html$div(arv_tile_text), width = 6),
     dbcCol(
       dbcCard(
-        htmlDiv(list(
+        html$div(list(
           dccLoading(graph_arv_tile, type = "circle"),
           dbcCard(list(
-            htmlH4("Settings:", style = list("padding" = 5)), dbcCol(slider, width = 12)
+            html$h4("Settings:", style = list("padding" = 5)), dbcCol(slider, width = 12)
           )),
           dbcAlert(
-            htmlH5(
-              htmlB(
+            html$h5(
+              html$b(
                 "You can see the density of idle cars with an idle duration between 3 hrs and 6 hrs."
               )
             ),
@@ -205,7 +205,7 @@ app$callback(output = list(
   params = list(input("map-graph", "clickData")),
   function(clickdata) {
     prevent_update(is_null(clickdata$points[[1]]))
-    return(list(F, T, htmlH5(htmlB(
+    return(list(F, T, html$h5(html$b(
       paste0(
         "Scroll down to see the fleet density for ",
         location_finder(as.integer(clickdata$points[[1]])),
@@ -222,7 +222,7 @@ app$callback(
   
   function(tile_clickdata){
     prevent_update(is.null(tile_clickdata$points[[1]][2]),is.null(tile_clickdata$points[[1]][3]))
-    return(list(F,T,htmlH5(htmlB(paste0("Scroll down to see the fleet density throughout the week for the cars that arrive at ",as.integer(tile_clickdata$points[[1]][3])," on ",c(
+    return(list(F,T,html$h5(html$b(paste0("Scroll down to see the fleet density throughout the week for the cars that arrive at ",as.integer(tile_clickdata$points[[1]][3])," on ",c(
       "Monday",
       "Tuesday",
       "Wednesday",
@@ -245,7 +245,7 @@ app$callback(output = list(
     input(id = "arv_tile_slider", property = "value")
     ),
   function(period_list) {
-    return(list(T, T, htmlH5(htmlB(
+    return(list(T, T, html$h5(html$b(
       paste0(
         "You can see the density of idle cars with an idle duration ",
         ifelse(
@@ -257,7 +257,7 @@ app$callback(output = list(
         )
       )
     )),
-    htmlH5(htmlB(
+    html$h5(html$b(
       paste0("Scroll up to choose other neighbourhoods and times.")
     ))))
   })
