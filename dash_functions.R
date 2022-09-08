@@ -5,27 +5,27 @@ suppressPackageStartupMessages(library(tidyverse))
 # library(ggmap)
 library(base64enc)
 
-text_template = "updatemode (a value equal to: 'mouseup' or 'drag'; default 'mouseup'): Determines when the component should update its value property. If mouseup (the default) then the slider will only trigger its value when the user has finished dragging the slider. If drag, then the slider will update its value continuously as it is being dragged. If you want different actions during and after drag, leave updatemode as mouseup and use drag_value for the continuously updating value.
-
-vertical (boolean; optional): If True, the slider will be vertical.
-
-verticalHeight (number; default 400): The height, in px, of the slider if it is vertical.
-
-className (string; optional): Additional CSS class for the root DOM node.
-
-id (string; optional): The ID of this component, used to identify dash components in callbacks. The ID needs to be unique across all of the components in an app.
-
-loading_state (dict; optional): Object that holds the loading state object coming from dash-renderer.
-
-loading_state is a dict with keys:
-
-component_name (string; optional): Holds the name of the component that is loading.
-
-is_loading (boolean; optional): Determines if the component is loading or not.
-
-prop_name (string; optional): Holds which property is loading.
-
-persistence (boolean | string | number; optional): Used to allow user interactions in this component to be persisted when the component - or the page - is refreshed. If persisted is truthy and hasn't changed from its previous value, a value that the user has changed while using the app will keep that change, as long as the new value also matches what was given originally. Used in conjunction with persistence_type."
+# text_template = "updatemode (a value equal to: 'mouseup' or 'drag'; default 'mouseup'): Determines when the component should update its value property. If mouseup (the default) then the slider will only trigger its value when the user has finished dragging the slider. If drag, then the slider will update its value continuously as it is being dragged. If you want different actions during and after drag, leave updatemode as mouseup and use drag_value for the continuously updating value.
+# 
+# vertical (boolean; optional): If True, the slider will be vertical.
+# 
+# verticalHeight (number; default 400): The height, in px, of the slider if it is vertical.
+# 
+# className (string; optional): Additional CSS class for the root DOM node.
+# 
+# id (string; optional): The ID of this component, used to identify dash components in callbacks. The ID needs to be unique across all of the components in an app.
+# 
+# loading_state (dict; optional): Object that holds the loading state object coming from dash-renderer.
+# 
+# loading_state is a dict with keys:
+# 
+# component_name (string; optional): Holds the name of the component that is loading.
+# 
+# is_loading (boolean; optional): Determines if the component is loading or not.
+# 
+# prop_name (string; optional): Holds which property is loading.
+# 
+# persistence (boolean | string | number; optional): Used to allow user interactions in this component to be persisted when the component - or the page - is refreshed. If persisted is truthy and hasn't changed from its previous value, a value that the user has changed while using the app will keep that change, as long as the new value also matches what was given originally. Used in conjunction with persistence_type."
 
 
 # map_text = list("For my graduate research project I had access to Evo carsharing service's fleet data between February 2017 and August 2018. 
@@ -47,27 +47,35 @@ persistence (boolean | string | number; optional): Used to allow user interactio
 #                 To be more precise, the aggregate idle time (hour unit) of vehicles for each hour is calculated.")
 
 
-map_text = list(html$p("For my graduate research project I had access to Evo carsharing service's fleet data between February 2017 and August 2018. 
+map_text = list(p("For my graduate research project I had access to Evo carsharing service's fleet data between February 2017 and August 2018. 
                 Evo is a free-floating (+ station-based) carsharing service that has been operating in Vancouver, BC since March 2015.
                 The other carsharing services in Vancouver at the time of the study belonged to Car2Go, 
                 also free-floating but ceased to continue operating in 2020, and Modo, a co-op providing round-trip carsharing service."),
-                html$p("During the data collection period the fleet consisted of 1050 Toyota Prius Hybrids on average. 
+                p("During the data collection period the fleet consisted of 1050 Toyota Prius Hybrids on average. 
                 The data had information about the location of each carsharing car while they were idle and not reserved by the users 
                 with a 5-minute frequency. After wrangling the data, we were able to identidy trips and cancelled reservations. 
                 On average an Evo car was used 5.8 times per day with each trip (+ reservation period) averageing around an hour in duration."),
-                html$p("In a part of my thesis I explored the spatio-temporal usage of the cars and through that identified usage patterns
+                p(list("In a part of ",
+                       a(
+                         "my thesis",
+                         # id = "Downtown Vancouver link",
+                         href = "https://open.library.ubc.ca/soa/cIRcle/collections/ubctheses/24/items/1.0401820?o=13",
+                         target="_blank",
+                         rel="noopener noreferrer"
+                       ),
+                       " I explored the spatio-temporal usage of the cars and through that identified usage patterns
                 among different neighbourhoods. The usage of the carsharing service follows the general daily pattern of other transportation 
-                modes with peaks during the commute hours. But how does it plays out in the service boundary?"),html$p("Here You can find
+                modes with peaks during the commute hours. But how does it plays out in the service boundary?")),p("Here You can find
                 57 neighborhoods throughout Metro Vancouver in which Evo has been present. 
                 Hover over the map and see the neighbourhoods' names. In order to show the usage pattern in the neighbourhoods,
                 the periods that a car was idle at a location waiting for a user to book and drive it are analyzed."),
-                html$p("If you click on a neighbourhood, you can see the hourly aggregate fleet idle time distribution (HAFIT) figure below.
+                p("If you click on a neighbourhood, you can see the hourly aggregate fleet idle time distribution (HAFIT) figure below.
                 That is the number of vehicles idle in that neighbourhood during any hour of a day of the week.
                 To be more precise, the aggregate idle time (hour unit) of vehicles for each hour is calculated."))
 
 
 tile_text = list(
-  html$p(
+  p(
     'HAFIT, tells you when and where cars get piled up in the morning, leave in the afternoon,
                        and where the parties happen on the weekend nights! The system on the long weekend Mondays would experience a usage
                        pattern different from regular weekday Mondays, hence a separate column for "H/ Mondays".
@@ -76,39 +84,47 @@ tile_text = list(
                        The color scale indicate Z-score that is the standardized value. Hover over the graph and see the 
     mean of aggregate hourly idle time and its standard deviation (SD).'
   ),
-  html$p(
+  p(
     list(
       "If you click on ",
-      html$a(
+      a(
+        "Downtown Vancouver",
         id = "Downtown Vancouver link",
-        children = "Downtown Vancouver",
         href = "#!"
-      ),
+        ),
       ", you can see that this neighbourhood is a popular destination for carsharing users in the morning on weekdays.
                              The HAFIT level stays the same until afternoon around 4PM when the majority of the cars are taken by the users gradually
                              and leave the neighbourhood. The neighbourhood is not as popular in the weekends with lighter red colors."
     )),
-    html$p(
+    p(
       "To have a better view of the daily patterns, you can change the settings of the figure to show the daily
       normalized data instead of weekly. This normalization helps better with identifying neighbourhood classes. If you hover over the graph with daily normalized values, you can see that the mean and standard deviation for each day is different."
     ),
-    html$p(list(
+    p(list(
       "Opposed to Downtown Vancouver, ",
-      html$a(
+      a(
         id = "False Creek link",
-        children = "False Creek",
+        "False Creek",
         href = "#!"
       ),
       " on Friday nights is as busy as weekday middays.
       The daily normalization show a more similar pattern for False Creek and Downtown Vancouver,
       both being destinations for work during weekdays and entertainment on weekend nights. The result of a clustering analysis
-      on these figures are presented in my thesis."
+      on these figures are presented in ",
+      a(
+        "my thesis",
+        # id = "Downtown Vancouver link",
+        href = "https://open.library.ubc.ca/soa/cIRcle/collections/ubctheses/24/items/1.0401820?o=13",
+        target="_blank",
+        rel="noopener noreferrer"
+      ),
+      "."
     )),
-    html$p(list(
+    p(list(
       "Take a look at ",
-      html$a(
+      a(
         id = "Grouse Mountain link",
-        children = "Grouse Mountain",
+        "Grouse Mountain",
         href = "#!"
       ),
       ". This is a beautiful place only 20 minutes away from Vancouver's core that attracts hikers and skiers all around the year.
@@ -119,28 +135,28 @@ tile_text = list(
 )
 
 arv_tile_text = list(
-  html$p("The figure above gives us a tool to see the distribution of idle vehicles in time and place. 
+  p("The figure above gives us a tool to see the distribution of idle vehicles in time and place. 
         We can take a deeper look by checking the frequency of vehicles staying idle.
         Not all the vehicles arriving in Downtown Vancouver in the morning commute hours will stay until the afternoon commute hours.
         Some may be picked up by users not later than 10 minutes after arrival. What is the distribution of idle duration for those vehicles?"),
-  html$p(
+  p(
         "Hover over the figure above and click on an hour of a day. The figure on the right shows the HAFIT for the vehicles arriving at the chosen neighbourhood at the chosen hour of the day. 
         Moreover, you can choose a period for the idle duration from the settings below the figure. 
         Move the slider's left and right nodes to specify the minimum and maximum values for idle duration to be considered in the graph."),
-  html$p(list(
+  p(list(
     "Let's check Downtown Vancouver vehicles arriving at ",
-    html$a(
+    a(
       id = "DT 8-9AM  Mondays link",
-      children = "8-9 in the morning on Mondays",
+      "8-9 in the morning on Mondays",
       href = "#!"
     ),
     ". hover over the newly created figure on the right.
     It informs that between 8-9AM, 21% of the HAFIT belonging to the vehicles arrived between 8-9AM would have an idle duration less than 2 hours.
     In the next hour, 10% of the vehicles arrived between 8-9AM and are idle at 9-10AM have a 0-2 hour idle duration.
     Let's compare these percentages with ",
-    html$a(
+    a(
       id = "YL 8-9AM  Mondays link",
-      children = "Yaletown",
+      "Yaletown",
       href = "#!"
     ),
     ". 
@@ -148,7 +164,7 @@ arv_tile_text = list(
     This percentage for 9-10AM is 59%, which could be interpreted as percentage of idle vehicles between 9-10AM with an arrival between 8-9AM to Yaletown that have an idle duration less than 2 hours.
     The comparison between Downtown Vancouver and Yaletown shows that most of the vehicles that come into Yaletown would leave within 2 hours while 80% of cars arriving to Downtown Vancouver stay there unused more than 2 hours.")
 ),
-html$p(list("The limits of the color scale are fixed between 0 and the maximum aggregate fleet idle time of the cars arriving at an hour of a day of the week for any idle duration.")))
+p(list("The limits of the color scale are fixed between 0 and the maximum aggregate fleet idle time of the cars arriving at an hour of a day of the week for any idle duration.")))
                  
 
 
@@ -172,13 +188,13 @@ periods_list = list(`0` = list(label = "0 min", style = list(transform = "transl
                     `600` = list(label = "6+ hrs", style = list(transform = "translateX(-100%)")))
 
 # periods_list = list(`0` = list(label = "0 min"),
-#                     `10` = list(label = "10 min"),
-#                     `30` = list(label = "30 min"),
+#                     `10` = list(label = "10 mins"),
+#                     `30` = list(label = "30 mins"),
 #                     `60` = list(label = "1 hr"),
-#                     `120` = list(label = "2 hr"),
-#                     `180` = list(label = "3 hr"),
-#                     `360` = list(label = "6 hr"),
-#                     `600` = list(label = "6+ hr"))
+#                     `120` = list(label = "2 hrs"),
+#                     `180` = list(label = "3 hrs"),
+#                     `360` = list(label = "6 hrs"),
+#                     `600` = list(label = "6+ hrs"))
 
 # mapboxToken <- "pk.eyJ1IjoibmltbmltIiwiYSI6ImNsN2s2c2c2MzBtYnozb21xdDczMDZheGoifQ.0iiCoYMlrjz84TU4FkRapQ"
 # Sys.setenv("MAPBOX_TOKEN" = mapboxToken)

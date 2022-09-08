@@ -24,30 +24,35 @@ app <- Dash$new(
   )
 )
 
-div_header <- html$div(list(heading_title,
+div_header <- div(list(heading_title,
                            heading_subtitle))
 
-div_sidebar <- html$div(
+div_sidebar <- div(
   list(
-    html$h2(html$b(toupper('Nima Jamshidi'))),
-    html$br(),
+    h2(html$b(toupper('Nima Jamshidi'))),
+    br(),
     html$h6(html$i(
       "M.Sc. in Resources, Environment and Sustainability, UBC"
     )),
-    html$br(),
-    html$a(
+    br(),
+    a(
       id = "LinkedIn",
       className = "fa fa-linkedin fa-2x",
       href = "https://www.linkedin.com/in/nima-jamshidi-991711131/",
-      style = list("text-decoration" = "none")
+      style = list("text-decoration" = "none"),
+      target="_blank",
+      rel="noopener noreferrer"
     ),
     "  ",
-    html$a(
+    a(
       id = "GitHub",
       className = "fa fa-github fa-2x",
       href = "https://github.com/Nima-Jamshidi",
-      style = list("text-decoration" = "none")
-    )
+      style = list("text-decoration" = "none"),
+      target="_blank",
+      rel="noopener noreferrer"
+    )#,
+    # h2(id = "test","test")
   ),
   style = list(
     'background-color' = '#BBCFF1',
@@ -60,10 +65,10 @@ div_sidebar <- html$div(
 
 div_main <-
   list(dbcRow(list(
-    dbcCol(html$div(map_text), width = 6),
+    dbcCol(div(map_text), width = 6),
     dbcCol(
       dbcCard(
-        list(
+        div(list(
           graph_map,
           dbcAlert(
             html$h5(
@@ -81,10 +86,10 @@ div_main <-
           dbcAlert(
             id = "alert-map2",
             is_open = F,
-            duration = 4000,
+            duration = 6000,
             style = list(top = 10)
           )
-        ),
+        )),
         className = "position-sticky right",
         style = list(
           top = 10,
@@ -100,10 +105,10 @@ div_main <-
   dbcRow(list(
     dbcCol(
       dbcCard(
-        html$div(list(
+        div(list(
           graph_tile,
           dbcCard(list(
-            html$h4("Settings:", style = list("padding" = 5)),
+            h4("Settings:", style = list("padding" = 5)),
             dbcCol(zscoreDropdown, width = 6)
           )),
           dbcAlert(
@@ -122,7 +127,7 @@ div_main <-
           dbcAlert(
             id = "alert-tile2",
             is_open = F,
-            duration = 4000,
+            duration = 6000,
             style = list(top = 10)
           )
         )),
@@ -136,16 +141,16 @@ div_main <-
       ),
       width = 6
     ),
-    dbcCol(html$div(tile_text), width = 6)
+    dbcCol(div(tile_text), width = 6)
   )),
   dbcRow(list(
-    dbcCol(html$div(arv_tile_text), width = 6),
+    dbcCol(div(arv_tile_text), width = 6),
     dbcCol(
       dbcCard(
-        html$div(list(
+        div(list(
           dccLoading(graph_arv_tile, type = "circle"),
           dbcCard(list(
-            html$h4("Settings:", style = list("padding" = 5)), dbcCol(slider, width = 12)
+            h4("Settings:", style = list("padding" = 5)), dbcCol(slider, width = 12)
           )),
           dbcAlert(
             html$h5(
@@ -163,7 +168,7 @@ div_main <-
           dbcAlert(
             id = "alert-arv-tile2",
             is_open = F,
-            duration = 4000,
+            duration = 6000,
             style = list(top = 10)
           )
         )),
@@ -190,12 +195,12 @@ app %>% set_layout(dbcContainer(list(
 ), fluid = T))
 
 
-app$callback(output = output(id = "fade", property = "is_in"),
-             params = list(input(id = "Nima-div", property = "n_clicks")),
-             function(n1) {
-               prevent_update(is.null(n1[[1]]))
-               return(F)
-             })
+# app$callback(output = output(id = "fade", property = "is_in"),
+#              params = list(input(id = "Nima-div", property = "n_clicks")),
+#              function(n1) {
+#                prevent_update(is.null(n1[[1]]))
+#                return(F)
+#              })
 
 app$callback(output = list(
     output("alert-map1", "is_open"),
@@ -208,7 +213,7 @@ app$callback(output = list(
     return(list(F, T, html$h5(html$b(
       paste0(
         "Scroll down to see the fleet density for ",
-        location_finder(as.integer(clickdata$points[[1]])),
+        location_finder(as.integer(clickdata$points[[1]][[1]])),
         "."
       )
     ))))
@@ -219,7 +224,7 @@ app$callback(
                 output("alert-tile2", "is_open"),
                 output("alert-tile2", "children")),
   params = list(input("tile-graph", "clickData")),
-  
+
   function(tile_clickdata){
     prevent_update(is.null(tile_clickdata$points[[1]][2]),is.null(tile_clickdata$points[[1]][3]))
     return(list(F,T,html$h5(html$b(paste0("Scroll down to see the fleet density throughout the week for the cars that arrive at ",as.integer(tile_clickdata$points[[1]][3])," on ",c(
@@ -310,7 +315,7 @@ app$callback(
                 input(id = "zscore-type", property = "value")),
   function(clickdata,zscore){
     prevent_update(is_null(clickdata$points[[1]]))
-      make_tile_graph(curve_number = as.integer(clickdata$points[[1]]), zscore_type = zscore)
+      make_tile_graph(curve_number = as.integer(clickdata$points[[1]][[1]]), zscore_type = zscore)
   }
 )
 
@@ -322,7 +327,7 @@ app$callback(
               input(id = "arv_tile_slider", property = "value")),
   function(map_clickdata,tile_clickdata,zscore,period_list) {
     prevent_update(is_null(map_clickdata$points[[1]]),is.null(tile_clickdata$points[[1]][2]),is.null(tile_clickdata$points[[1]][3]))
-      make_arrival_tile_graph(curve_number = as.integer(map_clickdata$points[[1]]),
+      make_arrival_tile_graph(curve_number = as.integer(map_clickdata$points[[1]][[1]]),
                                        zscore_type = zscore,
                                        Weekday_arv = as.integer(tile_clickdata$points[[1]][2]),
                                        Hour_arv = as.integer(tile_clickdata$points[[1]][3]),
@@ -330,20 +335,20 @@ app$callback(
   }
 )
 
-app$callback(
-    output=output(id = 'test', property='children'),
-    params=list(input(id = 'map-graph', property='clickData')),
-    function(data){
-      paste0(data$points[[1]])
-    })
-
-
-app$callback(
-  output=output(id = 'test2', property='children'),
-  params = list(input(id = "zscore-type", property = "value")),
-  function(data){
-    paste0((data))
-  })
+# app$callback(
+#     output=output(id = 'test', property='children'),
+#     params=list(input(id = 'tile-graph', property='clickData')),
+#     function(data){
+#       paste0(data$points[[1]][3])
+#     })
+# 
+# 
+# app$callback(
+#   output=output(id = 'test2', property='children'),
+#   params = list(input(id = "zscore-type", property = "value")),
+#   function(data){
+#     paste0((data))
+#   })
 
 app$callback(
   output = output("offcanvas-scrollable", "is_open"),
@@ -369,9 +374,9 @@ app$callback(
   }
 )
 
-app$run_server(host = '0.0.0.0', port = Sys.getenv('PORT', 8050))
+# app$run_server(host = '0.0.0.0', port = Sys.getenv('PORT', 8050))
 
-# app$run_server(debug=TRUE)
+app$run_server(debug=TRUE)
 # app %>% run_app(host = '0.0.0.0', port = Sys.getenv('PORT'))
 # app %>% run_app(
 #   host = Sys.getenv("DASH_HOST", Sys.getenv("HOST", "0.0.0.0")),

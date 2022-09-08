@@ -23,7 +23,7 @@ install.packages('remotes')
 #                    'dtplyr', 'forcats', 'googledrive', 'googlesheets4', 'haven', 'hms', 'lubridate', 'modelr', 'readr', 'readxl', 'reprex', 'rstudioapi', 'rvest',
 #                    'stringr'),type="binary")
 
-install.packages(c('jsonlite', 'curl', 'triebeard', 'Rcpp', 'magrittr', 'rlang', 'later', 'R6', 'fastmap', 'base64enc', 'digest',
+install.packages(c('dashCoreComponents','jsonlite', 'curl', 'triebeard', 'Rcpp', 'magrittr', 'rlang', 'later', 'R6', 'fastmap', 'base64enc', 'digest',
                    'lazyeval', 'htmltools', 'utf8', 'cli', 'glue', 'vctrs', 'pkgconfig', 'pillar', 'lifecycle', 'fansi', 'purrr',
                    'ellipsis', 'tidyselect', 'tibble', 'generics', 'cpp11', 'dplyr', 'yaml', 'sys', 'askpass', 'openssl', 'mime', 'colorspace', 'viridisLite',
                    'RColorBrewer', 'munsell', 'labeling', 'farver', 'withr', 'scales', 'isoband', 'gtable', 'webutils', 'xml2', 'brotli', 'urltools', 'stringi',

@@ -1,5 +1,5 @@
-heading_title <- html$h1(id="header",'Evo Car Share Idle Fleet in Time and Space')
-heading_subtitle <- html$h2('Looking at neighbourhood data interactively',style = list("padding" = 10))
+heading_title <- h1(id="header",'Evo Car Share Idle Fleet in Time and Space')
+heading_subtitle <- h2('Looking at neighbourhood data interactively',style = list("padding" = 10))
 
 
 
@@ -14,16 +14,9 @@ zscoreDropdown <- dccDropdown(
 )
 
 
-# zscoreDropdown_boot <- dbcDropdownMenu(children = list(dbcDropdownMenuItem("")))
 
-# logbutton <- dccRadioItems(
-# 	id = 'yaxis-type',
-# 	options = list(list(label = 'Linear', value = 'linear'),
-# 								 list(label = 'Log', value = 'log')),
-# 	value = 'linear'
-# )
 
-slider <- html$div(dccRangeSlider(
+slider <- div(dashCoreComponents::dccRangeSlider(
   id = "arv_tile_slider",
   min=0,
   max=600,
@@ -40,14 +33,29 @@ slider <- html$div(dccRangeSlider(
     "padding" = 10
   ))
 
-offcanvas = html$div(list(
+# slider = dccRangeSlider(
+#   min=0,
+#   max=10,
+#   marks=list(
+#     "0" = "0°F",
+#     "3" = "3°F",
+#     "5" = "5°F",
+#     "7.65" = "7.65°F",
+#     "10" = "10°F"
+#   ),
+#   value=list(3, 7.65),
+#   step = NULL
+# )
+
+
+offcanvas = div(list(
   dbcButton(
     "Open scrollable offcanvas",
     id="open-offcanvas-scrollable",
     n_clicks=0,
   ),
   dbcOffcanvas(
-    html$p("The contents on the main page are now scrollable."),
+    p("The contents on the main page are now scrollable."),
     id="offcanvas-scrollable",
     scrollable=T,
     title="Scrollable Offcanvas",
@@ -56,14 +64,14 @@ offcanvas = html$div(list(
   ))
 )
 
-offcanvas2 = html$div(list(
+offcanvas2 = div(list(
   dbcButton(
     "Open scrollable offcanvas2",
     id="open-offcanvas-scrollable2",
     n_clicks=0,
   ),
   dbcOffcanvas(
-    html$p("Hellooo"),
+    p("Hellooo"),
     id="offcanvas-scrollable2",
     scrollable=T,
     title="Scrollable Offcanvas2",
