@@ -5,6 +5,11 @@ FROM rstudio/r-base:devel-focal
 # FROM rocker/r-bspm:testing
 # FROM eddelbuettel/r2u
 RUN apt update -qq
+
+COPY . /app/
+
+RUN if [ -f '/app/apt-packages' ]; then apt-get update -q && cat /app/apt-packages | xargs apt-get -qy install && rm -rf /var/lib/apt/lists/*; fi;              
+
 RUN apt install --yes --no-install-recommends gpg-agent  	# to add the key
 RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys A1489FE2AB99A21A
 
@@ -29,7 +34,7 @@ RUN echo "suppressMessages(bspm::enable())" >> ${RHOME}/etc/Rprofile.site
 RUN echo "options(bspm.sudo=TRUE)" >> ${RHOME}/etc/Rprofile.site
 #
 # on build, copy application files
-COPY . /app/
+#COPY . /app/
 
 #run apt install --yes --no-install-recommends wget; wget -q -O- https://eddelbuettel.github.io/r2u/assets/dirk_eddelbuettel_key.asc \
 #    | tee -a /etc/apt/trusted.gpg.d/cranapt_key.asc
@@ -40,7 +45,7 @@ COPY . /app/
 RUN if [ -f '/app/onbuild' ]; then bash /app/onbuild; fi; 
 
 # look for /app/apt-packages and if it exists, install the packages contained
-RUN if [ -f '/app/apt-packages' ]; then apt-get update -q && cat /app/apt-packages | xargs apt-get -qy install && rm -rf /var/lib/apt/lists/*; fi;              
+#RUN if [ -f '/app/apt-packages' ]; then apt-get update -q && cat /app/apt-packages | xargs apt-get -qy install && rm -rf /var/lib/apt/lists/*; fi;              
 
 # look for /app/init.R and if it exists, execute it
 RUN if [ -f '/app/init.R' ]; then /usr/bin/R --no-init-file --no-save --quiet --slave -f /app/init.R; fi; 
