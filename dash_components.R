@@ -1,5 +1,5 @@
-heading_title <- h1(id="header","EVO CAR SHARE IDLE FLEET IN TIME AND SPACE")
-heading_subtitle <- h2('Looking at neighbourhood data interactively',style = list("padding" = 10))
+heading_title <- h1(id="header","EVO CAR SHARE IDLE FLEET",style=list("margin-left"=10))
+heading_subtitle <- h2('Looking at Neighbourhood Data Interactively in Time and Space',style = list("padding" = 10))
 
 
 
@@ -11,6 +11,16 @@ zscoreDropdown <- dccDropdown(
 		}),
 	value = "weekly",
 	clearable=F
+)
+
+scaleDropdown <- dccDropdown(
+  id = "scale-type",
+  options = map(
+    1:nrow(scale_list), function(i){
+      list(label=scale_list$label[i], value=scale_list$value[i])
+    }),
+  value = "3",
+  clearable=F
 )
 
 
@@ -33,19 +43,6 @@ slider <- div(dashCoreComponents::dccRangeSlider(
     "padding" = 10
   ))
 
-# slider = dccRangeSlider(
-#   min=0,
-#   max=10,
-#   marks=list(
-#     "0" = "0°F",
-#     "3" = "3°F",
-#     "5" = "5°F",
-#     "7.65" = "7.65°F",
-#     "10" = "10°F"
-#   ),
-#   value=list(3, 7.65),
-#   step = NULL
-# )
 
 
 offcanvas = div(list(
@@ -83,10 +80,14 @@ offcanvas2 = div(list(
 graph_map <- dccGraph(
 	id = 'map-graph',
 	figure=make_map_plot(),
-	style = list(height = '45vh'),
+	style = list(width = "100%",
+	             `aspect-ratio`= "2140 / 1326"
+	             # height= "10vh"
+	             # `padding-bottom`: "30%"
+	  # ,height = '45vh'
+	  ),
 	config = list(
-	  # displayModeBar = T,
-	              modeBarButtonsToRemove = list('toggleSpikelines','lasso2d','select2d','hoverClosestCartesian','hoverCompareCartesian','autoScale')),
+	  modeBarButtonsToRemove = list('toggleSpikelines','lasso2d','select2d','hoverClosestCartesian','hoverCompareCartesian','autoScale2d','zoomIn2d', 'zoomOut2d')),
 	clickData = list(points = 84)
 )
 
