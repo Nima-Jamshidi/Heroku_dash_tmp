@@ -189,7 +189,7 @@ div_main <-
       )
     )
     ),
-  dbcRow(thank_text)
+  dbcRow(div(thank_text,style = list(`margin-bottom` = "50vh")))
   )
 
 app %>% set_layout(dbcContainer(list(
