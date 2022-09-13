@@ -70,7 +70,7 @@ map_text = list(p("For my graduate research project I had access to Evo carshari
                 57 neighborhoods throughout Metro Vancouver in which Evo has been present. 
                 Hover over the map and see the neighbourhoods' names. In order to show the usage pattern in the neighbourhoods,
                 the periods that a car was idle at a location waiting for a user to book and drive it are analyzed."),
-                p("If you click on a neighbourhood, you can see the respective hourly aggregate fleet idle time distribution (HAFIT) figure below.
+                p("If you click on a neighbourhood, you can see the respective ", html$b("hourly aggregate fleet idle time distribution (HAFIT)")," figure below.
                 That is the number of vehicles idle in that neighbourhood during any hour of a day of the week.
                 To be more precise, the aggregate idle time (hour unit) of vehicles for each hour is calculated. In simpler words, it gives an interpretation of idle car density"))
 
@@ -78,7 +78,7 @@ map_text = list(p("For my graduate research project I had access to Evo carshari
 tile_text = list(
   p(
     'HAFIT, tells you when and where cars get piled up in the morning, leave in the afternoon,
-                       and where the parties happen on the weekend nights! The system on the long weekend Mondays would experience a usage
+                       or where the parties happen on the weekend nights! The system on the long weekend Mondays would experience a usage
                        pattern different from regular weekday Mondays, hence a separate column for "H/ Mondays".
                        Hover over the figure to see HAFIT and the respective normalized values for each hour of a day of the week.
                        The coloring of the figure is to convey when the number of idle cars are high (red) or low (blue).
@@ -165,9 +165,9 @@ arv_tile_text = list(
     This percentage for 9-10AM is 59%, which could be interpreted as percentage of idle vehicles between 9-10AM with an arrival between 8-9AM to Yaletown that have an idle duration less than 2 hours.
     The comparison between Downtown Vancouver and Yaletown shows that most of the vehicles that come into Yaletown would leave within 2 hours while 80% of cars arriving to Downtown Vancouver stay there unused more than 2 hours.")
 ),
-p(list("The limits of the color scale are fixed between 0 and the maximum aggregate fleet idle time of the cars arriving at an hour of a day of the week for any idle duration.")))
+p(list("For HAFIT scale, The limits of the yellow color scale are fixed between 0 and the maximum aggregate fleet idle time of the cars arriving at an hour of a day of the week for any idle duration.")))
                  
-
+thank_text = p("Special thanks to UBC, IRES, Rainer Lempert, Michiko Namazu, and my supervisor, Hadi Dowlatabadi.")
 
 zscore_type <- tibble(label = c("Weekly normalized", "Daily normalized"),
 									 value = c("weekly", "daily"))
@@ -188,17 +188,11 @@ periods_list = list(`0` = list(label = "0 min", style = list(transform = "transl
                     `360` = list(label = "6 hrs", style = list(transform = "translateX(-50%) translateY(40%) rotate(-90deg)")),
                     `600` = list(label = "6+ hrs", style = list(transform = "translateX(-100%)")))
 
-# periods_list = list(`0` = list(label = "0 min"),
-#                     `10` = list(label = "10 mins"),
-#                     `30` = list(label = "30 mins"),
-#                     `60` = list(label = "1 hr"),
-#                     `120` = list(label = "2 hrs"),
-#                     `180` = list(label = "3 hrs"),
-#                     `360` = list(label = "6 hrs"),
-#                     `600` = list(label = "6+ hrs"))
+scale_list = tibble(label = c("HAFIT","Fraction of Total HAFIT","Fraction of HAFIT of all vehicles arrived at\nthe chosen time"),
+               value = as.character(c(1,2,3)))
 
-# mapboxToken <- "pk.eyJ1IjoibmltbmltIiwiYSI6ImNsN2s2c2c2MzBtYnozb21xdDczMDZheGoifQ.0iiCoYMlrjz84TU4FkRapQ"
-# Sys.setenv("MAPBOX_TOKEN" = mapboxToken)
+
+
 location_finder <- function(curve_number = 84){
   data <- readRDS("data/map plot/sf_neighborhoods_t.rds")
   locations <-
@@ -213,59 +207,6 @@ make_map_plot <- function() {
   google_map <- dataURI(file = "data/map plot/google_map.png")
   bbox_sf <- readRDS("data/map plot/bbox_sf.rds")
   
-  # plot_ly(type = "scatter",data, split = ~location, showlegend = F,
-  #         hoverlabel = list(namelength = 0)
-  # ) %>% layout(clickmode = "event+select") %>%
-  #   layout(xaxis = list(range = c((bbox_sf[1,]))),
-  #          yaxis = list(range = c((bbox_sf[2,])))) %>%
-  #   layout(
-  #     images = list(
-  #       list(
-  #         source =  google_map,
-  #         xref = "x",
-  #         yref = "y",
-  #         x = bbox_sf[1,1],
-  #         y = bbox_sf[2,2],
-  #         sizex = bbox_sf[1,2]-bbox_sf[1,1],
-  #         sizey = bbox_sf[2,2]-bbox_sf[2,1],
-  #         sizing = "stretch",
-  #         opacity = 0.4,
-  #         layer = "over"
-  #       )
-  #     )
-  #   ) %>%
-  #   highlight(on = "plotly_click", color = "blue")
-  #
-  
-  # plot_ly(type = "scatter",data, split = ~location, showlegend = F,
-  #         hoverlabel = list(namelength = 0),
-  #         width=800, height=495
-  # ) %>% layout(clickmode = "event+select") %>%
-  #   layout(xaxis = list(range = c((bbox_sf[1,]))),
-  #          yaxis = list(range = c((bbox_sf[2,])))) %>%
-  #   layout(
-  #     images = list(
-  #       list(
-  #         source =  google_map,
-  #         xref = "x",
-  #         yref = "y",
-  #         x = bbox_sf[1,1],
-  #         y = bbox_sf[2,2],
-  #         sizex = bbox_sf[1,2]-bbox_sf[1,1],
-  #         sizey = bbox_sf[2,2]-bbox_sf[2,1],
-  #         # sizing = "stretch",
-  #         opacity = 0.4,
-  #         layer = "over"
-  #       )
-  #     )
-  #   ) %>%
-  #   layout(margin=list(
-  #     l=0,
-  #     r=0,
-  #     b=0,
-  #     t=0,
-  #     pad=0
-  #   ))
   
   
   plot_ly(
@@ -301,7 +242,8 @@ make_map_plot <- function() {
       b = 0,
       t = 0,
       pad = 0
-    ))# %>% config(mapboxAccessToken = Sys.getenv("MAPBOX_TOKEN"))
+    ),
+    dragmode = "pan")
 }
 
 
@@ -381,7 +323,7 @@ make_tile_graph <- function(curve_number=84,zscore_type = "weekly"){
   plotly::ggplotly(hweek, tooltip = "text")  %>% layout(clickmode = "event+select",
                                                         xaxis = list(fixedrange = TRUE), 
                                                         yaxis = list(fixedrange = TRUE),
-                                                        title=Name,
+                                                        title=paste0(Name," Idle Fleet Density "),
                                                         margin = list(
                                                           # l = 0,
                                                           r = 20
@@ -395,19 +337,20 @@ make_tile_graph <- function(curve_number=84,zscore_type = "weekly"){
 
 make_arrival_tile_graph <-
   function(curve_number = 84,
-           zscore_type = "weekly",
+           # zscore_type = "weekly",
            Weekday_arv = 2,
            Hour_arv = 8,
-           Period_cat = list(180,360)) {
-    data <- readRDS("data/arrival tile plot/arrival_tile_plot_data.rds")
+           Period_cat = list(180,360),
+           scale_type = 3) {
+    data <- readRDS("data/arrival tile plot/arrival_tile_plot_data.rds") %>% ungroup()
   
     locations <-
       data %>% distinct(location) %>% arrange(location)
     j = curve_number - 56
     Name <- locations$location[j]
-    zscore = paste0("zscore_", tolower(zscore_type))
-    mean = paste0("mean_", tolower(zscore_type))
-    std = paste0("std_", tolower(zscore_type))
+    # zscore = paste0("zscore_", tolower(zscore_type))
+    # mean = paste0("mean_", tolower(zscore_type))
+    # std = paste0("std_", tolower(zscore_type))
     
     Weekday_arv = c(
       "Monday",
@@ -428,9 +371,16 @@ make_arrival_tile_graph <-
       ))
     )
     
-    data <- data %>% filter(location == Name) %>% group_by(weekday_arv, hour_arv, weekday_int,hour_int) %>% mutate(number_sum = sum(number))
-                                                                                                                      
-    color_limits <- c(0,max(data$number_sum))
+    # data <- data %>% filter(location == Name) %>% group_by(weekday_arv, hour_arv, weekday_int,hour_int) %>% mutate(number_sum = sum(number))
+    #                     
+    # data <- data %>% filter(
+    #   location == Name) 
+    
+    Scale = tibble(type = c("number","percentage_tot","percentage_sum"),
+                   label = c("HAFIT","Fraction of\nTotal HAFIT","Fraction of\nHAFIT of all\nvehicles arrived at\nthe chosen time"),
+                   color = c("yellow","green","orange"),
+                   color_limits = list(c(0,max(data$number_sum)),c(0,100),c(0,100)),
+                   label_fn = list(~ paste0(.x),~ paste0(.x,"%"),~ paste0(.x,"%")))
     
     data_plot <-
       data %>% filter(
@@ -442,9 +392,10 @@ make_arrival_tile_graph <-
           which(periods$end == Period_cat[[2]])
         )]
       ) %>% 
-      group_by(weekday_int,hour_int,number_sum) %>% 
+      group_by(weekday_int,hour_int,number_sum,number_tot) %>% 
       summarise(number = sum(number)) %>% 
-      mutate(percentage = number/number_sum*100)
+      mutate(percentage_sum = number/number_sum*100,
+             percentage_tot = number/number_tot*100)
     
     data_plot$weekday_int <-
       fct_relevel(
@@ -472,7 +423,7 @@ make_arrival_tile_graph <-
       ggplot(data_plot , aes(weekday_int, hour_int)) +
       geom_raster(
         aes(
-          fill = number,
+          fill = !!sym(Scale$type[scale_type]),
           text = paste0("</br><b>",
                         Name,
                         "</b>",
@@ -484,8 +435,14 @@ make_arrival_tile_graph <-
                         x_levels[weekday_int],
                         "</b></br>Hourly aggregate fleet idle time = ",
                         sprintf("%.2f",round(number, 2)),
-                        "</b></br>Percentage of HAFIT = ",
-                        round(percentage),"%"
+                        "</b></br>Fraction of total HAFIT = ",
+                        round(percentage_tot),"%",
+                        "</b></br>Fraction of HAFIT for vehilces\n    arrived at ",Hour_arv,
+                        ":00-",
+                        Hour_arv + 1,
+                        ":00 on ",
+                        Weekday_arv," = ",
+                        round(percentage_sum),"%"
           )),
           hjust = 0.5,
           vjust = 0.5,
@@ -501,12 +458,14 @@ make_arrival_tile_graph <-
           #   limits = color_limits
           # ) +
       scale_fill_gradient(
-        name = "Number",
+        name = Scale$label[scale_type],
         low = "#DCDCDC",
         # mid = "white",
-        high = "#FFFF00",
+        # high = "#FFFF00",
+        high = Scale$color[scale_type],
         na.value = "grey50",
-        limits = color_limits
+        limits = Scale$color_limits[[scale_type]],
+        labels = Scale$label_fn[[scale_type]]
       ) +
           coord_cartesian(
             clip = "off") +
@@ -532,29 +491,48 @@ make_arrival_tile_graph <-
           labs(x = "",
                y = "Hour of Day")+
       theme(axis.text.x = element_text(
-        angle = 45,
+        angle = 45
         # vjust = 1,
         # size = 5,
         # hjust = 0
       ))
-
+    periods <- tibble(label = c("0 min","10 mins","30 mins","1 hr","2 hrs","3 hrs","6 hrs","6+ hrs"),
+                      value = c(0,10,30,60,120,180,360,600)) 
         ggplotly(hweek, tooltip = "text") %>% layout(clickmode = "event+select",
-                                                     title=paste0(
+                                                     title=list(y = 0.95,
+                                                            text = paste0(
                                                        Name,
-                                                       # "</b>",
+                                                       " density information",
+                                                       "</b>",
                                                        "<br>",
-                                                       "Arrivals between ",
+                                                       # '<span style="line-height: 2pt;">',"<br></br></span>",
+                                                       '<span style="line-height: normal;font-size: 60%;">',
+                                                       "For cars with arrival between ",
                                                        Hour_arv,
                                                        "-",
                                                        Hour_arv + 1,
-                                                       ":00 ",
-                                                       Weekday_arv
-                                                     ),
+                                                       ":00 on ",
+                                                       Weekday_arv,#" ",
+                                                       "<br>",
+                                                       ifelse(Period_cat[[1]] == 0,
+                                                              ifelse(Period_cat[[2]] == 600,"",paste0("with idle durations equal or less than ",
+                                                                                                       periods$label[periods$value == Period_cat[[2]]])),
+                                                              paste0("with idle durations ",
+                                                                     ifelse(
+                                                                       Period_cat[[2]] == 600,
+                                                                       paste0("more than ", periods$label[periods$value ==
+                                                                                                            Period_cat[[1]]]),
+                                                                       paste0("between ", periods$label[periods$value ==
+                                                                                                          Period_cat[[1]]], " to ",
+                                                                              periods$label[periods$value == Period_cat[[2]]])
+                                                       ))),"</span>"
+                                                     )),
+                                                     hoverlabel = list(align = "left"),
                                                      margin = list(
                                                        l = 0,
                                                        r = 0,
                                                        b = 0,
-                                                       t = 60,
+                                                       t = 80,
                                                        pad = 0
                                                      ),
                                                      autosize=T,
@@ -565,3 +543,4 @@ make_arrival_tile_graph <-
           #        modeBarButtonsToRemove = list('zoom2d','pan2d','hoverClosestGl2d','lasso2d'),
           #        displaylogo = F)
   }
+

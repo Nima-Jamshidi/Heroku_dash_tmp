@@ -29,7 +29,7 @@ div_header <- div(list(heading_title,
 
 div_sidebar <- div(
   list(
-    h2(html$b(toupper('Nima Jamshidi'))),
+    h2(style = list(`font-size` = "2.5vw"),html$b(toupper('Nima Jamshidi'))),
     br(),
     html$h6(html$i(
       "M.Sc. in Resources, Environment and Sustainability, UBC"
@@ -43,12 +43,13 @@ div_sidebar <- div(
       target="_blank",
       rel="noopener noreferrer"
     ),
-    "  ",
+    "    ",
     a(
       id = "GitHub",
       className = "fa fa-github fa-2x",
       href = "https://github.com/Nima-Jamshidi",
-      style = list("text-decoration" = "none"),
+      style = list("text-decoration" = "none",
+                   "margin-left" = "5pt"),
       target="_blank",
       rel="noopener noreferrer"
     )#,
@@ -73,7 +74,7 @@ div_main <-
           dbcAlert(
             html$h5(
               html$b(
-                "Check out Vancouver Map! Hover over the map to see neighbourhoods. Click on them to see their fleet density through out the week."
+                "Check out Vancouver Map! Hover over the map to see neighbourhoods. Click on them to see their fleet density throughout the week."
               )
             ),
             id = "alert-map1",
@@ -109,7 +110,7 @@ div_main <-
           graph_tile,
           dbcCard(list(
             h4("Settings:", style = list("padding" = 5)),
-            dbcCol(zscoreDropdown, width = 6)
+            dbcCol(zscoreDropdown, width = 6, style = list("padding" = 20))
           )),
           dbcAlert(
             html$h5(
@@ -150,14 +151,16 @@ div_main <-
         div(list(
           dccLoading(graph_arv_tile, type = "circle"),
           dbcCard(list(
-            h4("Settings:", style = list("padding" = 5)), dbcCol(slider, width = 12)
+            h4("Settings:", style = list("padding" = 5)),
+            dbcCol(slider, width = 12),
+            dbcCol(scaleDropdown, width = 12, style = list("padding" = 20))
           )),
           dbcAlert(
-            html$h5(
-              html$b(
-                "You can see the density of idle cars with an idle duration between 3 hrs and 6 hrs."
+            html$h5(html$b(
+              paste0(
+                "Hover over the graph above to see more information about the distribution of idle cars with the chosen arrival time and idle duration."
               )
-            ),
+            )),
             id = "alert-arv-tile1",
             is_open = T,
             dismissable = F,
@@ -166,6 +169,9 @@ div_main <-
             style = list(top = 10)
           ),
           dbcAlert(
+            html$h5(html$b(
+              paste0("Scroll up to choose other neighbourhoods and times.")
+            )),
             id = "alert-arv-tile2",
             is_open = F,
             duration = 6000,
@@ -182,7 +188,8 @@ div_main <-
       width = 6
       )
     )
-    )
+    ),
+  dbcRow(thank_text)
   )
 
 app %>% set_layout(dbcContainer(list(
@@ -219,7 +226,7 @@ app %>% add_callback(output = list(
     ))))
   })
 
-app$callback(
+app %>% add_callback(
   output = list(output("alert-tile1", "is_open"),
                 output("alert-tile2", "is_open"),
                 output("alert-tile2", "children")),
@@ -240,31 +247,17 @@ app$callback(
                                         )))))
   })
 
-app$callback(output = list(
+app %>% add_callback(output = list(
   output("alert-arv-tile1", "is_open"),
-  output("alert-arv-tile2", "is_open"),
-  output("alert-arv-tile1", "children"),
-  output("alert-arv-tile2", "children")
+  output("alert-arv-tile2", "is_open")
+  # output("alert-arv-tile1", "children"),
+  # output("alert-arv-tile2", "children")
   ),
   params = list(
     input(id = "arv_tile_slider", property = "value")
     ),
   function(period_list) {
-    return(list(T, T, html$h5(html$b(
-      paste0(
-        "You can see the density of idle cars with an idle duration ",
-        ifelse(
-          period_list[[2]] == 600,
-          paste0("more than ", periods$label[periods$value ==
-                                               period_list[[1]]], "."),
-          paste0("between ", periods$label[periods$value ==
-                                             period_list[[1]]], " and ", periods$label[periods$value == period_list[[2]]], ".")
-        )
-      )
-    )),
-    html$h5(html$b(
-      paste0("Scroll up to choose other neighbourhoods and times.")
-    ))))
+    return(list(F, T))
   })
 
 app %>% add_callback(
@@ -295,7 +288,9 @@ app %>% add_callback(
   params = list(input(id = "DT 8-9AM  Mondays link", property = "n_clicks"),
                 input(id = "YL 8-9AM  Mondays link", property = "n_clicks")),
   function(n1,n2){
+    
     ctx <- callback_context()
+    
     prevent_update(is.null(ctx$triggered$prop_id))
     if (ctx$triggered$prop_id == "DT 8-9AM  Mondays link.n_clicks"){
       return(list(
@@ -323,15 +318,17 @@ app %>% add_callback(
   output = output(id = "arv-tile-graph", property = "figure"),
   params=list(input(id = 'map-graph', property='clickData'),
               input(id = 'tile-graph', property='clickData'),
-              input(id = 'zscore-type', property='value'),
-              input(id = "arv_tile_slider", property = "value")),
-  function(map_clickdata,tile_clickdata,zscore,period_list) {
+              # input(id = 'zscore-type', property='value'),
+              input(id = "arv_tile_slider", property = "value"),
+              input(id = 'scale-type', property='value')),
+  function(map_clickdata,tile_clickdata,period_list,scale) {
     prevent_update(is_null(map_clickdata$points[[1]]),is.null(tile_clickdata$points[[1]][2]),is.null(tile_clickdata$points[[1]][3]))
       make_arrival_tile_graph(curve_number = as.integer(map_clickdata$points[[1]][[1]]),
-                                       zscore_type = zscore,
-                                       Weekday_arv = as.integer(tile_clickdata$points[[1]][2]),
-                                       Hour_arv = as.integer(tile_clickdata$points[[1]][3]),
-                                       Period_cat = period_list)
+                              # zscore_type = zscore,
+                              Weekday_arv = as.integer(tile_clickdata$points[[1]][2]),
+                              Hour_arv = as.integer(tile_clickdata$points[[1]][3]),
+                              Period_cat = period_list,
+                              scale_type = as.integer(scale))
   }
 )
 
@@ -376,8 +373,8 @@ app %>% add_callback(
 
 # app$run_server(host = '0.0.0.0', port = Sys.getenv('PORT', 8050))
 
-# app$run_server(debug=TRUE)
-app %>% run_app(host = '0.0.0.0', port = Sys.getenv('PORT', 8050))
+app$run_server(debug=TRUE)
+# app %>% run_app(host = '0.0.0.0', port = Sys.getenv('PORT', 8050))
 # app %>% run_app(
 #   host = Sys.getenv("DASH_HOST", Sys.getenv("HOST", "0.0.0.0")),
 #   port = as.numeric(Sys.getenv("DASH_PORT", Sys.getenv("PORT", 8050)))
